@@ -1,0 +1,16 @@
+{
+  "name": "tax_helper",
+  "version": "1.0.0",
+  "description": "helps with taxes on staking rewards",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@polkadot/api": "^2.5.1",
+    "coingecko-api": "^1.0.10",
+    "moment": "^2.29.1"
+  }
+}
