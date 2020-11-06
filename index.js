@@ -5,8 +5,12 @@ const moment = require('moment');
 
 const CoinGeckoClient = new CoinGecko();
 
+const ADDR = '15wqXZqwCkkpHox8u1a5D8oHw3t57pDP7SK1YHQbPGrXrhaj';
+const YEAR = '2020';
+const COIN = 'polkadot';
 const start = YEAR.concat('-01-01');
 const end = YEAR.concat('-12-31');
+
 
 var getDaysArray = function(start, end) {
     for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
@@ -57,28 +61,22 @@ async function getDailyPrice(date){
 
 console.log(dateToString(daylist[0]));
 
-async function generateDatePriceDictionairy(year, coin){
+// TODO
+/* async function generateDatePriceDictionairy(year, coin){
 
   let handler = await CoinGeckoClient.coins.fetchHistory(coin, {date});
   console.log('Successfull');
-}
+} */
 
 async function main () {
 
-  const ADDR = '15wqXZqwCkkpHox8u1a5D8oHw3t57pDP7SK1YHQbPGrXrhaj';
-  const YEAR = '2020';
-  const COIN = 'polkadot';
 
    // CoinGecko API
     let polkadot = await CoinGeckoClient.coins.fetchHistory('polkadot', {
         date: '30-09-2020'
       });
     //console.log(polkadot.data.market_data.current_price.chf);
-    date_new = new Date();
-    getDailyPrice(date_new);
-
-    generateDatePriceDictionairy(YEAR, COIN);
-
+    
 
     // Polkadot API
 
