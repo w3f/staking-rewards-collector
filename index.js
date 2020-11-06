@@ -5,11 +5,8 @@ const moment = require('moment');
 
 const CoinGeckoClient = new CoinGecko();
 
-const ADDR = '15wqXZqwCkkpHox8u1a5D8oHw3t57pDP7SK1YHQbPGrXrhaj';
-const YEAR = '2020'
-
-start = YEAR.concat('-01-01');
-end = YEAR.concat('-12-31');
+const start = YEAR.concat('-01-01');
+const end = YEAR.concat('-12-31');
 
 var getDaysArray = function(start, end) {
     for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
@@ -21,18 +18,66 @@ var getDaysArray = function(start, end) {
 var daylist = getDaysArray(new Date(start),new Date(end));
 daylist.map((v)=>v.toISOString().slice(0,10)).join("")
 
-console.log(daylist);
+function dateToString(date){
+  day = date.getDate().toString();
+  month = date.getMonth().toString() + 1;
+  year = date.getFullYear().toString();
 
+  if(day.length == 1){
+    day = day.concat('0');
+    day = reverseString(day);
+  }
 
+  return day.concat('-', month, '-', year);
+}
+
+function reverseString(string){
+  var i;
+  length = string.length;
+  var tmp_string = '';
+
+  for(i = 0; i < string.length; i++){
+    tmp_string = tmp_string.concat(string[length-1]);
+    length -= 1;
+  }
+  console.log(tmp_string);
+  return tmp_string;
+}
+
+async function getDailyPrice(date){
+  date_string = dateToString(date);
+  
+  let polkadot = await CoinGeckoClient.coins.fetchHistory('polkadot', {
+    date: date_string
+  });
+
+  return polkadot.data.market_data.current_price.chf;
+
+}
+
+console.log(dateToString(daylist[0]));
+
+async function generateDatePriceDictionairy(year, coin){
+
+  let handler = await CoinGeckoClient.coins.fetchHistory(coin, {date});
+  console.log('Successfull');
+}
 
 async function main () {
+
+  const ADDR = '15wqXZqwCkkpHox8u1a5D8oHw3t57pDP7SK1YHQbPGrXrhaj';
+  const YEAR = '2020';
+  const COIN = 'polkadot';
 
    // CoinGecko API
     let polkadot = await CoinGeckoClient.coins.fetchHistory('polkadot', {
         date: '30-09-2020'
       });
-    console.log(polkadot.data.market_data.current_price.chf);
+    //console.log(polkadot.data.market_data.current_price.chf);
+    date_new = new Date();
+    getDailyPrice(date_new);
 
+    generateDatePriceDictionairy(YEAR, COIN);
 
 
     // Polkadot API
