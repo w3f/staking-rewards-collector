@@ -13,12 +13,17 @@ daylist.map((v)=>v.toISOString().slice(0,10)).join("") */
 
 function dateToString(date){
   day = date.getDate().toString();
-  month = date.getMonth().toString() + 1;
+  month = (date.getMonth() + 1).toString();
   year = date.getFullYear().toString();
 
   if(day.length == 1){
     day = day.concat('0');
     day = reverseString(day);
+  }
+
+  if(month.length == 1){
+    month = month.concat('0');
+    month = reverseString(month);
   }
   return day.concat('-', month, '-', year);
 }
@@ -41,7 +46,6 @@ function reverseString(string){
     tmp_string = tmp_string.concat(string[length-1]);
     length -= 1;
   }
-  console.log(tmp_string);
   return tmp_string;
 }
 
@@ -72,14 +76,16 @@ async function main () {
   const END = YEAR.concat('-12-31');
 
   let array = makeDaysArray(new Date(START),new Date(END));
-  console.log(transformArrayToString(array));
-
+  //console.log(array);
+  array = transformArrayToString(array);
+  
+  console.log(array[31]);
 
    // CoinGecko API
-    let polkadot = await CoinGeckoClient.coins.fetchHistory('polkadot', {
-        date: '30-09-2020'
-      });
-    //console.log(polkadot.data.market_data.current_price.chf);
+   let price_call = await CoinGeckoClient.coins.fetchHistory('polkadot', {
+    date: array[300]
+  });
+    console.log(price_call.data.market_data.current_price.chf);
         
 
     // Polkadot API
