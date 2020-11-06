@@ -69,14 +69,12 @@ console.log(dateToString(daylist[0]));
 } */
 
 async function main () {
-
-
    // CoinGecko API
     let polkadot = await CoinGeckoClient.coins.fetchHistory('polkadot', {
         date: '30-09-2020'
       });
     //console.log(polkadot.data.market_data.current_price.chf);
-    
+        
 
     // Polkadot API
 
