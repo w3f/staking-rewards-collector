@@ -1,26 +1,15 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const CoinGecko = require('coingecko-api');
-const moment = require('moment');
 
-
-const CoinGeckoClient = new CoinGecko();
-
-const ADDR = '15wqXZqwCkkpHox8u1a5D8oHw3t57pDP7SK1YHQbPGrXrhaj';
-const YEAR = '2020';
-const COIN = 'polkadot';
-const start = YEAR.concat('-01-01');
-const end = YEAR.concat('-12-31');
-
-
-var getDaysArray = function(start, end) {
+function makeDaysArray(start, end) {
     for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
         arr.push(new Date(dt));
     }
     return arr;
 };
 
-var daylist = getDaysArray(new Date(start),new Date(end));
-daylist.map((v)=>v.toISOString().slice(0,10)).join("")
+/* var daylist = getDaysArray(new Date(start),new Date(end));
+daylist.map((v)=>v.toISOString().slice(0,10)).join("") */
 
 function dateToString(date){
   day = date.getDate().toString();
@@ -31,8 +20,16 @@ function dateToString(date){
     day = day.concat('0');
     day = reverseString(day);
   }
-
   return day.concat('-', month, '-', year);
+}
+
+function transformArrayToString(array){
+  new_array = [];
+
+  for(i = 0; i < array.length; i++){
+    new_array[i] = dateToString(array[i]);
+  }
+  return new_array;
 }
 
 function reverseString(string){
@@ -58,9 +55,6 @@ async function getDailyPrice(date){
   return polkadot.data.market_data.current_price.chf;
 
 }
-
-console.log(dateToString(daylist[0]));
-
 // TODO
 /* async function generateDatePriceDictionairy(year, coin){
 
@@ -69,6 +63,18 @@ console.log(dateToString(daylist[0]));
 } */
 
 async function main () {
+
+  const CoinGeckoClient = new CoinGecko();
+  const ADDR = '15wqXZqwCkkpHox8u1a5D8oHw3t57pDP7SK1YHQbPGrXrhaj';
+  const YEAR = '2020';
+  const COIN = 'polkadot';
+  const START = YEAR.concat('-01-01');
+  const END = YEAR.concat('-12-31');
+
+  let array = makeDaysArray(new Date(START),new Date(END));
+  console.log(transformArrayToString(array));
+
+
    // CoinGecko API
     let polkadot = await CoinGeckoClient.coins.fetchHistory('polkadot', {
         date: '30-09-2020'
