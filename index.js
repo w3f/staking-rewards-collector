@@ -59,6 +59,18 @@ async function getDailyPrice(date){
   return polkadot.data.market_data.current_price.chf;
 
 }
+
+function makePriceDictionary(date_array, price_array){
+  var keys = date_array;
+  var values = price_array;
+  var result = {};
+  keys.forEach((key, i) => result[key] = values[i]);
+
+  return result
+}
+
+// }
+
 // TODO
 /* async function generateDatePriceDictionairy(year, coin){
 
@@ -72,20 +84,27 @@ async function main () {
   const ADDR = '15wqXZqwCkkpHox8u1a5D8oHw3t57pDP7SK1YHQbPGrXrhaj';
   const YEAR = '2020';
   const COIN = 'polkadot';
-  const START = YEAR.concat('-01-01');
-  const END = YEAR.concat('-12-31');
+  const START = YEAR.concat('-10-10'); // only for 2020
+  const END = YEAR.concat('-11-08'); // should be today if within tax year or 12-31 if after -> do in UI
+  let date_array = [];
+  let price_array = [];
 
-  let array = makeDaysArray(new Date(START),new Date(END));
+  date_array = makeDaysArray(new Date(START),new Date(END));
   //console.log(array);
-  array = transformArrayToString(array);
+  date_array = transformArrayToString(date_array);
   
-  console.log(array[31]);
+  console.log(date_array);
 
    // CoinGecko API
-   let price_call = await CoinGeckoClient.coins.fetchHistory('polkadot', {
-    date: array[300]
-  });
-    console.log(price_call.data.market_data.current_price.chf);
+   for(i=0; i<date_array.length; i++){
+    let price_call = await CoinGeckoClient.coins.fetchHistory('polkadot', {
+      date: date_array[i]
+    });
+    price_array[i] = price_call.data.market_data.current_price.chf;
+   }
+
+   dictionary = makePriceDictionary(date_array, price_array);
+
         
 
     // Polkadot API
