@@ -1,7 +1,45 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const CoinGecko = require('coingecko-api');
 const prompts = require('prompts');
+const ws = require('ws');
+const gql = require('graphql-tag');
 
+/* GraphQL connection example end */
+const { InMemoryCache, ApolloClient } = require('apollo-boost');
+const { WebSocketLink } = require('apollo-link-ws');
+const { SubscriptionClient } = require('subscriptions-transport-ws');
+
+const graphQLEndpoint = 'wss://kusama.polkastats.io/api/v3';
+const client = new SubscriptionClient(graphQLEndpoint, {
+  reconnect: true
+}, ws);
+const link = new WebSocketLink(client);
+const apolloClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  link
+});
+
+apolloClient.query({
+  query: gql`
+    query event {
+      event(
+        order_by: { block_number: desc, event_index: desc }
+        where: {
+          section: { _eq: "staking" }
+          method: { _eq: "Reward" }
+        }
+        limit: 100
+      ) {
+        block_number
+        event_index
+        data
+      }
+    }
+  `
+})
+  .then(data => console.log(JSON.stringify(data, null, 2)))
+  .catch(error => console.error(error));
+/* GraphQL connection example end */
 
 function makeDaysArray(start, end) {
     for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
@@ -80,7 +118,7 @@ async function main () {
   let date_array = [];
   let price_array = [];
 
-  console.log('--------------------------------------------_WELCOME ----------------------------------------------\n');
+  console.log('-------------------------------------------- WELCOME ----------------------------------------------\n');
   console.log('I do not take any responsibility for the correctness of the results, do your own research!!');
   console.log('This tool should help you to request your staking rewards for a given address and calculate your tax burden.');
   console.log('It will be possible for you to insert your Address and the time-frame for which the staking rewards should be calculated.');
