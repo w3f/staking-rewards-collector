@@ -1,5 +1,7 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const CoinGecko = require('coingecko-api');
+const prompts = require('prompts');
+
 
 function makeDaysArray(start, end) {
     for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
@@ -7,9 +9,6 @@ function makeDaysArray(start, end) {
     }
     return arr;
 };
-
-/* var daylist = getDaysArray(new Date(start),new Date(end));
-daylist.map((v)=>v.toISOString().slice(0,10)).join("") */
 
 function dateToString(date){
   day = date.getDate().toString();
@@ -69,42 +68,65 @@ function makePriceDictionary(date_array, price_array){
   return result
 }
 
-// }
-
-// TODO
-/* async function generateDatePriceDictionairy(year, coin){
-
-  let handler = await CoinGeckoClient.coins.fetchHistory(coin, {date});
-  console.log('Successfull');
-} */
 
 async function main () {
 
   const CoinGeckoClient = new CoinGecko();
   const ADDR = '15wqXZqwCkkpHox8u1a5D8oHw3t57pDP7SK1YHQbPGrXrhaj';
-  const YEAR = '2020';
-  const COIN = 'polkadot';
-  const START = YEAR.concat('-10-10'); // only for 2020
-  const END = YEAR.concat('-11-08'); // should be today if within tax year or 12-31 if after -> do in UI
+  //const YEAR = '2020';
+  //const COIN = 'polkadot';
+  //const START = YEAR.concat('-10-10'); // only for 2020
+  //const END = YEAR.concat('-11-08'); // should be today if within tax year or 12-31 if after -> do in UI
   let date_array = [];
   let price_array = [];
 
-  date_array = makeDaysArray(new Date(START),new Date(END));
-  //console.log(array);
-  date_array = transformArrayToString(date_array);
-  
-  console.log(date_array);
+  console.log('--------------------------------------------_WELCOME ----------------------------------------------\n');
+  console.log('I do not take any responsibility for the correctness of the results, do your own research!!');
+  console.log('This tool should help you to request your staking rewards for a given address and calculate your tax burden.');
+  console.log('It will be possible for you to insert your Address and the time-frame for which the staking rewards should be calculated.');
+  console.log('The daily prices are requested from the CoinGecko API and the staking rewards from Polkastats GraphQL.\n');
 
-   // CoinGecko API
+  console.log(new Date());
+
+
+
+  const response_coin = await prompts({
+    type: 'text',
+    name: 'coin',
+    message: 'Enter the coin you want to get the rewards for (polkadot / kusama): '
+  });
+  coin = response_coin.coin;
+
+  const response_start = await prompts({
+    type: 'text',
+    name: 'start',
+    message: 'Enter the start date of your analysis (YYYY-MM-DD). \n Note that for polkadot the earliest possible date is 2020-08-19 and for kusama 2019-09-20:'
+  });
+  start = response_start.start;
+
+  const response_end = await prompts({
+    type: 'text',
+    name: 'end',
+    message: 'Enter the end date of your analysis (YYYY-MM-DD). \n Note that you might want to use yesterday instead of today in case the price is not logged into the API yet: '
+  });
+  end = response_end.end;
+
+  date_array = makeDaysArray(new Date(start),new Date(end));
+  date_array = transformArrayToString(date_array);
+
+  console.log('Please wait for the data to be fetched');
+
+   // CoinGecko API it has 100 requests per minute. If there are more than 100 requests, can I do 100, make the loop wait 1 min and do the rest??
    for(i=0; i<date_array.length; i++){
-    let price_call = await CoinGeckoClient.coins.fetchHistory('polkadot', {
-      date: date_array[i]
+    let price_call = await CoinGeckoClient.coins.fetchHistory(coin, {
+      date: date_array[i] 
     });
     price_array[i] = price_call.data.market_data.current_price.chf;
    }
 
    dictionary = makePriceDictionary(date_array, price_array);
 
+   console.log(dictionary);
         
 
     // Polkadot API
