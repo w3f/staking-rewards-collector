@@ -118,11 +118,7 @@ async function main () {
   let date_array = [];
   let price_array = [];
 
-<<<<<<< HEAD
-  console.log('--------------------------------------------WELCOME ----------------------------------------------\n');
-=======
   console.log('-------------------------------------------- WELCOME ----------------------------------------------\n');
->>>>>>> origin/mario/graphql-connection
   console.log('I do not take any responsibility for the correctness of the results, do your own research!!');
   console.log('This tool should help you to request your staking rewards for a given address and calculate your tax burden.');
   console.log('It will be possible for you to insert your Address and the time-frame for which the staking rewards should be calculated.');
