@@ -1,45 +1,6 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const CoinGecko = require('coingecko-api');
 const prompts = require('prompts');
-const ws = require('ws');
-const gql = require('graphql-tag');
-
-/* GraphQL connection example end */
-const { InMemoryCache, ApolloClient } = require('apollo-boost');
-const { WebSocketLink } = require('apollo-link-ws');
-const { SubscriptionClient } = require('subscriptions-transport-ws');
-
-const graphQLEndpoint = 'wss://kusama.polkastats.io/api/v3';
-const client = new SubscriptionClient(graphQLEndpoint, {
-  reconnect: true
-}, ws);
-const link = new WebSocketLink(client);
-const apolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link
-});
-
-apolloClient.query({
-  query: gql`
-    query event {
-      event(
-        order_by: { block_number: desc, event_index: desc }
-        where: {
-          section: { _eq: "staking" }
-          method: { _eq: "Reward" }
-        }
-        limit: 100
-      ) {
-        block_number
-        event_index
-        data
-      }
-    }
-  `
-})
-  .then(data => console.log(JSON.stringify(data, null, 2)))
-  .catch(error => console.error(error));
-/* GraphQL connection example end */
 
 function makeDaysArray(start, end) {
     for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
@@ -111,10 +72,6 @@ async function main () {
 
   const CoinGeckoClient = new CoinGecko();
   const ADDR = '15wqXZqwCkkpHox8u1a5D8oHw3t57pDP7SK1YHQbPGrXrhaj';
-  //const YEAR = '2020';
-  //const COIN = 'polkadot';
-  //const START = YEAR.concat('-10-10'); // only for 2020
-  //const END = YEAR.concat('-11-08'); // should be today if within tax year or 12-31 if after -> do in UI
   let date_array = [];
   let price_array = [];
 
@@ -168,21 +125,4 @@ async function main () {
 
    console.log(dictionary);
 }
-//     // Polkadot API
-//   // Initialise the provider to connect to the local node
-//   const provider = new WsProvider('wss://rpc.polkadot.io');
-//   // Create the API and wait until ready
-//   const api = await ApiPromise.create({ provider });
-//   // Retrieve the chain & node information information via rpc calls
-//   const [chain, nodeName, nodeVersion] = await Promise.all([
-//     api.rpc.system.chain(),
-//     api.rpc.system.name(),
-//     api.rpc.system.version()
-//   ]);
-//   // Retrieve the last timestamp
-// const now = await api.query.timestamp.now();
-// // Retrieve the account balance & nonce via the system module
-// const { nonce, data: balance } = await api.query.system.account(address);
-// console.log(`${now}: balance of ${balance.free} and a nonce of ${nonce}`);
-
 main().catch(console.error).finally(() => process.exit());
