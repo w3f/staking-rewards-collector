@@ -1,45 +1,7 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const CoinGecko = require('coingecko-api');
 const prompts = require('prompts');
-const ws = require('ws');
-const gql = require('graphql-tag');
 
-/* GraphQL connection example end */
-const { InMemoryCache, ApolloClient } = require('apollo-boost');
-const { WebSocketLink } = require('apollo-link-ws');
-const { SubscriptionClient } = require('subscriptions-transport-ws');
-
-const graphQLEndpoint = 'wss://kusama.polkastats.io/api/v3';
-const client = new SubscriptionClient(graphQLEndpoint, {
-  reconnect: true
-}, ws);
-const link = new WebSocketLink(client);
-const apolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link
-});
-
-apolloClient.query({
-  query: gql`
-    query event {
-      event(
-        order_by: { block_number: desc, event_index: desc }
-        where: {
-          section: { _eq: "staking" }
-          method: { _eq: "Reward" }
-        }
-        limit: 100
-      ) {
-        block_number
-        event_index
-        data
-      }
-    }
-  `
-})
-  .then(data => console.log(JSON.stringify(data, null, 2)))
-  .catch(error => console.error(error));
-/* GraphQL connection example end */
 
 function makeDaysArray(start, end) {
     for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
@@ -118,22 +80,15 @@ async function main () {
   let date_array = [];
   let price_array = [];
 
-<<<<<<< HEAD
-  console.log('--------------------------------------------WELCOME ----------------------------------------------\n');
-=======
-  console.log('-------------------------------------------- WELCOME ----------------------------------------------\n');
->>>>>>> origin/mario/graphql-connection
+  console.log('--------------------------------------------_WELCOME ----------------------------------------------\n');
   console.log('I do not take any responsibility for the correctness of the results, do your own research!!');
   console.log('This tool should help you to request your staking rewards for a given address and calculate your tax burden.');
   console.log('It will be possible for you to insert your Address and the time-frame for which the staking rewards should be calculated.');
   console.log('The daily prices are requested from the CoinGecko API and the staking rewards from Polkastats GraphQL.\n');
 
-  const response_address = await prompts({
-    type: 'text',
-    name: 'address',
-    message: 'Please enter the address you want to look up the staking rewards for (ctrl+shift+v): '
-  });
-  address = response_address.address;
+  console.log(new Date());
+
+
 
   const response_coin = await prompts({
     type: 'text',
@@ -156,9 +111,10 @@ async function main () {
   });
   end = response_end.end;
 
-  date_array = transformArrayToString(makeDaysArray(new Date(start),new Date(end)));
+  date_array = makeDaysArray(new Date(start),new Date(end));
+  date_array = transformArrayToString(date_array);
 
-  console.log('\n Please wait for the data to be fetched');
+  console.log('Please wait for the data to be fetched');
 
    // CoinGecko API it has 100 requests per minute. If there are more than 100 requests, can I do 100, make the loop wait 1 min and do the rest??
    for(i=0; i<date_array.length; i++){
@@ -171,22 +127,31 @@ async function main () {
    dictionary = makePriceDictionary(date_array, price_array);
 
    console.log(dictionary);
+        
+
+    // Polkadot API
+
+  // Initialise the provider to connect to the local node
+  const provider = new WsProvider('wss://rpc.polkadot.io');
+
+  // Create the API and wait until ready
+  const api = await ApiPromise.create({ provider });
+
+  // Retrieve the chain & node information information via rpc calls
+  const [chain, nodeName, nodeVersion] = await Promise.all([
+    api.rpc.system.chain(),
+    api.rpc.system.name(),
+    api.rpc.system.version()
+  ]);
+
+  // Retrieve the last timestamp
+const now = await api.query.timestamp.now();
+
+// Retrieve the account balance & nonce via the system module
+const { nonce, data: balance } = await api.query.system.account(ADDR);
+
+console.log(`${now}: balance of ${balance.free} and a nonce of ${nonce}`);
+
 }
-//     // Polkadot API
-//   // Initialise the provider to connect to the local node
-//   const provider = new WsProvider('wss://rpc.polkadot.io');
-//   // Create the API and wait until ready
-//   const api = await ApiPromise.create({ provider });
-//   // Retrieve the chain & node information information via rpc calls
-//   const [chain, nodeName, nodeVersion] = await Promise.all([
-//     api.rpc.system.chain(),
-//     api.rpc.system.name(),
-//     api.rpc.system.version()
-//   ]);
-//   // Retrieve the last timestamp
-// const now = await api.query.timestamp.now();
-// // Retrieve the account balance & nonce via the system module
-// const { nonce, data: balance } = await api.query.system.account(address);
-// console.log(`${now}: balance of ${balance.free} and a nonce of ${nonce}`);
 
 main().catch(console.error).finally(() => process.exit());
