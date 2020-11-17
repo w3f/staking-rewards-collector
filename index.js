@@ -2,44 +2,7 @@ const { ApiPromise, WsProvider } = require('@polkadot/api');
 const CoinGecko = require('coingecko-api');
 const prompts = require('prompts');
 const ws = require('ws');
-const gql = require('graphql-tag');
-
-/* GraphQL connection example end */
-const { InMemoryCache, ApolloClient } = require('apollo-boost');
-const { WebSocketLink } = require('apollo-link-ws');
-const { SubscriptionClient } = require('subscriptions-transport-ws');
-
-const graphQLEndpoint = 'wss://kusama.polkastats.io/api/v3';
-const client = new SubscriptionClient(graphQLEndpoint, {
-  reconnect: true
-}, ws);
-const link = new WebSocketLink(client);
-const apolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link
-});
-
-apolloClient.query({
-  query: gql`
-    query event {
-      event(
-        order_by: { block_number: desc, event_index: desc }
-        where: {
-          section: { _eq: "staking" }
-          method: { _eq: "Reward" }
-        }
-        limit: 100
-      ) {
-        block_number
-        event_index
-        data
-      }
-    }
-  `
-})
-  .then(data => console.log(JSON.stringify(data, null, 2)))
-  .catch(error => console.error(error));
-/* GraphQL connection example end */
+var curl = require('curlrequest');
 
 function makeDaysArray(start, end) {
     for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
@@ -131,6 +94,8 @@ async function main () {
   });
   address = response_address.address;
 
+  address = ADDR;
+
   const response_coin = await prompts({
     type: 'text',
     name: 'coin',
@@ -167,7 +132,34 @@ async function main () {
    dictionary = makePriceDictionary(date_array, price_array);
 
    console.log(dictionary);
+
+   var options = {
+      url: 'https://polkadot.subscan.io/api/scan/account/reward_slash',
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      data: JSON.stringify({
+      'row':20,
+      'page':1,
+      'address': ADDR
+      }),
+    };
+
+    let test = await requestStakingRewards(options);
+    console.log(test);    
 }
+
+function requestStakingRewards(options){
+  return new Promise(function (resolve, reject){
+    curl.request(options, (err,data) => {
+      if (!err){
+        resolve(data);
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
 //     // Polkadot API
 //   // Initialise the provider to connect to the local node
 //   const provider = new WsProvider('wss://rpc.polkadot.io');
