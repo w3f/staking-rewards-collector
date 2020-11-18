@@ -1,9 +1,7 @@
-const { ApiPromise, WsProvider } = require('@polkadot/api');
-const CoinGecko = require('coingecko-api');
-const prompts = require('prompts');
-const ws = require('ws');
-var curl = require('curlrequest');
-const fs = require('fs');
+import CoinGecko from 'coingecko-api';
+import prompts from 'prompts';
+import curl from 'curlrequest';
+import fs from 'fs';
 
 function makeDaysArray(start, end) {
     for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
@@ -13,9 +11,9 @@ function makeDaysArray(start, end) {
 };
 
 function dateToString(date){
-  day = date.getDate().toString();
-  month = (date.getMonth() + 1).toString();
-  year = date.getFullYear().toString();
+  let day = date.getDate().toString();
+  let month = (date.getMonth() + 1).toString();
+  let year = date.getFullYear().toString();
 
   if(day.length == 1){
     day = day.concat('0');
@@ -30,9 +28,9 @@ function dateToString(date){
 }
 
 function transformArrayToString(array){
-  new_array = [];
+  let new_array = [];
 
-  for(i = 0; i < array.length; i++){
+  for(let i = 0; i < array.length; i++){
     new_array[i] = dateToString(array[i]);
   }
   return new_array;
@@ -121,10 +119,10 @@ async function main () {
   });
   end = response_end.end;
  */
-  address = ADDR;
-  start = '2020-10-10';
-  end = '2020-10-11';
-  coin = 'polkadot'
+  let address = ADDR;
+  let start = '2020-10-10';
+  let end = '2020-10-11';
+  let coin = 'polkadot'
 
   start = new Date(start);
   end = new Date(end);
@@ -132,22 +130,19 @@ async function main () {
   let start_unix = start.valueOf() / 1000;
   let end_unix = end.valueOf() / 1000;
   
-  console.log(start_unix);
-
-
   date_array = transformArrayToString(makeDaysArray(start,end));
 
   console.log('\n Please wait for the data to be fetched');
 
    // CoinGecko API it has 100 requests per minute. If there are more than 100 requests, can I do 100, make the loop wait 1 min and do the rest??
-   for(i=0; i<date_array.length; i++){
+   for(let i=0; i<date_array.length; i++){
     let price_call = await CoinGeckoClient.coins.fetchHistory(coin, {
       date: date_array[i] 
     });
     price_array[i] = price_call.data.market_data.current_price.chf;
    }
 
-   dictionary = makePriceDictionary(date_array, price_array);
+   let dictionary = makePriceDictionary(date_array, price_array);
 
    console.log(dictionary); 
 

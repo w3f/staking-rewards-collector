@@ -3,22 +3,15 @@
   "version": "1.0.0",
   "description": "helps with taxes on staking rewards",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@polkadot/api": "^2.5.1",
-    "apollo-boost": "^0.4.9",
-    "apollo-link-ws": "^1.0.20",
     "coingecko-api": "^1.0.10",
     "curlrequest": "^1.0.1",
-    "graphql": "^15.4.0",
-    "graphql-tag": "^2.11.0",
-    "moment": "^2.29.1",
-    "prompts": "^2.4.0",
-    "subscriptions-transport-ws": "^0.9.18",
-    "ws": "^7.4.0"
+    "prompts": "^2.4.0"
   }
 }
