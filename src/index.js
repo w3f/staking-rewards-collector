@@ -1,6 +1,9 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const CoinGecko = require('coingecko-api');
 const prompts = require('prompts');
+const ws = require('ws');
+var curl = require('curlrequest');
+const fs = require('fs');
 
 function makeDaysArray(start, end) {
     for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
@@ -71,10 +74,17 @@ function makePriceDictionary(date_array, price_array){
 async function main () {
 
   const CoinGeckoClient = new CoinGecko();
-  const ADDR = '15wqXZqwCkkpHox8u1a5D8oHw3t57pDP7SK1YHQbPGrXrhaj';
+  //const ADDR = '15wqXZqwCkkpHox8u1a5D8oHw3t57pDP7SK1YHQbPGrXrhaj';
+  const ADDR = '15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK';
+
+  //const YEAR = '2020';
+  //const COIN = 'polkadot';
+  //const START = YEAR.concat('-10-10'); // only for 2020
+  //const END = YEAR.concat('-11-08'); // should be today if within tax year or 12-31 if after -> do in UI
   let date_array = [];
   let price_array = [];
 
+  /* Turned off User Input for better testing 
   console.log('-------------------------------------------- WELCOME ----------------------------------------------\n');
   console.log('I do not take any responsibility for the correctness of the results, do your own research!!');
   console.log('This tool should help you to request your staking rewards for a given address and calculate your tax burden.');
@@ -87,6 +97,8 @@ async function main () {
     message: 'Please enter the address you want to look up the staking rewards for (ctrl+shift+v): '
   });
   address = response_address.address;
+
+  address = ADDR;
 
   const response_coin = await prompts({
     type: 'text',
@@ -108,8 +120,22 @@ async function main () {
     message: 'Enter the end date of your analysis (YYYY-MM-DD). \n Note that you might want to use yesterday instead of today in case the price is not logged into the API yet: '
   });
   end = response_end.end;
+ */
+  address = ADDR;
+  start = '2020-10-10';
+  end = '2020-10-11';
+  coin = 'polkadot'
 
-  date_array = transformArrayToString(makeDaysArray(new Date(start),new Date(end)));
+  start = new Date(start);
+  end = new Date(end);
+
+  let start_unix = start.valueOf() / 1000;
+  let end_unix = end.valueOf() / 1000;
+  
+  console.log(start_unix);
+
+
+  date_array = transformArrayToString(makeDaysArray(start,end));
 
   console.log('\n Please wait for the data to be fetched');
 
@@ -123,6 +149,41 @@ async function main () {
 
    dictionary = makePriceDictionary(date_array, price_array);
 
-   console.log(dictionary);
+   console.log(dictionary); 
+
+
+  var options = {
+      url: 'https://polkadot.subscan.io/api/scan/account/reward_slash',
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      data: JSON.stringify({
+      'row':100,
+      'page':0,
+      'address': ADDR
+      }),
+    };
+    
+
+    let data = await requestStakingRewards(options);
+
+  try {
+      fs.writeFileSync('user.json', data);
+      console.log("JSON data is saved.");
+  } catch (error) {
+      console.error(err);
+  }
+
+}
+
+function requestStakingRewards(options){
+  return new Promise(function (resolve, reject){
+    curl.request(options, (err,data) => {
+      if (!err){
+        resolve(data);
+      } else {
+        reject(err);
+      }
+    });
+  });
 }
 main().catch(console.error).finally(() => process.exit());
