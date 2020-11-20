@@ -1,4 +1,3 @@
-import curl from 'curlrequest';
 import fs from 'fs';
 import { MockUserInput } from './ui.js';
 import { gatherData } from './gatherData.js';
@@ -20,51 +19,11 @@ async function main () {
 
   const userInput = MockUserInput();
 
+  console.log('Wait until your data is retrieved...')
   await gatherData(userInput.start, userInput.end, userInput.coin, userInput.address);
 
   // let start_unix = start.valueOf() / 1000;
   // let end_unix = end.valueOf() / 1000;
-  
-  
 
-  console.log('\n Please wait for the data to be fetched');
-
-  
-
-
-
-  // var options = {
-  //     url: 'https://polkadot.subscan.io/api/scan/account/reward_slash',
-  //     method: 'POST',
-  //     headers: {'Content-Type': 'application/json'},
-  //     data: JSON.stringify({
-  //     'row':100,
-  //     'page':0,
-  //     'address': ADDR
-  //     }),
-  //   };
-    
-
-  //   let data = await requestStakingRewards(options);
-
-  // try {
-  //     fs.writeFileSync('user.json', data);
-  //     console.log("JSON data is saved.");
-  // } catch (error) {
-  //     console.error(err);
-  // }
-
-}
-
-function requestStakingRewards(options){
-  return new Promise(function (resolve, reject){
-    curl.request(options, (err,data) => {
-      if (!err){
-        resolve(data);
-      } else {
-        reject(err);
-      }
-    });
-  });
 }
 main().catch(console.error).finally(() => process.exit());
