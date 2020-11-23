@@ -14,8 +14,8 @@ This program makes it easy to **look up the staking rewards** of an account. Add
 When launching the program, you are asked to provide several **inputs**:
 * Address: The Address you want to have the stake rewards parsed.
 * Network: The network you want to analyze (allowed: 'polkadot' and 'kusama').
-* Start (YYYY-MM-DD): The first day you want to analyze (Note that there are earliest days for chain data for polkadot 2020-08-19 and for kusama 2019-09-20).
-* End (YYYY-MM-DD): The last day you want to analyze.
+* Start (YYYY-MM-DD): The earliest day you want to analyze (Note that there are earliest days for chain data for polkadot 2020-08-19 and for kusama 2019-09-20).
+* End (YYYY-MM-DD): The most recent day you want to analyze.
 * Currency: In what currency you would like to have your value expressed (allowed: 'chf', 'usd', 'eur').
 * IncomeTax: You can specify already your income Tax rate. If you don't know / care input e.g. 1 and ignore the output's taxableIncome.
 * PriceData: To be answered with 'y' or 'n'. If the user specifies 'y', the tool tries to populate the staking rewards with the respective spot prices of that day.

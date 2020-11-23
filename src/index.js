@@ -15,8 +15,8 @@ function makePriceDictionary(date_array, price_array){
 
 async function main () {
   let obj = {};
-  const userInput = MockUserInput();
-  //const userInput = await getUserInput();
+  //const userInput = MockUserInput();
+  const userInput = await getUserInput();
 
   console.log('Wait until your data is retrieved...')
   obj = await gatherData(userInput);
