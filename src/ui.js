@@ -62,7 +62,7 @@ export async function getUserInput(){
 
   const response_priceData = await prompts({
     type: 'text',
-    name: 'stakeData',
+    name: 'priceData',
     message: 'Do you want to get price data? Note that earliest prices for polkadot are and kusama : Also, your request should not exceed 100 days. (y/n)'
   });
   priceData = response_priceData.priceData;
