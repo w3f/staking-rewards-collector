@@ -1,5 +1,6 @@
 import curl from 'curlrequest';
 import { dateToString, transformDDMMYYYtoUnix, min } from './utils.js';
+import { exportVariable } from './writer.js';
 
 export async function addStakingData(obj){
     let found = 0;
@@ -8,6 +9,8 @@ export async function addStakingData(obj){
     let page = -1;
     let address = obj.address;
     let network = obj.network;
+    let round = 0;
+    var loopindex;
 
     /*
     This function runs at least once and parses the staking info for the given address. The API is structured in a way that you specify which
@@ -20,8 +23,14 @@ export async function addStakingData(obj){
 
     do {
         page += 1;
+        round += 1;
         stakingObject = await getStakingObject(address, page, network);
-        let loopindex = min(stakingObject.data.count, 100);
+        if(page==0){
+            loopindex = min(stakingObject.data.count, 100);
+        } else {
+            loopindex = min(stakingObject.data.count - page*100,100);
+        }
+        console.log(loopindex);
        
         for(let i=0; i < obj.data.numberOfDays; i++){
             for(let x = 0; x < loopindex; x++){
@@ -43,9 +52,10 @@ export async function addStakingData(obj){
                         }
                     }
                 }
-            }     
-        finished = checkIfEnd(stakingObject, obj);
-        } while (finished == false)
+            } 
+        exportVariable(JSON.stringify(stakingObject), 'stakingobj.json');    
+        finished = checkIfEnd(stakingObject, obj, loopindex);
+        } while (finished == false);
 
     
     obj.data.numberRewardsParsed = found;
@@ -53,12 +63,13 @@ export async function addStakingData(obj){
     return obj;  
 }
 
-function checkIfEnd(stakingObj, obj){
+function checkIfEnd(stakingObj, obj, loopindex){
     let endStakingObj = stakingObj.data.list.slice(-1)[0].block_timestamp;
     let endObj = transformDDMMYYYtoUnix(obj.data.list.slice(-1)[0].day);
+    
     let finished = true;
 
-    if(endStakingObj > endObj){
+    if((endStakingObj < endObj) && loopindex == 100){
         finished = false;
     }
     return finished;

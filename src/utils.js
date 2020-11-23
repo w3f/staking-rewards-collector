@@ -91,9 +91,10 @@ export function min(a,b){
     var min;
     if(a>b){
         min = b; 
-    } else {
+    }else {
         min = a;
     }
+
     return min;
 }
 
