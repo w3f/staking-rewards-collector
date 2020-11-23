@@ -94,7 +94,6 @@ export function min(a,b){
     }else {
         min = a;
     }
-
     return min;
 }
 

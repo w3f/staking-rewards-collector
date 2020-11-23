@@ -59,7 +59,11 @@ export async function addStakingData(obj){
     obj.message = 'data collection complete';
     return obj;  
 }
-
+/*
+This function checks if the loop should continue. If the last entry (i.e. the longest date in history) of stakingObject has a smaller timestamp
+than that of the user specified one, it should continue, because there might be more rewards beyond that date. However, for that to be true, the
+staking object must have 100 entries (which basically means that there are more to come).
+*/
 function checkIfEnd(stakingObj, obj, loopindex){
     let endStakingObj = stakingObj.data.list.slice(-1)[0].block_timestamp;
     let endObj = transformDDMMYYYtoUnix(obj.data.list.slice(-1)[0].day);

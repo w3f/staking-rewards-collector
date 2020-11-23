@@ -56,7 +56,7 @@ export async function getUserInput(){
   const response_tax = await prompts({
     type: 'text',
     name: 'incomeTax',
-    message: 'If you want, you can directly state your income tax rate to estimate your tax burden. If you do not want that, type 0'
+    message: 'If you want, you can directly state your income tax rate (e.g. 0.07 for 7%) to estimate your tax burden. If you do not want that, type 0'
   });
   incomeTax = response_tax.incomeTax;
 
