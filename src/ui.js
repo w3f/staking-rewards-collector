@@ -35,14 +35,14 @@ export async function getUserInput(){
   const response_start = await prompts({
     type: 'text',
     name: 'start',
-    message: 'Enter the start date of your analysis (YYYY-MM-DD).'
+    message: 'Enter the earliest date of your analysis (YYYY-MM-DD). '
   });
   start = response_start.start;
 
   const response_end = await prompts({
     type: 'text',
     name: 'end',
-    message: 'Enter the end date of your analysis (YYYY-MM-DD).'
+    message: 'Enter the most recent date of your analysis (YYYY-MM-DD).'
   });
   end = response_end.end;
 
@@ -87,11 +87,11 @@ export function MockUserInput(){
     userInput = {
         'address': '15fTw39Ju2jJiHeGe1fJ5DtgugUauy9tr2HZuiRNFwqnGQ1Q',
         'network': 'polkadot',
-        'start': '2019-06-10',
-        'end': '2020-05-23',
+        'start': '2020-10-10',
+        'end': '2020-11-23',
         'currency': "chf",
         'incomeTax': 0.07,
-        'priceData': 'n'
+        'priceData': 'y'
     };
     return userInput;
 }
