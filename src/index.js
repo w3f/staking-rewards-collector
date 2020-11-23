@@ -7,9 +7,9 @@ async function main () {
   let obj = {};
 
   // for testing only
-  //const userInput = MockUserInput();
+  const userInput = MockUserInput();
   
-  const userInput = await getUserInput();
+  //const userInput = await getUserInput();
 
   console.log('Wait until your data is retrieved...')
   obj = await gatherData(userInput);

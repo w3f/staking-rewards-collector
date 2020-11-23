@@ -46,6 +46,13 @@ export async function getUserInput(){
   });
   end = response_end.end;
 
+  const response_initialInvestment = await prompts({
+    type: 'number',
+    name: 'initialInvestment',
+    message: 'If you want to calculate your annualized return, specify your initial investment (in DOT/KSM) which generates the staking rewards.'
+  });
+  initialInvestment = response_initialInvestment.initialInvestment;
+
   const response_currency = await prompts({
     type: 'text',
     name: 'currency',
@@ -74,6 +81,7 @@ export async function getUserInput(){
       'network': network, 
       'start': start, 
       'end': end, 
+      'initialInvestment': initialInvestment,
       'currency': currency, 
       'incomeTax': incomeTax,
       'priceData': priceData
@@ -89,6 +97,7 @@ export function MockUserInput(){
         'network': 'polkadot',
         'start': '2020-10-10',
         'end': '2020-11-23',
+        'initialInvestment': 100000,
         'currency': "chf",
         'incomeTax': 0.07,
         'priceData': 'y'

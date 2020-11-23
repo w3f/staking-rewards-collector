@@ -27,6 +27,7 @@ If the script is successfully run, you can find an 'output.json' in your main fo
 * Some information of your inputs (address, network, income tax rate).
 * A a sum of your total staked amount expressed in human readable format (i.e., in new DOT or KSM).
 * If priceData was requested and income tax was specified: Overall tax burden.
+* If you specified your initial investment, an estimate of your annualized return rate. For this, the period between the first and the last reward is taken. This is ony accurate if you did not change your staking situation often or reward destination.
 * A list with objects containing more information about when rewards happened as well as block number and extrinisc hash. Every day in your specified range is one object. When there are several events within one day, strings are concanated and numbers are added.
 
 # Important Notes:

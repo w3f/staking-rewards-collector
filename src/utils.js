@@ -1,4 +1,4 @@
-import { round } from 'mathjs';
+import { round, pow } from 'mathjs';
 
 export function dateToString(date){
     let day = date.getDate().toString();
@@ -25,15 +25,20 @@ export function makeDaysArray(start, end) {
     return arr;
 };
 
-export function initializeObject(daysArray, network, address, currency, incomeTax){
+export function initializeObject(daysArray, network, address, currency, incomeTax, initialInvestment){
     let obj = {
         'message': 'empty',
         'address': address,
         'network': network,
         'currency': currency,
         'incomeTax': incomeTax,
+        'initialInvestment': initialInvestment,
+        'firstReward': '',
+        'lastReward': '',
+        'annualizedReturn':0,
+        'currentValueRewardsFiat':0,
         'totalAmountHumanReadable':0,
-        'totalAmountFiat': 0,
+        'totalValueFiat': 0,
         'totalTaxBurdenFiat': 0,
         'data':{
             'numberRewardsParsed': 0,
@@ -99,6 +104,7 @@ export function min(a,b){
 
 export function calculateMetrics(obj){
     var normalization;
+
     if(obj.network == 'polkadot'){
         normalization = 1/10000000000;
     } else {
@@ -108,14 +114,61 @@ export function calculateMetrics(obj){
         obj.data.list[i].amountHumanReadable = obj.data.list[i].amountPlanks * normalization;
         obj.data.list[i].valueFiat = obj.data.list[i].amountHumanReadable * obj.data.list[i].price;
         obj.data.list[i].valueTaxable = obj.data.list[i].valueFiat * obj.incomeTax;
-        obj.totalAmountFiat = obj.totalAmountFiat + obj.data.list[i].valueFiat;
+        obj.totalValueFiat = obj.totalValueFiat + obj.data.list[i].valueFiat;
         obj.totalTaxBurdenFiat =  obj.totalTaxBurdenFiat + obj.data.list[i].valueTaxable;
         obj.totalAmountHumanReadable = obj.totalAmountHumanReadable + obj.data.list[i].amountHumanReadable;
     }
 
-    obj.totalAmountFiat = round(obj.totalAmountFiat,2);
+    obj.totalValueFiat = round(obj.totalValueFiat,2);
     obj.totalAmountHumanReadable = round(obj.totalAmountHumanReadable,2);
     obj.totalTaxBurdenFiat = round(obj.totalTaxBurdenFiat,2);
-
+    obj.currentValueRewardsFiat = round(obj.totalAmountHumanReadable * obj.data.list[0].price,2);
+    obj.annualizedReturn = _calculateAnnualizedReturn(obj);
+    
     return obj;
+}
+
+function _calculateAnnualizedReturn(obj){
+    var annualized;
+    var firstAndLastReward;
+    var daysBetweenRewards;
+
+    firstAndLastReward = _getFirstandLastReward(obj);
+    obj.firstReward = firstAndLastReward.firstReward;
+    obj.lastReward = firstAndLastReward.lastReward;
+    daysBetweenRewards =  (transformDDMMYYYtoUnix(obj.lastReward) - transformDDMMYYYtoUnix(obj.firstReward)) / 60 / 60 / 24;
+    let rateOfReturn = 1 + obj.totalAmountHumanReadable /obj.initialInvestment;
+    let daysFraction = 365 / daysBetweenRewards;
+    annualized = pow(rateOfReturn,daysFraction) - 1;
+
+    return annualized;
+}
+
+function _getFirstandLastReward(obj){
+    let i = 0;
+    let max = obj.data.numberOfDays;
+    let x = max;
+    var firstReward;
+    var lastReward;
+
+    while (i < max) {
+        i++;
+        if (obj.data.list[i].numberPayouts != 0) {    
+            firstReward = obj.data.list[i].day; 
+            break;
+        } 
+    }
+
+    while (x > 0) {
+        x--;
+        if (obj.data.list[x].numberPayouts != 0) {    
+           lastReward = obj.data.list[x].day;
+            break;
+        } 
+    }
+    return {
+        'firstReward': firstReward,
+        'lastReward': lastReward
+    }
+
 }

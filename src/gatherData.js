@@ -10,12 +10,13 @@ export async function gatherData(userInput){
     let currency = userInput.currency;
     let incomeTax = userInput.incomeTax;
     let priceData = userInput.priceData;
+    let initialInvestment = userInput.initialInvestment;
 
     let obj = {};
     let daysArray = [];
 
     daysArray = makeDaysArray(new Date(start), new Date(end));
-    obj = initializeObject(daysArray, network, address, currency, incomeTax);
+    obj = initializeObject(daysArray, network, address, currency, incomeTax, initialInvestment);
     if(priceData == 'y'){
         obj = await addPriceData(obj);
     }
