@@ -9,13 +9,16 @@ export async function gatherData(userInput){
     let address = userInput.address;
     let currency = userInput.currency;
     let incomeTax = userInput.incomeTax;
+    let priceData = userInput.priceData;
 
     let obj = {};
     let daysArray = [];
 
     daysArray = makeDaysArray(new Date(start), new Date(end));
     obj = initializeObject(daysArray, network, address, currency, incomeTax);
-    obj = await addPriceData(obj);
+    if(priceData == 'y'){
+        obj = await addPriceData(obj);
+    }
     obj = await addStakingData(obj);
 
     return obj;

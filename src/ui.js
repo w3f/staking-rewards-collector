@@ -3,11 +3,12 @@ import prompts from 'prompts';
 export async function getUserInput(){
 
     var address;
-    var coin;
+    var network;
     var start;
     var end;
     var currency;
     var incomeTax;
+    var priceData;
 
 
   console.log('-------------------------------------------- WELCOME ----------------------------------------------\n');
@@ -34,14 +35,14 @@ export async function getUserInput(){
   const response_start = await prompts({
     type: 'text',
     name: 'start',
-    message: 'Enter the start date of your analysis (YYYY-MM-DD). Note that for polkadot the earliest possible date is 2020-08-19 and for kusama 2019-09-20:'
+    message: 'Enter the start date of your analysis (YYYY-MM-DD).'
   });
   start = response_start.start;
 
   const response_end = await prompts({
     type: 'text',
     name: 'end',
-    message: 'Enter the end date of your analysis (YYYY-MM-DD). Note that you might want to use yesterday instead of today in case the price is not logged into the API yet: '
+    message: 'Enter the end date of your analysis (YYYY-MM-DD).'
   });
   end = response_end.end;
 
@@ -59,13 +60,23 @@ export async function getUserInput(){
   });
   incomeTax = response_tax.incomeTax;
 
+  const response_priceData = await prompts({
+    type: 'text',
+    name: 'stakeData',
+    message: 'Do you want to get price data? Note that earliest prices for polkadot are and kusama : Also, your request should not exceed 100 days. (y/n)'
+  });
+  priceData = response_priceData.priceData;
+
+
+
   return {
       'address': address, 
       'network': network, 
       'start': start, 
       'end': end, 
       'currency': currency, 
-      'incomeTax': incomeTax
+      'incomeTax': incomeTax,
+      'priceData': priceData
     };
 }
 
@@ -76,11 +87,11 @@ export function MockUserInput(){
     userInput = {
         'address': '15fTw39Ju2jJiHeGe1fJ5DtgugUauy9tr2HZuiRNFwqnGQ1Q',
         'network': 'polkadot',
-        'start': '2020-10-10',
+        'start': '2020-06-10',
         'end': '2020-11-23',
         'currency': "chf",
         'incomeTax': 0.07,
+        'priceData': 'n'
     };
-
     return userInput;
 }
