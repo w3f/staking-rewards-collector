@@ -29,9 +29,7 @@ export async function addStakingData(obj){
             loopindex = min(stakingObject.data.count, 100);
         } else {
             loopindex = min(stakingObject.data.count - page*100,100);
-        }
-        console.log(loopindex);
-       
+        }       
         for(let i=0; i < obj.data.numberOfDays; i++){
             for(let x = 0; x < loopindex; x++){
                 let tmp = dateToString(new Date(stakingObject.data.list[x].block_timestamp * 1000));
@@ -53,7 +51,6 @@ export async function addStakingData(obj){
                     }
                 }
             } 
-        exportVariable(JSON.stringify(stakingObject), 'stakingobj.json');    
         finished = checkIfEnd(stakingObject, obj, loopindex);
         } while (finished == false);
 

@@ -88,7 +88,7 @@ export function MockUserInput(){
         'address': '15fTw39Ju2jJiHeGe1fJ5DtgugUauy9tr2HZuiRNFwqnGQ1Q',
         'network': 'polkadot',
         'start': '2019-06-10',
-        'end': '2020-11-23',
+        'end': '2020-05-23',
         'currency': "chf",
         'incomeTax': 0.07,
         'priceData': 'n'
