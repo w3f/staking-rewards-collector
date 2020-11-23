@@ -5,7 +5,11 @@
   "repository": "git@github.com:jonasW3F/tax_helper.git",
   "author": "Jonas Gehrlein <jonas@web3.foundation>",
   "license": "MIT",
-  "type": "module"
-
-  
+  "type": "module",
+  "dependencies": {
+    "coingecko-api": "^1.0.10",
+    "curlrequest": "^1.0.1",
+    "mathjs": "^8.0.1",
+    "prompts": "^2.4.0"
+  }
 }

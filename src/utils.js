@@ -1,3 +1,5 @@
+import { round } from 'mathjs';
+
 export function dateToString(date){
     let day = date.getDate().toString();
     let month = (date.getMonth() + 1).toString();
@@ -23,13 +25,16 @@ export function makeDaysArray(start, end) {
     return arr;
 };
 
-export function initializeObject(daysArray, coin, address, currency, incomeTax){
+export function initializeObject(daysArray, network, address, currency, incomeTax){
     let obj = {
         'message': 'empty',
         'address': address,
-        'coin': coin,
+        'network': network,
         'currency': currency,
         'incomeTax': incomeTax,
+        'totalAmountHumanReadable':0,
+        'totalAmountFiat': 0,
+        'totalTaxBurdenFiat': 0,
         'data':{
             'numberRewardsParsed': 0,
             'numberOfDays': daysArray.length,
@@ -43,7 +48,10 @@ export function initializeObject(daysArray, coin, address, currency, incomeTax){
             'extrinsicHash': '',
             'price': 0,
             'amountPlanks': 0,
-            'numberPayouts':0
+            'numberPayouts':0,
+            'amountHumanReadable': 0,
+            'valueFiat':0,
+            'valueTaxable':0
         }
     }
     return obj;
@@ -87,4 +95,27 @@ export function min(a,b){
         min = a;
     }
     return min;
+}
+
+export function calculateMetrics(obj){
+    var normalization;
+    if(obj.network == 'polkadot'){
+        normalization = 1/10000000000;
+    } else {
+        normalization = 1/1000000000000;
+    }
+    for(let i = 0; i < obj.data.numberOfDays; i++){
+        obj.data.list[i].amountHumanReadable = obj.data.list[i].amountPlanks * normalization;
+        obj.data.list[i].valueFiat = obj.data.list[i].amountHumanReadable * obj.data.list[i].price;
+        obj.data.list[i].valueTaxable = obj.data.list[i].valueFiat * obj.incomeTax;
+        obj.totalAmountFiat = obj.totalAmountFiat + obj.data.list[i].valueFiat;
+        obj.totalTaxBurdenFiat =  obj.totalTaxBurdenFiat + obj.data.list[i].valueTaxable;
+        obj.totalAmountHumanReadable = obj.totalAmountHumanReadable + obj.data.list[i].amountHumanReadable;
+    }
+
+    obj.totalAmountFiat = round(obj.totalAmountFiat,2);
+    obj.totalAmountHumanReadable = round(obj.totalAmountHumanReadable,2);
+    obj.totalTaxBurdenFiat = round(obj.totalTaxBurdenFiat,2);
+
+    return obj;
 }

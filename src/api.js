@@ -7,7 +7,7 @@
 
     try{
         for(let i=0; i < obj.data.numberOfDays; i++){
-            let price_call = await CoinGeckoClient.coins.fetchHistory(obj.coin, {
+            let price_call = await CoinGeckoClient.coins.fetchHistory(obj.network, {
               date: obj.data.list[i].day 
             });
             switch(obj.currency) {

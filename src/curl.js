@@ -7,6 +7,7 @@ export async function addStakingData(obj){
     var finished;
     let page = -1;
     let address = obj.address;
+    let network = obj.network;
 
     /*
     This function runs at least once and parses the staking info for the given address. The API is structured in a way that you specify which
@@ -19,7 +20,7 @@ export async function addStakingData(obj){
 
     do {
         page += 1;
-        stakingObject = await getStakingObject(address, page);
+        stakingObject = await getStakingObject(address, page, network);
         let loopindex = min(stakingObject.data.count, 100);
        
         for(let i=0; i < obj.data.numberOfDays; i++){
@@ -63,11 +64,18 @@ function checkIfEnd(stakingObj, obj){
     return finished;
 }
 
-async function getStakingObject(address, page){
+async function getStakingObject(address, page, network){
     let stakingObject = {};
+    var url;
+
+    if(network == 'polkadot'){
+        url = 'https://polkadot.subscan.io/api/scan/account/reward_slash'
+    } else {
+        url = 'https://kusama.subscan.io/api/scan/account/reward_slash'
+    } 
 
     var options = {
-        url: 'https://polkadot.subscan.io/api/scan/account/reward_slash',
+        url: url,
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify({
