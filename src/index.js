@@ -5,7 +5,10 @@ import { calculateMetrics } from './utils.js';
 
 async function main () {
   let obj = {};
+
+  // for testing only
   //const userInput = MockUserInput();
+  
   const userInput = await getUserInput();
 
   console.log('Wait until your data is retrieved...')
