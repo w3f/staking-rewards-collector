@@ -1,4 +1,4 @@
-# Tax Helper
+# Staking Rewards Collector & Tax Calculator
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. I do not guarantee that the data is valid and every user is responsible for double-checking the results of this tool. In addition, every user must do his/her own research about how stake rewards are taxable in his/her regulatory framework. **Note**: The current estimate of overall tax burden assumes that staking rewards are taxed as they are paid out into the account with the respective spot-price of the day. It is unclear, whether this is the right way to do it. In addition, note that you are relying on Subscan's API (for staking data) as well as CoinGecko's API (for price data).
