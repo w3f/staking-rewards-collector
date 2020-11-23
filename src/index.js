@@ -1,9 +1,6 @@
-import fs from 'fs';
 import { MockUserInput } from './ui.js';
 import { gatherData } from './gatherData.js';
-
-
-
+import { exportVariable } from './writer.js';
 
 function makePriceDictionary(date_array, price_array){
   var keys = date_array;
@@ -16,14 +13,11 @@ function makePriceDictionary(date_array, price_array){
 
 
 async function main () {
-
+  let obj = {};
   const userInput = MockUserInput();
 
   console.log('Wait until your data is retrieved...')
-  await gatherData(userInput.start, userInput.end, userInput.coin, userInput.address);
-
-  // let start_unix = start.valueOf() / 1000;
-  // let end_unix = end.valueOf() / 1000;
-
+  obj = await gatherData(userInput);
+  exportVariable(JSON.stringify(obj), 'output.json');
 }
 main().catch(console.error).finally(() => process.exit());
