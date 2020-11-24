@@ -8,3 +8,9 @@ export function exportVariable(data, name){
         console.error(err);
         }
 }
+
+export function readJSON(filePath) {
+    const rawContent = fs.readFileSync(filePath);
+
+    return JSON.parse(rawContent);
+  }

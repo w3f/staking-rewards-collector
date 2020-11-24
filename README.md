@@ -8,27 +8,61 @@ Everyone using this tool does so at his/her own risk. I do not guarantee that th
 # What does it do?
 This program makes it easy to **look up the staking rewards** of an account. Additionally, the user can specify to also add daily prices (in various fiat currencies) as provided by the CoinGecko API. With that data, additional metrics such as the total value of the staking rewards (in Fiat) as well as a potential tax burden are calculated. The output is a .json File, which gives you all the information you need.
 
-# How to install?
+# How to run?
+## Requirements:
+* yarn: https://classic.yarnpkg.com/en/docs/install/
+
+## Run
+* git clone git@github.com:w3f/staking-rewards-collector.git
+* cd staking-rewards-collector
+* (optionally): change the parameters inside the userInput.json to your needs.
+* yarn
+* yarn start
 
 # How to use it?
 ## Input
-When launching the program, you are asked to provide several **inputs**:
-* Address: The Address you want to have the stake rewards parsed.
-* Network: The network you want to analyze (allowed: 'polkadot' and 'kusama').
-* Start (YYYY-MM-DD): The earliest day you want to analyze (Note that there are earliest days for chain data for polkadot 2020-08-19 and for kusama 2019-09-20).
-* End (YYYY-MM-DD): The most recent day you want to analyze.
-* Currency: In what currency you would like to have your value expressed (allowed: 'chf', 'usd', 'eur').
-* IncomeTax: You can specify already your income Tax rate. If you don't know / care input e.g. 1 and ignore the output's taxableIncome.
-* PriceData: To be answered with 'y' or 'n'. If the user specifies 'y', the tool tries to populate the staking rewards with the respective spot prices of that day.
+The program takes several inputs in the 'config/userInput.json' file.
+
+Staking Rewards:
+* **Address**: The Address you want to have the stake rewards parsed.
+* **Network**: The network you want to analyze (allowed: "polkadot" and "kusama").
+* **Start** (YYYY-MM-DD): The earliest day you want to analyze (Note that there are earliest days for chain data for polkadot 2020-08-19 and for kusama 2019-09-20).
+* **End** (YYYY-MM-DD): The most recent day you want to analyze.
+* **InitialInvestment**: To calculate your annualized return, specify how much tokens you bonded for staking. 
+
+Price Data:
+* **Currency**: In what currency you would like to have your value expressed (allowed: "chf", "usd", "eur").
+* **IncomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
+* **PriceData**: Do you want to look up price data for your specified range? (allowed: "y", "n"). **Note** if your specified time window exceeds 100 days the CoinGecko API will return an error.
 
 
 ## Output
-If the script is successfully run, you can find an 'output.json' in your main folder. Insert that to e.g., http://jsonviewer.stack.hu/ to make it readable. The **output** contains:
-* Some information of your inputs (address, network, income tax rate).
-* A a sum of your total staked amount expressed in human readable format (i.e., in new DOT or KSM).
-* If priceData was requested and income tax was specified: Overall tax burden.
-* If you specified your initial investment, an estimate of your annualized return rate. For this, the period between the first and the last reward is taken. This is ony accurate if you did not change your staking situation often or reward destination.
-* A list with objects containing more information about when rewards happened as well as block number and extrinisc hash. Every day in your specified range is one object. When there are several events within one day, strings are concanated and numbers are added.
+If the script is successfully run, you can find an 'output.json' in your main folder. Copy the inside of that file and Insert that to e.g., http://jsonviewer.stack.hu/ (click at "format" after paste) to make it readable. Example output:
+
+![]https://i.imgur.com/QwXEGIN.png
+
+
+The **Output** contains:
+
+### Header
+
+* Some information of your inputs (address, network, income tax rate, currency, initialInvestment).
+* **firstReward**: The day specified within your window you received your first reward.
+* **lastReward**: The day specified within your window you received your last reward.
+* **annualizedReturn**: The annualized return rate of your investment (if you provided a reasonable value for "initialInvestment"). The basis of this calculation is those days between "firstReward" and "lastReward". It is only reasonable if you did not change too much in your staking situation (like deposited, withdraw etc.).
+* **currentValueRewardsFiat**: The amount of staking rewards priced at "start".
+* **totalAmountHumanReadable**: The sum of staking rewards within your specified period in (new Dot or KSM).
+* **totalValueFiat**: The value of the staking rewards **based on daily prices they were received**.
+* **totalTaxBurden**: The "totalValueFiat" multiplied with your incomeTax rate.
+
+### Data
+
+* **numberRewardsParsed**: The number of found staking rewards.
+* **numberOfDays**: The days between "start" and "end".
+
+### List
+
+A list with objects for every day in your specified range. In the price of numbers (e.g. "amountPlanks") multiple staking rewards are added. In the case of strings, those are concanated.
 
 # Important Notes:
 * CoinGecko's API only allows for 100 requests per minute. That means, currently you a range of longer than 100 days will produce an error.

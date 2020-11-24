@@ -1,0 +1,10 @@
+{
+"address": "15fTw39Ju2jJiHeGe1fJ5DtgugUauy9tr2HZuiRNFwqnGQ1Q",
+"network": "polkadot",
+"start": "2020-10-10",
+"end": "2020-11-23",
+"initialInvestment": 100000,
+"currency": "chf",
+"incomeTax": 0.07,
+"priceData": "y"
+}

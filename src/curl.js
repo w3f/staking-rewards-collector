@@ -1,6 +1,6 @@
 import curl from 'curlrequest';
 import { dateToString, transformDDMMYYYtoUnix, min } from './utils.js';
-import { exportVariable } from './writer.js';
+import { exportVariable } from './fileWorker.js';
 
 export async function addStakingData(obj){
     let found = 0;
