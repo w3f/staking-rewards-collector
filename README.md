@@ -1,4 +1,4 @@
-# Staking Rewards Collector & Tax Calculator
+# Staking Rewards Collector & Tax Calculator (BETA)
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. I do not guarantee that the data is valid and every user is responsible for double-checking the results of this tool. In addition, every user must do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
