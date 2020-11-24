@@ -5,8 +5,12 @@ Everyone using this tool does so at his/her own risk. I do not guarantee that th
 
 **Note**: The current estimate of overall tax burden assumes that staking rewards are taxed as they are paid out into the account with the respective spot-price of the day. It is unclear, whether this is the right way to do it. In addition, note that you are relying on Subscan's API (for staking data) as well as CoinGecko's API (for price data).
 
-# What does it do?
-This program makes it easy to **look up the staking rewards** of an account. Additionally, the user can specify to also add daily prices (in various fiat currencies) as provided by the CoinGecko API. With that data, additional metrics such as the total value of the staking rewards (in Fiat) as well as a potential tax burden are calculated. The output is a .json File, which gives you all the information you need.
+# What can it do?
+* Collect staking rewards for a given public address (either Polkadot or Kusama) for a user-specified time window. The tool calculates the sum of staking rewards within that period.
+* If the time window allows it (check below some requirements for "start" and "end" date), it also collects daily price data and the fiat value of a stake reward given that day's spot price.
+* If a meaningful income tax parameter is provided, it can estimate your tax burden.
+* If a meaningful initial investment (in DOT or KSM) is provided, it can calculate the annualized return rate (extrapolated from your time window to one year).
+* The output is stored in a "output.json" file.
 
 # How to run?
 ## Requirements:
