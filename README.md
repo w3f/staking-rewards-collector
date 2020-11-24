@@ -26,7 +26,7 @@ The program takes several inputs in the 'config/userInput.json' file.
 Staking Rewards:
 * **address**: The Address you want to have the stake rewards parsed.
 * **network**: The network you want to analyze (allowed: "polkadot" and "kusama").
-* **start** (YYYY-MM-DD): The earliest day you want to analyze (Note that there are earliest days for chain data for polkadot 2020-08-19 and for kusama 2019-09-20).
+* **start** (YYYY-MM-DD): The earliest day you want to analyze (Note that the earliest available prices for Polkadot are 2020-08-19 and 2019-09-20 for Kusama).
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
 * **initialInvestment**: To calculate your annualized return, specify how much tokens you bonded for staking. 
 
