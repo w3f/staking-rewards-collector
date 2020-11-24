@@ -24,33 +24,33 @@ This program makes it easy to **look up the staking rewards** of an account. Add
 The program takes several inputs in the 'config/userInput.json' file.
 
 Staking Rewards:
-* **Address**: The Address you want to have the stake rewards parsed.
-* **Network**: The network you want to analyze (allowed: "polkadot" and "kusama").
-* **Start** (YYYY-MM-DD): The earliest day you want to analyze (Note that there are earliest days for chain data for polkadot 2020-08-19 and for kusama 2019-09-20).
-* **End** (YYYY-MM-DD): The most recent day you want to analyze.
-* **InitialInvestment**: To calculate your annualized return, specify how much tokens you bonded for staking. 
+* **address**: The Address you want to have the stake rewards parsed.
+* **network**: The network you want to analyze (allowed: "polkadot" and "kusama").
+* **start** (YYYY-MM-DD): The earliest day you want to analyze (Note that there are earliest days for chain data for polkadot 2020-08-19 and for kusama 2019-09-20).
+* **end** (YYYY-MM-DD): The most recent day you want to analyze.
+* **initialInvestment**: To calculate your annualized return, specify how much tokens you bonded for staking. 
 
 Price Data:
-* **Currency**: In what currency you would like to have your value expressed (allowed: "chf", "usd", "eur").
-* **IncomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
-* **PriceData**: Do you want to look up price data for your specified range? (allowed: "y", "n"). **Note** if your specified time window exceeds 100 days the CoinGecko API will return an error.
+* **currency**: In what currency you would like to have your value expressed (allowed: "chf", "usd", "eur").
+* **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
+* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n"). **Note** if your specified time window exceeds 100 days the CoinGecko API will return an error.
 
 
 ## Output
 If the script is successfully run, you can find an 'output.json' in your main folder. Copy the inside of that file and Insert that to e.g., http://jsonviewer.stack.hu/ (click at "format" after paste) to make it readable. Example output:
 
-![]https://i.imgur.com/QwXEGIN.png
+https://i.imgur.com/QwXEGIN.png
 
 
 The **Output** contains:
 
 ### Header
 
-* Some information of your inputs (address, network, income tax rate, currency, initialInvestment).
+* Some information of your inputs (address, network, incomeTax, currency, initialInvestment).
 * **firstReward**: The day specified within your window you received your first reward.
 * **lastReward**: The day specified within your window you received your last reward.
 * **annualizedReturn**: The annualized return rate of your investment (if you provided a reasonable value for "initialInvestment"). The basis of this calculation is those days between "firstReward" and "lastReward". It is only reasonable if you did not change too much in your staking situation (like deposited, withdraw etc.).
-* **currentValueRewardsFiat**: The amount of staking rewards priced at "start".
+* **currentValueRewardsFiat**: The current value of the staking rewards (at the most recent daily price specified by your time window).
 * **totalAmountHumanReadable**: The sum of staking rewards within your specified period in (new Dot or KSM).
 * **totalValueFiat**: The value of the staking rewards **based on daily prices they were received**.
 * **totalTaxBurden**: The "totalValueFiat" multiplied with your incomeTax rate.
