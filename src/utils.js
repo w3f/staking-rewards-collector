@@ -177,23 +177,16 @@ export function verifyUserInput(userInput){
     let start = new Date(userInput.start);
     let end = new Date(userInput.end);
     let distance = (end - start) / (1000*3600*24);
-    let verified = true;
 
     if(start > end){
-        console.log('Start date must be before end date');
-        verified = false;
+        throw new Error('Start date must be before end date')
     }
 
     if(distance > 100 & userInput.priceData == 'y'){
-        console.log('Your time window is more than 100 days and you are requesting price data. That is not possible. Either specify a shorter period of time between start and end date or turn off price data.');
-        verified = false;
+        throw new Error('Your time window is more than 100 days and you are requesting price data. That is not possible. Either specify a shorter period of time between start and end date or turn off price data.');
     }
 
     if(end > new Date()){
-        console.log('Start date is in the future.');
-        verified = false;
+        throw new Error('Start date is in the future.');
     }
-
-
-    return verified;
 }
