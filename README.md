@@ -32,7 +32,7 @@ Staking Rewards:
 * **network**: The network you want to analyze (allowed: "polkadot" and "kusama").
 * **start** (YYYY-MM-DD): The earliest day you want to analyze (Note that the earliest available prices for Polkadot are 2020-08-19 and 2019-09-20 for Kusama).
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
-* **initialInvestment**: To calculate your annualized return, specify how much tokens you bonded for staking. 
+* **initialInvestment**: The amount of tokens from which the staking rewards are generated. Used to calculate the annualizedReturn. 
 
 Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "chf", "usd", "eur").
