@@ -1,6 +1,6 @@
 import curl from 'curlrequest';
 import { dateToString, transformDDMMYYYtoUnix, min } from './utils.js';
-import { exportVariable } from './fileWorker.js';
+
 
 export async function addStakingData(obj){
     let found = 0;
@@ -9,8 +9,8 @@ export async function addStakingData(obj){
     let page = -1;
     let address = obj.address;
     let network = obj.network;
-    let round = 0;
     var loopindex;
+    let round = 0;
 
     /*
     This function runs at least once and parses the staking info for the given address. The API is structured in a way that you specify which
@@ -95,10 +95,14 @@ async function getStakingObject(address, page, network){
         'page': page,
         'address': address
         }),
-      };
-     stakingObject = await curlRequest(options);
-    
-    return JSON.parse(stakingObject);    
+    };
+    stakingObject = await curlRequest(options);
+    stakingObject = JSON.parse(stakingObject);
+
+    if(stakingObject.data.count == 0){
+        throw new Error('Staking object empty - No rewards to parse. Please specify a different time window where rewards were paid out.');
+    }
+    return stakingObject;    
 }
 
 async function curlRequest(options){
@@ -113,3 +117,10 @@ async function curlRequest(options){
     });
 }
 
+function checkObj(obj){
+    if(obj.count == 0){
+        console.log('I was here');
+        process.exit()
+    }
+
+}
