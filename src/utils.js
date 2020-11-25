@@ -136,7 +136,8 @@ function _calculateAnnualizedReturn(obj){
     firstAndLastReward = _getFirstandLastReward(obj);
     obj.firstReward = firstAndLastReward.firstReward;
     obj.lastReward = firstAndLastReward.lastReward;
-    daysBetweenRewards =  (transformDDMMYYYtoUnix(obj.lastReward) - transformDDMMYYYtoUnix(obj.firstReward)) / 60 / 60 / 24;
+    //added one day because users must lock for one day and wait.
+    daysBetweenRewards =  ((transformDDMMYYYtoUnix(obj.lastReward) - transformDDMMYYYtoUnix(obj.firstReward)) / 60 / 60 / 24) + 1;
     let rateOfReturn = 1 + obj.totalAmountHumanReadable /obj.initialInvestment;
     let daysFraction = 365 / daysBetweenRewards;
     annualized = pow(rateOfReturn,daysFraction) - 1;
