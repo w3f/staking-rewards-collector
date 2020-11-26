@@ -1,4 +1,4 @@
-# Staking Rewards Collector & Tax Calculator (BETA)
+# Staking Rewards Collector (BETA)
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. I do not guarantee that the data is valid and every user is responsible for double-checking the results of this tool. In addition, every user must do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
@@ -8,7 +8,7 @@ Everyone using this tool does so at his/her own risk. I do not guarantee that th
 # What can it do?
 * Collect staking rewards for a given public address (either Polkadot or Kusama) for a user-specified time window. The tool calculates the sum of staking rewards within that period.
 * If the time window allows it (check below some requirements for "start" and "end" date), it also collects daily price data and the fiat value of a stake reward given that day's spot price.
-* If a meaningful income tax parameter is provided, it can estimate your tax burden.
+* If a meaningful income tax parameter is provided, it can help to estimate your potential tax burden.
 * If a meaningful initial investment (in DOT or KSM) is provided, it can calculate the annualized return rate (extrapolated from your time window to one year).
 * The output is stored in a "output.json" file.
 
