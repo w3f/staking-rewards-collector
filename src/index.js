@@ -14,6 +14,7 @@ async function main () {
     obj = await gatherData(userInput);
     obj = calculateMetrics(obj);
     exportVariable(JSON.stringify(obj), 'output.json'); 
-    console.log('Insert the content of output.json into http://jsonviewer.stack.hu/ and click format to make it readable.'); 
+    console.log('In total, ' + obj.data.numberRewardsParsed + ' rewards were found and the staking rewards sum up to ' +  obj.totalAmountHumanReadable + ((obj.network == 'polkadot') ? ' DOT' : ' KSM') + ' .') ;
+    console.log('For more information, copy the content of output.json into http://jsonviewer.stack.hu/ and click format.'); 
 }
 main().catch(console.error).finally(() => process.exit());

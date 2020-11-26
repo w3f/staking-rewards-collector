@@ -3,7 +3,7 @@ import fs from 'fs';
 export function exportVariable(data, name){
     try {
         fs.writeFileSync(name, data);
-        console.log("JSON data is saved.");
+        console.log("Result is exported to " + name + '.');
         } catch (err) {
         console.error(err);
         }
