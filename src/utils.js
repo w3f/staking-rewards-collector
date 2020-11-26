@@ -177,6 +177,8 @@ export function verifyUserInput(userInput){
     let start = new Date(userInput.start);
     let end = new Date(userInput.end);
     let distance = (end - start) / (1000*3600*24);
+    let network = userInput.network;
+    let priceData = userInput.priceData;
 
     if(start > end){
         throw new Error('Start date must be before end date')
@@ -189,4 +191,13 @@ export function verifyUserInput(userInput){
     if(end > new Date()){
         throw new Error('Start date is in the future.');
     }
+
+    if(start.valueOf() < 1597795200000 & network == 'polkadot' & priceData == 'y'){
+        throw new Error('You are requesting price data when there were no prices available.');
+    }
+    
+    if(start.valueOf() < 1568937600000 & network == 'kusama' & priceData == 'y'){
+        throw new Error('You are requesting price data when there were no prices available.');
+    }
+
 }
