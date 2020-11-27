@@ -6,7 +6,6 @@ import util from 'util';
     const sleep = util.promisify(setTimeout);
     const CoinGeckoClient = new CoinGecko();
     let loopindex = -1;
-    console.log(obj.data.numberOfDays);
 
     try{
         for(let i = 0; i < obj.data.numberOfDays; i++){
