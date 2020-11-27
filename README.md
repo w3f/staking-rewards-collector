@@ -37,7 +37,7 @@ Staking Rewards:
 Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "chf", "usd", "eur").
 * **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
-* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n"). **Note** if your specified time window exceeds 100 days the CoinGecko API will return an error.
+* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n").
 
 
 ## Output
@@ -67,7 +67,3 @@ The **Output** contains:
 ### List
 
 A list with objects for every day in your specified range. In the price of numbers (e.g. "amountPlanks") multiple staking rewards are added. In the case of strings, those are concanated.
-
-# Important Notes:
-* CoinGecko's API only allows for 100 requests per minute. That means, currently you a range of longer than 100 days will produce an error.
-* If CoinGecko's API cannot provide daily prices (e.g., because there was no market yet), there will be an error.
