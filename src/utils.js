@@ -176,16 +176,11 @@ function _getFirstandLastReward(obj){
 export function verifyUserInput(userInput){
     let start = new Date(userInput.start);
     let end = new Date(userInput.end);
-    let distance = (end - start) / (1000*3600*24);
     let network = userInput.network;
     let priceData = userInput.priceData;
 
     if(start > end){
         throw new Error('Start date must be before end date')
-    }
-
-    if(distance > 100 & userInput.priceData == 'y'){
-        throw new Error('Your time window is more than 100 days and you are requesting price data. That is not possible. Either specify a shorter period of time between start and end date or turn off price data.');
     }
 
     if(end > new Date()){
