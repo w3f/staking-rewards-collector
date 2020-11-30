@@ -111,9 +111,13 @@ export function calculateMetrics(obj){
         normalization = 1/1000000000000;
     }
     for(let i = 0; i < obj.data.numberOfDays; i++){
-        obj.data.list[i].amountHumanReadable = obj.data.list[i].amountPlanks * normalization;
-        obj.data.list[i].valueFiat = obj.data.list[i].amountHumanReadable * obj.data.list[i].price;
-        obj.data.list[i].valueTaxable = obj.data.list[i].valueFiat * obj.incomeTax;
+        // generate new metrics and round
+        obj.data.list[i].amountHumanReadable = round(obj.data.list[i].amountPlanks * normalization,4);
+        obj.data.list[i].valueFiat = round(obj.data.list[i].amountHumanReadable * obj.data.list[i].price,2);
+        obj.data.list[i].valueTaxable = round(obj.data.list[i].valueFiat * obj.incomeTax,2);
+        obj.data.list[i].price = round(obj.data.list[i].price,2);
+
+        // add values of each day to general metrics.
         obj.totalValueFiat = obj.totalValueFiat + obj.data.list[i].valueFiat;
         obj.totalTaxBurdenFiat =  obj.totalTaxBurdenFiat + obj.data.list[i].valueTaxable;
         obj.totalAmountHumanReadable = obj.totalAmountHumanReadable + obj.data.list[i].amountHumanReadable;
