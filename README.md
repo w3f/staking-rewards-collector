@@ -10,18 +10,19 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 * If the time window allows it (check below some requirements for "start" and "end" date), it also collects daily price data and the fiat value of a stake reward given that day's spot price.
 * If a meaningful income tax parameter is provided, it can help to estimate your potential tax burden.
 * If a meaningful initial investment (in DOT or KSM) is provided, it can calculate the annualized return rate (extrapolated from your time window to one year).
-* The output is stored in a "output.json" file.
+* The output is stored in table format as output.csv and as JSON object (with more detailed information) as "output.json".
 
 # How to run?
 ## Requirements:
 * yarn: https://classic.yarnpkg.com/en/docs/install/
 
-## Run
-* git clone git@github.com:w3f/staking-rewards-collector.git
-* cd staking-rewards-collector
-* (optionally): change the parameters inside the userInput.json to your needs.
-* yarn
-* yarn start
+```bash
+git clone git@github.com:w3f/staking-rewards-collector.git
+cd staking-rewards-collector
+Change the parameters inside the userInput.json to your needs.
+yarn
+yarn start
+```
 
 # How to use it?
 ## Input
@@ -44,7 +45,10 @@ Price Data:
 After the tool executed successfully, it creates two files in the root folder. The output.json file contains some meta-data (e.g., sum of rewards and estimate of annualized return rate) and the output.csv file gives the most important information in a table and thereby printable format. 
 
 ### Output.csv
-The file contains a row for every day within the time frame where at least one staking reward occured. Other days are left out and are not shown.
+The file contains a row for every day within the time frame where at least one staking reward occured. Other days are left out and are not shown. Example output:
+
+https://i.imgur.com/4LCsDOc.png
+
 
 ### Output.json
 If the script is successfully run, you can find an 'output.json' in your main folder. Copy the inside of that file and Insert that to e.g., http://jsonviewer.stack.hu/ (click at "format" after paste) to make it readable. Example output:
