@@ -28,25 +28,17 @@ export function readJSON(filePath) {
   }
 
   function extractAsCSV(obj){
-    const header_list = [
+    const header = [
         "Day, Price in " + obj.currency +
         ", Staking Rewards in" + ((obj.network == 'polkadot') ? ' DOT' : ' KSM') + 
         ", Number of Payouts" +
         ", Value in Fiat" +
         ", Income tax (" + (obj.incomeTax*100).toFixed(2) + "%)"
-    ];
+    ]; 
     
-    // remove days without a staking reward.
-    for(let i = 0; i < obj.data.list.length; i++){
-          if(obj.data.list[i].numberPayouts==0){
-              obj.data.list.splice(i,1);
-        }
-    }    
+    const rows = obj.data.list
+        .filter(entry => entry.numberPayouts > 0)
+        .map(entry => `${entry.day}, ${entry.price}, ${entry.amountHumanReadable}, ${entry.numberPayouts}, ${entry.valueFiat}, ${entry.valueTaxable}`);
 
-    const rows_list = obj.data.list.map(entry => {
-        if(entry.numberPayouts>0){
-          return `${entry.day}, ${entry.price}, ${entry.amountHumanReadable}, ${entry.numberPayouts}, ${entry.valueFiat}, ${entry.valueTaxable}`;
-        } 
-    });
-      return header_list.concat(rows_list).join("\n");
+      return header.concat(rows).join("\n");
   }
