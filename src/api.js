@@ -13,11 +13,11 @@ import util from 'util';
                 date: obj.data.list[i].day 
               });
               switch(obj.currency) {
-                  case 'chf':
+                  case 'CHF':
                       obj.data.list[i].price = price_call.data.market_data.current_price.chf;
-                  case 'eur':
+                  case 'EUR':
                       obj.data.list[i].price = price_call.data.market_data.current_price.eur;
-                  case 'usd':
+                  case 'USD':
                       obj.data.list[i].price = price_call.data.market_data.current_price.usd;
                   break;
               }
