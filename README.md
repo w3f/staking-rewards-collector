@@ -35,12 +35,13 @@ Staking Rewards:
 * **initialInvestment**: The amount of tokens from which the staking rewards are generated. Used to calculate the annualizedReturn. 
 
 Price Data:
-* **currency**: In what currency you would like to have your value expressed (allowed: "chf", "usd", "eur").
+* **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR").
 * **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
 * **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n").
 
 
 ## Output
+### JSON
 If the script is successfully run, you can find an 'output.json' in your main folder. Copy the inside of that file and Insert that to e.g., http://jsonviewer.stack.hu/ (click at "format" after paste) to make it readable. Example output:
 
 https://i.imgur.com/QwXEGIN.png
@@ -67,3 +68,6 @@ The **Output** contains:
 ### List
 
 A list with objects for every day in your specified range. In the price of numbers (e.g. "amountPlanks") multiple staking rewards are added. In the case of strings, those are concanated.
+
+### CSV
+The script also generates an output.csv file in which most useful information are summed up. The .csv file contains only days where staking rewards occured and leaves out some bulky information about extrinsic hashes and block numbers etc.
