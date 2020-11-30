@@ -4,7 +4,7 @@
 "start": "2020-10-10",
 "end": "2020-11-23",
 "initialInvestment": 100000,
-"currency": "chf",
+"currency": "CHF",
 "incomeTax": 0.07,
 "priceData": "y"
 }
