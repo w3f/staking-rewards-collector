@@ -4,13 +4,12 @@
   "main": "src/index.js",
   "repository": "git@github.com:w3f/staking-rewards-collector.git",
   "author": "Jonas Gehrlein <jonas@web3.foundation>",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "type": "module",
   "dependencies": {
     "coingecko-api": "^1.0.10",
     "curlrequest": "^1.0.1",
-    "mathjs": "^8.0.1",
-    "prompts": "^2.4.0"
+    "mathjs": "^8.0.1"
   },
   "scripts": {
     "start": "node src/index.js"
