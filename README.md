@@ -15,7 +15,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 # How to run?
 ## Requirements:
 * yarn: https://classic.yarnpkg.com/en/docs/install/
-* node: 12.20.0 -> there might be a syntax error for older versions of nodejs
+* node: 12.20.0 -> there might be a syntax error if run with older versions of nodejs
 
 ```bash
 git clone git@github.com:w3f/staking-rewards-collector.git
