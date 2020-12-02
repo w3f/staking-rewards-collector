@@ -152,24 +152,24 @@ function _calculateAnnualizedReturn(obj){
 function _getFirstandLastReward(obj){
     let i = 0;
     let max = obj.data.numberOfDays;
-    let x = max;
+    let x = max - 1;
     var firstReward;
     var lastReward;
 
     while (i < max) {
-        i++;
-        if (obj.data.list[i].numberPayouts != 0) {    
+        if (obj.data.list[i].numberPayouts != 0) {
             firstReward = obj.data.list[i].day; 
             break;
         } 
+        i++;
     }
 
-    while (x > 0) {
-        x--;
+    while (x >= 0) {
         if (obj.data.list[x].numberPayouts != 0) {    
            lastReward = obj.data.list[x].day;
             break;
-        } 
+        }
+        x--;
     }
     return {
         'firstReward': firstReward,
