@@ -118,11 +118,3 @@ async function curlRequest(options){
       });
     });
 }
-
-function checkObj(obj){
-    if(obj.count == 0){
-        console.log('I was here');
-        process.exit()
-    }
-
-}
