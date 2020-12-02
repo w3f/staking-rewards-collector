@@ -56,6 +56,10 @@ export async function addStakingData(obj){
 
     
     obj.data.numberRewardsParsed = found;
+
+    if(obj.data.numberRewardsParsed == 0){
+        throw new Error('No rewards found to parse. Please specify a different time window where rewards were paid out.');
+    }
     obj.message = 'data collection complete';
     return obj;  
 }
@@ -98,10 +102,8 @@ async function getStakingObject(address, page, network){
     };
     stakingObject = await curlRequest(options);
     stakingObject = JSON.parse(stakingObject);
+    console.log(stakingObject.data.list[3]);
 
-    if(stakingObject.data.count == 0){
-        throw new Error('Staking object empty - No rewards to parse. Please specify a different time window where rewards were paid out.');
-    }
     return stakingObject;    
 }
 
