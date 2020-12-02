@@ -20,7 +20,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 ```bash
 git clone git@github.com:w3f/staking-rewards-collector.git
 cd staking-rewards-collector
-Change the parameters inside the userInput.json to your needs.
+Change the parameters inside the config/userInput.json to your needs.
 yarn
 yarn start
 ```
