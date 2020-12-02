@@ -102,7 +102,6 @@ async function getStakingObject(address, page, network){
     };
     stakingObject = await curlRequest(options);
     stakingObject = JSON.parse(stakingObject);
-    console.log(stakingObject.data.list[3]);
 
     return stakingObject;    
 }
