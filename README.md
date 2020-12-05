@@ -1,4 +1,4 @@
-# Staking Rewards Collector (BETA)
+# Staking Rewards Collector
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that the data is valid and every user is responsible for double-checking the results of this tool. In addition, every user must do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
@@ -10,7 +10,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 * If the time window allows it (check below some requirements for "start" and "end" date), it also collects daily price data and the fiat value of a stake reward given that day's spot price.
 * If a meaningful income tax parameter is provided, it can help to estimate your potential tax burden.
 * If a meaningful initial investment (in DOT or KSM) is provided, it can calculate the annualized return rate (extrapolated from your time window to one year).
-* The output is stored in table format as output.csv and as JSON object (with more detailed information) as "output.json".
+* The output is stored in table format as CSV file and as JSON object (with more detailed information). For easier processing of multiple addresses, the file names also contain the address.
 
 # How to run?
 ## Requirements:
@@ -45,18 +45,18 @@ Price Data:
 ## Output
 After the tool executed successfully, it creates two files in the root folder. The output.json file contains some meta-data (e.g., sum of rewards and estimate of annualized return rate) and the output.csv file gives the most important information in a table and thereby printable format. 
 
-### Output.csv
-The file contains a row for every day within the time frame where at least one staking reward occured. Other days are left out and are not shown. Example output:
+### CSV Output
+The CSV output file contains a row for every day within the time frame where at least one staking reward occured. Other days are excluded. Example output:
 
 https://i.imgur.com/4LCsDOc.png
 
 
-### Output.json
-If the script is successfully run, you can find an 'output.json' in your main folder. Copy the inside of that file and Insert that to e.g., http://jsonviewer.stack.hu/ (click at "format" after paste) to make it readable. Example output:
+### JSON Output
+The JSON output file contains a summary of the data as well as a list of objects for every day of the specified time-period (regardless of whether staking rewards occured). If your standard OS text editor does not format the file properly, you can copy the data and insert it to http://jsonviewer.stack.hu/ (click at "format" after paste). Example output:
 
 https://i.imgur.com/QwXEGIN.png
 
-The **Output** contains:
+The **JSON Output** contains:
 
 ### Summary
 
@@ -65,7 +65,7 @@ The **Output** contains:
 * **lastReward**: The day specified within your window you received your last reward.
 * **annualizedReturn**: The annualized return rate of your investment (if you provided a reasonable value for "initialInvestment"). The basis of this calculation is those days between "firstReward" and "lastReward". It is only reasonable if you did not change too much in your staking situation (like deposited, withdraw etc.).
 * **currentValueRewardsFiat**: The current value of the staking rewards (at the most recent daily price specified by your time window).
-* **totalAmountHumanReadable**: The sum of staking rewards within your specified period in (new Dot or KSM).
+* **totalAmountHumanReadable**: The sum of staking rewards within your specified period in (new DOT or KSM).
 * **totalValueFiat**: The value of the staking rewards **based on daily prices they were received**.
 * **totalTaxBurden**: The "totalValueFiat" multiplied with your incomeTax rate.
 
