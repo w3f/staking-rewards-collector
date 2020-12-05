@@ -13,9 +13,9 @@ async function main () {
     console.log('Wait until your data is retrieved...');
     obj = await gatherData(userInput);
     obj = calculateMetrics(obj);
-    exportVariable(JSON.stringify(obj), 'output.json'); 
+    exportVariable(JSON.stringify(obj), 'output-' + obj.address + '.json'); 
     console.log('In total, ' + obj.data.numberRewardsParsed + ' rewards were found and the staking rewards sum up to ' +  obj.totalAmountHumanReadable + ((obj.network == 'polkadot') ? ' DOT' : ' KSM') + ' .') ;
     console.log('For more information, copy the content of output.json into http://jsonviewer.stack.hu/ and click format.'); 
-    writeCSV(obj, 'output.csv');
+    writeCSV(obj, 'output-' + obj.address + '.csv');
 }
 main().catch(console.error).finally(() => process.exit());
