@@ -3,7 +3,7 @@ import fs from 'fs';
 export function exportVariable(data, name){
     try {
         fs.writeFileSync(name, data);
-        console.log("Result is exported to " + name + '.');
+        console.log('JSON file successfully exported.');
         } catch (err) {
         console.error(err);
         }
@@ -16,16 +16,15 @@ export function readJSON(filePath) {
   }
 
   export function writeCSV(obj, name){
-      const filename = name;
+    const filename = name;
 
-      fs.writeFileSync(filename, extractAsCSV(obj), err => {
-          if(err) {
-              console.log('Error writing .csv file', err);
-          } else {
-              console.log('Exported as .csv file');
-          }  
-      });
-  }
+     try {
+         fs.writeFileSync(filename, extractAsCSV(obj));
+         console.log('CSV file successfully exported.');
+        } catch (err){
+        console.error(err);
+        }
+    }
 
   function extractAsCSV(obj){
     const header = [
