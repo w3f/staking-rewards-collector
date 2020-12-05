@@ -43,7 +43,7 @@ Price Data:
 
 
 ## Output
-After the tool executed successfully, it creates two files in the root folder. The output.json file contains some meta-data (e.g., sum of rewards and estimate of annualized return rate) and the output.csv file gives the most important information in a table and thereby printable format. 
+After the tool executed successfully, it creates two files in the root folder. The JSON file contains some meta-data (e.g., sum of rewards and estimate of annualized return rate) and the CSV file gives the most important information in a table and thereby printable format. 
 
 ### CSV Output
 The CSV output file contains a row for every day within the time frame where at least one staking reward occured. Other days are excluded. Example output:
