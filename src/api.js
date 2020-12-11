@@ -2,7 +2,7 @@ import CoinGecko from 'coingecko-api';
 import util from 'util';
 
 
- export async function addPriceData(obj){
+ export async function addPriceData(obj, sleepTime){
     const sleep = util.promisify(setTimeout);
     const CoinGeckoClient = new CoinGecko();
     let loopindex = -1;
@@ -24,8 +24,8 @@ import util from 'util';
               loopindex += 1;
 
             if(loopindex % 100 == 0 & loopindex > 0){
-                console.log('We made more than 100 requests to CoinGecko API. Script is paused for around 80 seconds to reset the request limit. Please wait...');
-                await sleep(80000);
+                console.log('We made more than 100 requests to CoinGecko API. Script is paused for ' + sleepTime + ' seconds to reset the request limit. Please wait...');
+                await sleep(sleepTime * 1000);
                 console.log('Data collection continues...');
                 loopindex -= 100;
             }
@@ -33,6 +33,7 @@ import util from 'util';
 
      } catch (e){
          console.log('Error in parsing CoinGecko Data' + e);
+         console.log('If the CoinGecko API throttled your request, try to increase the sleepTime in the src/userInput.json.')
      }
      return obj;
 }
