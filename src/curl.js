@@ -41,7 +41,7 @@ export async function addStakingData(obj){
                             obj.data.list[i].numberPayouts = obj.data.list[i].numberPayouts + 1;
                             obj.data.list[i].blockNumber = obj.data.list[i].blockNumber + ' and ' + stakingObject.data.list[x].block_num;
                             obj.data.list[i].extrinsicHash = obj.data.list[i].extrinsicHash + ' and ' + stakingObject.data.list[x].extrinsic_hash;
-                        // if an entrie has only the default values we add the ones from the staking object.
+                        // if an entry has only the default values we add the ones from the staking object.
                         } else {
                             obj.data.list[i].amountPlanks = parseInt(stakingObject.data.list[x].amount); 
                             obj.data.list[i].numberPayouts = obj.data.list[i].numberPayouts + 1;
@@ -64,17 +64,26 @@ export async function addStakingData(obj){
     return obj;  
 }
 /*
-This function checks if the loop should continue. If the last entry (i.e. the longest date in history) of stakingObject has a smaller timestamp
-than that of the user specified one, it should continue, because there might be more rewards beyond that date. However, for that to be true, the
-staking object must have 100 entries (which basically means that there are more to come).
+This function checks if the loop should continue. There are several cases important with respect to whether the user specified time window overlaps with the
+start and/or the end of the staking rewards. It should continue if either the end is smaller than the end of the staking object AND the start is larger than
+the start of the staking object or vice versa. In any case, the staking object should still be full (i.e. the maximum of 100 objects) so that we know that the API
+can provide more staking rewards.
 */
-function checkIfEnd(stakingObj, obj, loopindex){
-    let endStakingObj = stakingObj.data.list.slice(-1)[0].block_timestamp;
-    let endObj = transformDDMMYYYtoUnix(obj.data.list.slice(-1)[0].day);
-    
-    let finished = true;
 
-    if((endStakingObj < endObj) && loopindex == 100){
+function checkIfEnd(stakingObj, obj, loopindex){
+    let finished = true;
+    let startStakingObj = stakingObj.data.list[0].block_timestamp
+    let endStakingObj = stakingObj.data.list.slice(-1)[0].block_timestamp;
+
+    let startObj = transformDDMMYYYtoUnix(obj.data.list[0].day);
+    let endObj = transformDDMMYYYtoUnix(obj.data.list.slice(-1)[0].day);
+
+
+    if((endStakingObj < endObj) && startObj > startStakingObj && loopindex == 100){
+        finished = false;
+    }
+
+    if((endStakingObj > endObj) && startObj < startStakingObj && loopindex == 100){
         finished = false;
     }
     return finished;
