@@ -7,11 +7,11 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 
 # Changelog 
 ## Version 1.1
-* Bugfix: In some special cases of start and end date could lead to a premature termination of the addStakingData loop and not finding rewards.
+* Bugfix: In some special combinations of `start`and `end`and paid rewards, it could lead to a premature termination of the addStakingData loop and not finding rewards.
 * Bugfix: The script would parse one day less than in `end` specified. 
 * CoinGecko limits API requests to 100 per minute. In some cases it seems that even waiting 80 seconds is not enough and the API returns a throttle warning. To counter this issue, a new variable `sleepTimer` is added to `config/userInput.json`. It specifies how long (in seconds) the script should idle before making an new request.
 * Added suggestion to increase `sleepTime` if user experiences throttled API requests.
-* Updated README.md to incorporate these changes and added a troubleshooting section.
+* Updated `README.md` to incorporate these changes and added a troubleshooting section.
 
 
 # What can it do?
@@ -77,7 +77,7 @@ The **JSON Output** contains:
 * **currentValueRewardsFiat**: The current value of the staking rewards (at the most recent daily price specified by your time window).
 * **totalAmountHumanReadable**: The sum of staking rewards within your specified period in (new DOT or KSM).
 * **totalValueFiat**: The value of the staking rewards **based on daily prices they were received**.
-* **totalTaxBurden**: The `totalValueFiat` multiplied with your incomeTax rate.
+* **totalTaxBurden**: The `totalValueFiat` multiplied with your `incomeTax` rate.
 
 ### Additional Data
 
