@@ -6,5 +6,6 @@
 "initialInvestment": 100000,
 "currency": "CHF",
 "incomeTax": 0.07,
-"priceData": "y"
+"priceData": "y",
+"sleepTime": 80
 }
