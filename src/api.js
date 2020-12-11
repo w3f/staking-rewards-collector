@@ -33,7 +33,7 @@ import util from 'util';
 
      } catch (e){
          console.log('Error in parsing CoinGecko Data' + e);
-         console.log('If the CoinGecko API throttled your request, try to increase the sleepTime in the src/userInput.json.')
+         console.log('If the CoinGecko API throttled your request, try to increase the sleepTime in the config/userInput.json.')
      }
      return obj;
 }
