@@ -17,13 +17,17 @@ export function dateToString(date){
     return day.concat('-', month, '-', year);
   }
 
-export function makeDaysArray(start, end) {
-    for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
-        arr.push(new Date(dt));
+export function makeDaysArray(startDate, endDate) {
+    let dates = [];
+    const theDate = new Date(startDate);
+    while (theDate < endDate) {
+      dates = [...dates, new Date(theDate)];
+      theDate.setDate(theDate.getDate() + 1);
     }
-    arr = _transformArrayToString(arr);
-    return arr;
-};
+    dates = [...dates, endDate];
+    dates = _transformArrayToString(dates);
+    return dates;
+  };
 
 export function initializeObject(daysArray, network, address, currency, incomeTax, initialInvestment){
     let obj = {
