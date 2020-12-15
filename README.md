@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.1
+# Staking Rewards Collector v1.2
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that the data is valid and every user is responsible for double-checking the results of this tool. In addition, every user must do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
@@ -6,6 +6,11 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **Note**: The current estimate of overall tax burden assumes that staking rewards are taxed as they are paid out into the account with the respective spot-price of the day. It is unclear, whether this is the right way to do it. In addition, note that you are relying on Subscan's API (for staking data) as well as CoinGecko's API (for price data).
 
 # Changelog 
+## Version 1.2
+* Removed the restriction that priceData must be available for all days within the specified time window. Now the user can request price data for any time period and the script will only populate prices where it is available and return a price of 0 where it is not.
+* Bugfix: There was one more day available of priceData from CoinGecko. This day is now included.
+* Adjusted `README.md` to illustrate the changes of v1.2.
+
 ## Version 1.1
 * Bugfix: In some special combinations of `start`and `end`and paid rewards, it could lead to a premature termination of the addStakingData loop and not finding rewards.
 * Bugfix: The script would parse one day less than in `end` specified. 
@@ -41,7 +46,7 @@ The program takes several inputs in the `config/userInput.json` file.
 Staking Rewards:
 * **address**: The Address you want to have the stake rewards parsed.
 * **network**: The network you want to analyze (allowed: "polkadot" and "kusama").
-* **start** (YYYY-MM-DD): The earliest day you want to analyze (Note that the earliest available prices for Polkadot are 2020-08-19 and 2019-09-20 for Kusama).
+* **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices for Polkadot are 2020-08-19 and 2019-09-20 for Kusama and that prices are set to 0 before that.
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
 * **initialInvestment**: The amount of tokens from which the staking rewards are generated. Used to calculate the annualizedReturn. 
 
