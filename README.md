@@ -9,6 +9,8 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 ## Version 1.2
 * Removed the restriction that priceData must be available for all days within the specified time window. Now the user can request price data for any time period and the script will only populate prices where it is available and return a price of 0 where it is not.
 * Bugfix: There was one more day available of priceData from CoinGecko. This day is now included.
+* The CoinGecko API is quite unstable and returns frequently throttle warnings. I found that making 50 requests every 30 seconds works a bit better.
+* Included an info text how many requests are left and approx. runtime of the script.
 * Adjusted `README.md` to illustrate the changes of v1.2.
 
 ## Version 1.1
@@ -54,7 +56,7 @@ Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR").
 * **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
 * **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n"). Note, that CoinGecko's API restricts requests to 100 per minute. If you request more than 100 days of prices, the script will pause (specified in `sleepTime`) to reset the limit. Getting price data is responsible for most of the runtime of the script.
-* **sleepTime**: Specify how long the script should wait (in seconds) for the request limit of CoinGecko's API to reset. It is suppose to be 60 seconds, but sometimes it can take significantly longer. Default value is 80 seconds. If you experience that your requests are throttled, try to increase the limit.
+* **sleepTime**: Specify how long the script should wait (in seconds) for the request limit of CoinGecko's API to reset. The default value is 30 seconds. If you experience that your requests are throttled, try to increase the limit.
 
 
 ## Output
@@ -95,6 +97,6 @@ A list with objects for every day in your specified range. In the price of numbe
 
 # Troubleshooting
 * `SyntaxError: Unexpected token < in JSON at position 0`: Sometimes the request to the Subscan API fails, which could cause this issue. Try to run the script again. If the error persists, please file an issue.
-* `[CoinGecko] Warning: Throttled request There was a problem with request limit.`: CoinGecko's API restricts requests to 100 per minute. The script waits 80 seconds per default until a new request is started. If this issue persists, try to increase `sleepTime` in `config/userInput.json`.
+* `[CoinGecko] Warning: Throttled request There was a problem with request limit.`: CoinGecko's API restricts requests to 100 per minute. The script makes 50 requests and waits 30 seconds per default until a new request is started. If this issue persists, try to increase `sleepTime` in `config/userInput.json`.
 
 
