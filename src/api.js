@@ -1,14 +1,17 @@
 import CoinGecko from 'coingecko-api';
+import { ceil, round } from 'mathjs';
 import util from 'util';
 import { transformDDMMYYYtoUnix } from './utils.js';
 
 
  export async function addPriceData(obj, sleepTime){
     const sleep = util.promisify(setTimeout);
+    const maxRequests = 50;
     const CoinGeckoClient = new CoinGecko();
     let loopindex = -1;
 
     let i = _setIndex(obj);
+    let requestsLeft = obj.data.numberOfDays - i;
 
     try{
         for(i; i < obj.data.numberOfDays; i++){
@@ -26,11 +29,19 @@ import { transformDDMMYYYtoUnix } from './utils.js';
               }
               loopindex += 1;
 
-            if(loopindex % 100 == 0 & loopindex > 0){
-                console.log('We made more than 100 requests to CoinGecko API. Script is paused for ' + sleepTime + ' seconds to reset the request limit. Please wait...');
+            if(loopindex % maxRequests == 0 & loopindex > 0){
+                console.log(
+
+                    'We made ' + maxRequests + ' requests to the CoinGecko API. Script is paused for ' + sleepTime + ' seconds. ' + 
+                    'There are ' + requestsLeft + ' requests left. ' +
+                    'This will take approx. ' + 
+                    round(ceil(requestsLeft / maxRequests) * (sleepTime + 10) / 60,1) + 
+                    ' more minutes.'
+                    );
                 await sleep(sleepTime * 1000);
                 console.log('Data collection continues...');
-                loopindex -= 100;
+                loopindex -= maxRequests;
+                requestsLeft -= maxRequests;
             }
         }
 
