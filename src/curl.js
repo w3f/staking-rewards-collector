@@ -10,7 +10,7 @@ export async function addStakingData(obj){
     let address = obj.address;
     let network = obj.network;
     var loopindex;
-    let round = 0;
+    let round = 0; 
 
     /*
     This function runs at least once and parses the staking info for the given address. The API is structured in a way that you specify which
@@ -51,7 +51,7 @@ export async function addStakingData(obj){
                     }
                 }
             } 
-        finished = checkIfEnd(stakingObject, obj, loopindex);
+        finished = checkIfEnd(stakingObject, obj.data.list[0].day, loopindex);
         } while (finished == false);
 
     
@@ -60,30 +60,21 @@ export async function addStakingData(obj){
     if(obj.data.numberRewardsParsed == 0){
         throw new Error('No rewards found to parse. Please specify a different time window where rewards were paid out.');
     }
+
     obj.message = 'data collection complete';
     return obj;  
 }
 /*
-This function checks if the loop should continue. There are several cases important with respect to whether the user specified time window overlaps with the
-start and/or the end of the staking rewards. It should continue if either the end is smaller than the end of the staking object AND the start is larger than
-the start of the staking object or vice versa. In any case, the staking object should still be full (i.e. the maximum of 100 objects) so that we know that the API
-can provide more staking rewards.
+This function checks if the loop should continue. It should continue whenever the last day retrieved by the staking object retrieved has a larger
+value (i.e. lies more towards the present) than the last day of the desired point to look into. In addition, the staking object needs to be full, so
+we know that there potentially are more rewards to get.
 */
 
-function checkIfEnd(stakingObj, obj, loopindex){
+function checkIfEnd(stakingObj, lastDay, loopindex){
     let finished = true;
-    let startStakingObj = stakingObj.data.list[0].block_timestamp
-    let endStakingObj = stakingObj.data.list.slice(-1)[0].block_timestamp;
+    let lastDayStakingObj = stakingObj.data.list.slice(-1)[0].block_timestamp;
 
-    let startObj = transformDDMMYYYtoUnix(obj.data.list[0].day);
-    let endObj = transformDDMMYYYtoUnix(obj.data.list.slice(-1)[0].day);
-
-
-    if((endStakingObj < endObj) && startObj > startStakingObj && loopindex == 100){
-        finished = false;
-    }
-
-    if((endStakingObj > endObj) && startObj < startStakingObj && loopindex == 100){
+    if(transformDDMMYYYtoUnix(lastDay) < lastDayStakingObj && loopindex == 100){
         finished = false;
     }
     return finished;
