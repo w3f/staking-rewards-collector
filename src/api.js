@@ -1,5 +1,6 @@
 import CoinGecko from 'coingecko-api';
 import util from 'util';
+import { transformDDMMYYYtoUnix } from './utils.js';
 
 
  export async function addPriceData(obj, sleepTime){
@@ -7,8 +8,10 @@ import util from 'util';
     const CoinGeckoClient = new CoinGecko();
     let loopindex = -1;
 
+    let i = _setIndex(obj);
+
     try{
-        for(let i = 0; i < obj.data.numberOfDays; i++){
+        for(i; i < obj.data.numberOfDays; i++){
             let price_call = await CoinGeckoClient.coins.fetchHistory(obj.network, {
                 date: obj.data.list[i].day 
               });
@@ -36,4 +39,24 @@ import util from 'util';
          console.log('If the CoinGecko API throttled your request, try to increase the sleepTime in the config/userInput.json.')
      }
      return obj;
+}
+
+function _setIndex(obj){
+    var index;
+
+    let network = obj.network;
+
+    if(network == 'polkadot'){
+        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1597708800);
+    }
+
+    if(network == 'kusama'){
+        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1568851200);
+    }
+
+    if(index < 0){
+        index = 0;
+    }
+
+    return index;
 }
