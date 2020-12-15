@@ -8,6 +8,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 # Changelog 
 ## Version 1.2
 * Removed the restriction that priceData must be available for all days within the specified time window. Now the user can request price data for any time period and the script will only populate prices where it is available and return a price of 0 where it is not.
+* Bugfix: There was another case (accounts with many payouts), where the loop prematurely ended and did not show all staking rewards.
 * Bugfix: There was one more day available of priceData from CoinGecko. This day is now included.
 * The CoinGecko API is quite unstable and returns frequently throttle warnings. I found that making 50 requests every 30 seconds works a bit better.
 * Included an info text how many requests are left and approx. runtime of the script.
