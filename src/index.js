@@ -6,8 +6,8 @@ import { calculateMetrics, verifyUserInput } from './utils.js';
 async function main () {
   let obj = {};
 
-  const userInput = readJSON('config/userInput.json');
-  verifyUserInput(userInput);
+  let userInput = readJSON('config/userInput.json');
+  userInput = verifyUserInput(userInput);
 
 
     console.log('Wait until your data is retrieved...');
