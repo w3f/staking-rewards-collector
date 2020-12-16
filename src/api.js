@@ -6,7 +6,7 @@ import { transformDDMMYYYtoUnix } from './utils.js';
 
  export async function addPriceData(obj, sleepTime){
     const sleep = util.promisify(setTimeout);
-    const maxRequests = 50;
+    const maxRequests = 60;
     const CoinGeckoClient = new CoinGecko();
     let loopindex = -1;
 
