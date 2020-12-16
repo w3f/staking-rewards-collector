@@ -195,12 +195,14 @@ export function verifyUserInput(userInput){
         throw new Error('Start date is in the future.');
     }
 
-    if(start.valueOf() < 1597795200000 & network == 'polkadot' & priceData == 'y'){
-        throw new Error('You are requesting price data when there were no prices available.');
+    if(end.valueOf() < 1597708800000 & network == 'polkadot' & priceData == 'y'){
+        userInput.priceData = 'n';
+        console.log('Your requested time window lies before prices are available. Switching off price data.');    
     }
     
-    if(start.valueOf() < 1568937600000 & network == 'kusama' & priceData == 'y'){
-        throw new Error('You are requesting price data when there were no prices available.');
+    if(end.valueOf() < 1568851200000 & network == 'kusama' & priceData == 'y'){
+        userInput.priceData = 'n';
+        console.log('Your requested time window lies before prices are available. Switching off price data.');
     }
-
+    return userInput;
 }

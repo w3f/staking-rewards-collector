@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.1
+# Staking Rewards Collector v1.2
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that the data is valid and every user is responsible for double-checking the results of this tool. In addition, every user must do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
@@ -6,6 +6,14 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **Note**: The current estimate of overall tax burden assumes that staking rewards are taxed as they are paid out into the account with the respective spot-price of the day. It is unclear, whether this is the right way to do it. In addition, note that you are relying on Subscan's API (for staking data) as well as CoinGecko's API (for price data).
 
 # Changelog 
+## Version 1.2
+* Removed the restriction that priceData must be available for all days within the specified time window. Now the user can request price data for any time period and the script will only populate prices where it is available and return a price of 0 where it is not.
+* Bugfix: There was another case (accounts with many payouts), where the loop prematurely ended and did not show all staking rewards.
+* Bugfix: There was one more day available of priceData from CoinGecko. This day is now included.
+* CoinGecko's support told me that the *actual* request limit is 60/minute. I adjusted the parameters, which hopefully fixes request limit throttles.
+* Included an info text how many requests are left and approx. runtime of the script.
+* Adjusted `README.md` to illustrate the changes of v1.2.
+
 ## Version 1.1
 * Bugfix: In some special combinations of `start`and `end`and paid rewards, it could lead to a premature termination of the addStakingData loop and not finding rewards.
 * Bugfix: The script would parse one day less than in `end` specified. 
@@ -41,15 +49,15 @@ The program takes several inputs in the `config/userInput.json` file.
 Staking Rewards:
 * **address**: The Address you want to have the stake rewards parsed.
 * **network**: The network you want to analyze (allowed: "polkadot" and "kusama").
-* **start** (YYYY-MM-DD): The earliest day you want to analyze (Note that the earliest available prices for Polkadot are 2020-08-19 and 2019-09-20 for Kusama).
+* **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices for Polkadot are 2020-08-19 and 2019-09-20 for Kusama and that prices are set to 0 before that.
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
 * **initialInvestment**: The amount of tokens from which the staking rewards are generated. Used to calculate the annualizedReturn. 
 
 Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR").
 * **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
-* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n").
-* **sleepTime**: Specify how long the script should wait (in seconds) for the request limit of CoinGecko's API to reset. They claim it to be 60 seconds but sometimes it can take significantly longer. Default value is 80 seconds. If you experience that your requests are throttled frequently, try to increase the limit.
+* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n"). Note, that CoinGecko's API restricts requests to 60 per minute. If you request more than 60 days of prices, the script will pause (specified in `sleepTime`) to reset the limit. Getting price data is responsible for most of the runtime of the script.
+* **sleepTime**: Specify how long the script should wait (in seconds) for the request limit of CoinGecko's API to reset. The default value is 60 seconds. If you experience that your requests are throttled, try to increase the limit.
 
 
 ## Output
@@ -90,6 +98,6 @@ A list with objects for every day in your specified range. In the price of numbe
 
 # Troubleshooting
 * `SyntaxError: Unexpected token < in JSON at position 0`: Sometimes the request to the Subscan API fails, which could cause this issue. Try to run the script again. If the error persists, please file an issue.
-* `[CoinGecko] Warning: Throttled request There was a problem with request limit.`: CoinGecko's API restricts requests to 100 per minute. The script waits 80 seconds per default until a new request is started. If this issue persists, try to increase `sleepTime` in `config/userInput.json`.
+* `[CoinGecko] Warning: Throttled request There was a problem with request limit.`: CoinGecko's API restricts requests to 60 per minute. The script makes 60 requests and waits 60 seconds until a new request is started. It could be that CoinGecko's API does not reset the limit on time and therefore causes this problem. If this issue persists, try to increase `sleepTime` in `config/userInput.json`.
 
 
