@@ -10,7 +10,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 * Removed the restriction that priceData must be available for all days within the specified time window. Now the user can request price data for any time period and the script will only populate prices where it is available and return a price of 0 where it is not.
 * Bugfix: There was another case (accounts with many payouts), where the loop prematurely ended and did not show all staking rewards.
 * Bugfix: There was one more day available of priceData from CoinGecko. This day is now included.
-* The CoinGecko API is quite unstable and returns frequently throttle warnings. I found that making 50 requests every 30 seconds works a bit better.
+* CoinGecko's support told me that the *actual* request limit is 60/minute. I adjusted the parameters, which hopefully fixes request limit throttles.
 * Included an info text how many requests are left and approx. runtime of the script.
 * Adjusted `README.md` to illustrate the changes of v1.2.
 
@@ -56,8 +56,8 @@ Staking Rewards:
 Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR").
 * **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
-* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n"). Note, that CoinGecko's API restricts requests to 100 per minute. If you request more than 100 days of prices, the script will pause (specified in `sleepTime`) to reset the limit. Getting price data is responsible for most of the runtime of the script.
-* **sleepTime**: Specify how long the script should wait (in seconds) for the request limit of CoinGecko's API to reset. The default value is 30 seconds. If you experience that your requests are throttled, try to increase the limit.
+* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n"). Note, that CoinGecko's API restricts requests to 60 per minute. If you request more than 60 days of prices, the script will pause (specified in `sleepTime`) to reset the limit. Getting price data is responsible for most of the runtime of the script.
+* **sleepTime**: Specify how long the script should wait (in seconds) for the request limit of CoinGecko's API to reset. The default value is 60 seconds. If you experience that your requests are throttled, try to increase the limit.
 
 
 ## Output
@@ -98,6 +98,6 @@ A list with objects for every day in your specified range. In the price of numbe
 
 # Troubleshooting
 * `SyntaxError: Unexpected token < in JSON at position 0`: Sometimes the request to the Subscan API fails, which could cause this issue. Try to run the script again. If the error persists, please file an issue.
-* `[CoinGecko] Warning: Throttled request There was a problem with request limit.`: CoinGecko's API restricts requests to 100 per minute. The script makes 50 requests and waits 30 seconds per default until a new request is started. If this issue persists, try to increase `sleepTime` in `config/userInput.json`.
+* `[CoinGecko] Warning: Throttled request There was a problem with request limit.`: CoinGecko's API restricts requests to 60 per minute. The script makes 60 requests and waits 60 seconds until a new request is started. It could be that CoinGecko's API does not reset the limit on time and therefore causes this problem. If this issue persists, try to increase `sleepTime` in `config/userInput.json`.
 
 
