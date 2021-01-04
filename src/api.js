@@ -18,6 +18,10 @@ import { transformDDMMYYYtoUnix } from './utils.js';
             let price_call = await CoinGeckoClient.coins.fetchHistory(obj.network, {
                 date: obj.data.list[i].day 
               });
+
+              // Get daily volume in denomination of the token, ie DOT or KSM
+              obj.data.list[i].volume = price_call.data.market_data.total_volume[price_call.data.symbol];
+
               switch(obj.currency) {
                   case 'CHF':
                       obj.data.list[i].price = price_call.data.market_data.current_price.chf;

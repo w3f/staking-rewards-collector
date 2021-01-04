@@ -56,6 +56,7 @@ export function initializeObject(daysArray, network, address, currency, incomeTa
             'blockNumber': '',
             'extrinsicHash': '',
             'price': 0,
+            'volume': 0,
             'amountPlanks': 0,
             'numberPayouts':0,
             'amountHumanReadable': 0,

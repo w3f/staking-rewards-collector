@@ -29,6 +29,7 @@ export function readJSON(filePath) {
   function extractAsCSV(obj){
     const header = [
         "Day, Price in " + obj.currency +
+        `, Daily ${((obj.network == 'polkadot') ? 'DOT' : 'KSM')} Volume` +  
         ", Staking Rewards in" + ((obj.network == 'polkadot') ? ' DOT' : ' KSM') + 
         ", Number of Payouts" +
         ", Value in Fiat" +
@@ -37,7 +38,7 @@ export function readJSON(filePath) {
     
     const rows = obj.data.list
         .filter(entry => entry.numberPayouts > 0)
-        .map(entry => `${entry.day}, ${entry.price}, ${entry.amountHumanReadable}, ${entry.numberPayouts}, ${entry.valueFiat}, ${entry.valueTaxable}`);
+        .map(entry => `${entry.day}, ${entry.price}, ${entry.volume}, ${entry.amountHumanReadable}, ${entry.numberPayouts}, ${entry.valueFiat}, ${entry.valueTaxable}`);
 
       return header.concat(rows).join("\n");
   }
