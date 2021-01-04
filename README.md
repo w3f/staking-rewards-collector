@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.2
+# Staking Rewards Collector v1.21
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that the data is valid and every user is responsible for double-checking the results of this tool. In addition, every user must do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
@@ -6,6 +6,10 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **Note**: The current estimate of overall tax burden assumes that staking rewards are taxed as they are paid out into the account with the respective spot-price of the day. It is unclear, whether this is the right way to do it. In addition, note that you are relying on Subscan's API (for staking data) as well as CoinGecko's API (for price data).
 
 # Changelog 
+## Version 1.21
+* Added GBP currency support.
+* Included daily volume in output files.
+
 ## Version 1.2
 * Removed the restriction that priceData must be available for all days within the specified time window. Now the user can request price data for any time period and the script will only populate prices where it is available and return a price of 0 where it is not.
 * Bugfix: There was another case (accounts with many payouts), where the loop prematurely ended and did not show all staking rewards.
