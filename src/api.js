@@ -25,6 +25,8 @@ import { transformDDMMYYYtoUnix } from './utils.js';
                       obj.data.list[i].price = price_call.data.market_data.current_price.eur;
                   case 'USD':
                       obj.data.list[i].price = price_call.data.market_data.current_price.usd;
+                  case 'GBP':
+                      obj.data.list[i].price = price_call.data.market_data.current_price.gbp;
                   break;
               }
               loopindex += 1;
