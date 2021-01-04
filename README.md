@@ -54,7 +54,7 @@ Staking Rewards:
 * **initialInvestment**: The amount of tokens from which the staking rewards are generated. Used to calculate the annualizedReturn. 
 
 Price Data:
-* **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR").
+* **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR", "GBP").
 * **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
 * **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n"). Note, that CoinGecko's API restricts requests to 60 per minute. If you request more than 60 days of prices, the script will pause (specified in `sleepTime`) to reset the limit. Getting price data is responsible for most of the runtime of the script.
 * **sleepTime**: Specify how long the script should wait (in seconds) for the request limit of CoinGecko's API to reset. The default value is 60 seconds. If you experience that your requests are throttled, try to increase the limit.
