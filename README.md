@@ -63,7 +63,7 @@ Staking Rewards:
 * **initialInvestment**: The amount of tokens from which the staking rewards are generated. Used to calculate the annualizedReturn. 
 
 Price Data:
-* **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR", "GBP").
+* **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR", "GBP" and others available at CoinGecko.com).
 * **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
 * **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n").
 
