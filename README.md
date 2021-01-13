@@ -32,7 +32,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 
 # What can it do?
 * Collect staking rewards for a given public address (either Polkadot or Kusama) for a user-specified time window. The tool calculates the sum of staking rewards within that period.
-* If the time window allows it (check below some requirements for `start` and `end` date), it also collects daily price data and the fiat value of a stake reward given that day's spot price.
+* If the time window allows it (check below some requirements for `start` and `end` date), it also collects daily price data and the fiat value of a stake reward given that day's **opening price**.
 * If a meaningful income tax parameter is provided, it can help to estimate your potential tax burden.
 * If a meaningful initial investment (in DOT or KSM) is provided, it can calculate the annualized return rate (extrapolated from your time window to one year).
 * The output is stored in table format as CSV file and as JSON object (with more detailed information). For easier processing of multiple addresses, the file names also contain the address.
