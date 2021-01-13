@@ -91,9 +91,9 @@ function _transformArrayToString(array){
 export function transformDDMMYYYtoUnix(dateString){
 
     var dateParts = dateString.split('-');
-    let date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+    let date = new Date(Date.UTC(+dateParts[2], dateParts[1] - 1, +dateParts[0]));
+    // CoinGecko defines a day at 12:00am (UTC) which is 7200 after the value given by the date.valueOf()
     let unix = date.valueOf() / 1000;
-
     return unix;
 }
 
