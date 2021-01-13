@@ -13,9 +13,12 @@ export async function addPriceData(obj){
     prices = _arrayToObject(priceObject.data.prices, "price");
     total_volume = _arrayToObject(priceObject.data.total_volumes, "volume");
 
-    for(let i=0;i<obj.data.list.length;i++){
-        let tmp = transformDDMMYYYtoUnix(obj.data.list[i].day);
-               
+    // set index to first day price were available to avoid looking for prices where are none
+    let i = _setIndex(obj);
+
+    for(i;i<obj.data.list.length;i++){
+        
+        let tmp = transformDDMMYYYtoUnix(obj.data.list[i].day);               
         obj.data.list[i].price = prices.find(x => x.timestamp == tmp).price;
         obj.data.list[i].volume = total_volume.find(x => x.timestamp == tmp).volume;
     }
@@ -76,4 +79,28 @@ function _checkDuration(start, end){
         setEnd = end;
     }
     return setEnd;
+}
+
+/*
+This function checks when prices were available and sets the index correspondingly to avoid looking for prices when there were none available.
+*/
+
+function _setIndex(obj){
+    var index;
+
+    let network = obj.network;
+
+    if(network == 'polkadot'){
+        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1597708800);
+    }
+
+    if(network == 'kusama'){
+        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1568851200);
+    }
+
+    if(index < 0){
+        index = 0;
+    }
+
+    return index;
 }
