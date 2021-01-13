@@ -11,7 +11,6 @@ export async function gatherData(userInput){
     let incomeTax = userInput.incomeTax;
     let priceData = userInput.priceData;
     let initialInvestment = userInput.initialInvestment;
-    let sleepTime = userInput.sleepTime;
 
     let obj = {};
     let daysArray = [];
@@ -19,7 +18,7 @@ export async function gatherData(userInput){
     daysArray = makeDaysArray(new Date(start), new Date(end));
     obj = initializeObject(daysArray, network, address, currency, incomeTax, initialInvestment);
     if(priceData == 'y'){
-        obj = await addPriceData(obj, sleepTime);
+        obj = await addPriceData(obj);
     }
     obj = await addStakingData(obj);
 

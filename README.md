@@ -1,11 +1,16 @@
-# Staking Rewards Collector v1.21
+# Staking Rewards Collector v1.3
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
 
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
 
-# Changelog 
+# Changelog
+## Version 1.3
+* Updated the API call such which gathers all price data with a single call. This significantly improves runtime and avoids throttle issues.
+* Removed some rounding for non-Fiat values to give a accurate result.
+* Fixed a bug where the USD price was used instead of other curriencies.
+   
 ## Version 1.21
 * Added GBP currency support.
 * Included daily volume in output files.
@@ -28,7 +33,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 
 # What can it do?
 * Collect staking rewards for a given public address (either Polkadot or Kusama) for a user-specified time window. The tool calculates the sum of staking rewards within that period.
-* If the time window allows it (check below some requirements for `start` and `end` date), it also collects daily price data and the fiat value of a stake reward given that day's spot price.
+* If the time window allows it (check below some requirements for `start` and `end` date), it also collects daily price data and the fiat value of a stake reward given that day's **opening price**.
 * If a meaningful income tax parameter is provided, it can help to estimate your potential tax burden.
 * If a meaningful initial investment (in DOT or KSM) is provided, it can calculate the annualized return rate (extrapolated from your time window to one year).
 * The output is stored in table format as CSV file and as JSON object (with more detailed information). For easier processing of multiple addresses, the file names also contain the address.
@@ -60,8 +65,7 @@ Staking Rewards:
 Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR", "GBP").
 * **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
-* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n"). Note, that CoinGecko's API restricts requests to 60 per minute. If you request more than 60 days of prices, the script will pause (specified in `sleepTime`) to reset the limit. Getting price data is responsible for most of the runtime of the script.
-* **sleepTime**: Specify how long the script should wait (in seconds) for the request limit of CoinGecko's API to reset. The default value is 60 seconds. If you experience that your requests are throttled, try to increase the limit.
+* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n").
 
 
 ## Output
@@ -102,6 +106,4 @@ A list with objects for every day in your specified range. In the price of numbe
 
 # Troubleshooting
 * `SyntaxError: Unexpected token < in JSON at position 0`: Sometimes the request to the Subscan API fails, which could cause this issue. Try to run the script again. If the error persists, please file an issue.
-* `[CoinGecko] Warning: Throttled request There was a problem with request limit.`: CoinGecko's API restricts requests to 60 per minute. The script makes 60 requests and waits 60 seconds until a new request is started. It could be that CoinGecko's API does not reset the limit on time and therefore causes this problem. If this issue persists, try to increase `sleepTime` in `config/userInput.json`.
-
 

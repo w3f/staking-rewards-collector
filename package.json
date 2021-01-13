@@ -1,6 +1,6 @@
 {
   "name": "staking-rewards-collector",
-  "version": "1.21",
+  "version": "1.3",
   "main": "src/index.js",
   "repository": "git@github.com:w3f/staking-rewards-collector.git",
   "author": "Jonas Gehrlein <jonas@web3.foundation>",

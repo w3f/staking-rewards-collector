@@ -10,7 +10,6 @@ async function main () {
   userInput = verifyUserInput(userInput);
 
 
-    console.log('Wait until your data is retrieved...');
     obj = await gatherData(userInput);
     obj = calculateMetrics(obj);
     exportVariable(JSON.stringify(obj), 'output-' + obj.address + '.json'); 
