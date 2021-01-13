@@ -5,7 +5,10 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
 
-# Changelog 
+# Changelog
+## Version 1.3
+* Updated the API call such which gathers all price data with a single call. This significantly improves runtime and avoids throttle issues!
+   
 ## Version 1.21
 * Added GBP currency support.
 * Included daily volume in output files.
@@ -60,8 +63,7 @@ Staking Rewards:
 Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR", "GBP").
 * **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
-* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n"). Note, that CoinGecko's API restricts requests to 60 per minute. If you request more than 60 days of prices, the script will pause (specified in `sleepTime`) to reset the limit. Getting price data is responsible for most of the runtime of the script.
-* **sleepTime**: Specify how long the script should wait (in seconds) for the request limit of CoinGecko's API to reset. The default value is 60 seconds. If you experience that your requests are throttled, try to increase the limit.
+* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n").
 
 
 ## Output
@@ -102,6 +104,4 @@ A list with objects for every day in your specified range. In the price of numbe
 
 # Troubleshooting
 * `SyntaxError: Unexpected token < in JSON at position 0`: Sometimes the request to the Subscan API fails, which could cause this issue. Try to run the script again. If the error persists, please file an issue.
-* `[CoinGecko] Warning: Throttled request There was a problem with request limit.`: CoinGecko's API restricts requests to 60 per minute. The script makes 60 requests and waits 60 seconds until a new request is started. It could be that CoinGecko's API does not reset the limit on time and therefore causes this problem. If this issue persists, try to increase `sleepTime` in `config/userInput.json`.
-
 
