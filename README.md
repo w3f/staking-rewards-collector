@@ -9,6 +9,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 ## Version 1.3
 * Updated the API call such which gathers all price data with a single call. This significantly improves runtime and avoids throttle issues.
 * Removed some rounding for non-Fiat values to give a accurate result.
+* Fixed a bug where the USD price was used instead of other curriencies.
    
 ## Version 1.21
 * Added GBP currency support.
