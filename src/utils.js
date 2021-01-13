@@ -116,11 +116,11 @@ export function calculateMetrics(obj){
         normalization = 1/1000000000000;
     }
     for(let i = 0; i < obj.data.numberOfDays; i++){
-        // generate new metrics and round
-        obj.data.list[i].amountHumanReadable = round(obj.data.list[i].amountPlanks * normalization,4);
-        obj.data.list[i].valueFiat = round(obj.data.list[i].amountHumanReadable * obj.data.list[i].price,2);
-        obj.data.list[i].valueTaxable = round(obj.data.list[i].valueFiat * obj.incomeTax,2);
-        obj.data.list[i].price = round(obj.data.list[i].price,2);
+        // generate new metrics
+        obj.data.list[i].amountHumanReadable = obj.data.list[i].amountPlanks * normalization;
+        obj.data.list[i].valueFiat = obj.data.list[i].amountHumanReadable * obj.data.list[i].price;
+        obj.data.list[i].valueTaxable = obj.data.list[i].valueFiat * obj.incomeTax;
+        obj.data.list[i].price = obj.data.list[i].price;
 
         // add values of each day to general metrics.
         obj.totalValueFiat = obj.totalValueFiat + obj.data.list[i].valueFiat;
@@ -129,7 +129,6 @@ export function calculateMetrics(obj){
     }
 
     obj.totalValueFiat = round(obj.totalValueFiat,2);
-    obj.totalAmountHumanReadable = round(obj.totalAmountHumanReadable,2);
     obj.totalTaxBurdenFiat = round(obj.totalTaxBurdenFiat,2);
     obj.currentValueRewardsFiat = round(obj.totalAmountHumanReadable * obj.data.list[0].price,2);
     obj.annualizedReturn = _calculateAnnualizedReturn(obj);
