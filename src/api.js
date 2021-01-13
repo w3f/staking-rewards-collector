@@ -1,79 +1,79 @@
 import CoinGecko from 'coingecko-api';
 import { ceil, round } from 'mathjs';
-import util from 'util';
 import { transformDDMMYYYtoUnix } from './utils.js';
 
 
- export async function addPriceData(obj, sleepTime){
-    const sleep = util.promisify(setTimeout);
-    const maxRequests = 60;
-    const CoinGeckoClient = new CoinGecko();
-    let loopindex = -1;
 
-    let i = _setIndex(obj);
-    let requestsLeft = obj.data.numberOfDays - i;
+export async function addPriceData(obj){
+    let priceObject = await _getPriceObject(obj);
+    var prices;
+    var total_volume;
 
-    try{
-        for(i; i < obj.data.numberOfDays; i++){
-            let price_call = await CoinGeckoClient.coins.fetchHistory(obj.network, {
-                date: obj.data.list[i].day 
-              });
 
-              // Get daily volume in denomination of the token, ie DOT or KSM
-              obj.data.list[i].volume = price_call.data.market_data.total_volume[price_call.data.symbol];
+    prices = _arrayToObject(priceObject.data.prices, "price");
+    total_volume = _arrayToObject(priceObject.data.total_volumes, "volume");
 
-              switch(obj.currency) {
-                  case 'CHF':
-                      obj.data.list[i].price = price_call.data.market_data.current_price.chf;
-                  case 'EUR':
-                      obj.data.list[i].price = price_call.data.market_data.current_price.eur;
-                  case 'USD':
-                      obj.data.list[i].price = price_call.data.market_data.current_price.usd;
-                  case 'GBP':
-                      obj.data.list[i].price = price_call.data.market_data.current_price.gbp;
-                  break;
-              }
-              loopindex += 1;
-
-            if(loopindex % maxRequests == 0 & loopindex > 0){
-                console.log(
-
-                    'We made ' + maxRequests + ' requests to the CoinGecko API. Script is paused for ' + sleepTime + ' seconds. ' + 
-                    'There are ' + requestsLeft + ' requests left. ' +
-                    'This will take approx. ' + 
-                    round(ceil(requestsLeft / maxRequests) * (sleepTime + 10) / 60,1) + 
-                    ' more minutes.'
-                    );
-                await sleep(sleepTime * 1000);
-                console.log('Data collection continues...');
-                loopindex -= maxRequests;
-                requestsLeft -= maxRequests;
-            }
-        }
-
-     } catch (e){
-         console.log('Error in parsing CoinGecko Data' + e);
-         console.log('If the CoinGecko API throttled your request, try to increase the sleepTime in the config/userInput.json.')
-     }
-     return obj;
+    for(let i=0;i<obj.data.list.length;i++){
+        let tmp = transformDDMMYYYtoUnix(obj.data.list[i].day);
+               
+        obj.data.list[i].price = prices.find(x => x.timestamp == tmp).price;
+        obj.data.list[i].volume = total_volume.find(x => x.timestamp == tmp).volume;
+    }
+    return obj;
 }
 
-function _setIndex(obj){
-    var index;
+async function _getPriceObject(obj){
+    const CoinGeckoClient = new CoinGecko();
+    var priceObject;
 
-    let network = obj.network;
+    let start = transformDDMMYYYtoUnix(obj.data.list[0].day);
+    let end = transformDDMMYYYtoUnix(obj.data.list.slice(-1)[0].day);
 
-    if(network == 'polkadot'){
-        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1597708800);
+    // Avoid getting hourly or minute price data.
+    end = _checkDuration(start, end);
+    
+        try{
+            priceObject = await CoinGeckoClient.coins.fetchMarketChartRange(obj.network, {
+                from: start,
+                to: end,
+                vs_currency: obj.currency,
+            });
+        } catch (e){
+            console.log('Error in parsing CoinGecko Data' + e);
+        }
+    return priceObject;
+}
+
+/*
+CoinGecko API returns a list of arrays without a key,value pair. This function creates an object from that list.
+*/
+
+function _arrayToObject(array, key){
+    let name = key;
+    let obj = [];
+    // populate the key
+        for(let i=0; i<array.length; i++){
+            obj[i] = {
+                "timestamp" : array[i][0] / 1000,
+                [name]: array[i][1],
+            }
+        }
+    return obj;
+}
+
+/*
+This function checks if the user did input a time-period larger than 90 days. Minutely data will be provided for for duration within 1 day and  Hourly data will be used for duration between 1 day and 90 days. We are only interested in daily data, so we check if the duration is less than 90 days and then just increase it artificially (only the prices within the time-period of the user will be used later).
+*/ 
+
+function _checkDuration(start, end){
+    var setEnd;
+
+    let duration = (end - start) / 60 / 60 / 24;
+
+    if(duration < 90){
+        setEnd = start + 91 * 60 * 60 * 24;
+    } else {
+        setEnd = end;
     }
-
-    if(network == 'kusama'){
-        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1568851200);
-    }
-
-    if(index < 0){
-        index = 0;
-    }
-
-    return index;
+    return setEnd;
 }
