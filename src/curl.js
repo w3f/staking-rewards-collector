@@ -101,7 +101,14 @@ async function getStakingObject(address, page, network){
         }),
     };
     stakingObject = await curlRequest(options);
-    stakingObject = JSON.parse(stakingObject);
+
+    // Sometimes the staking object is not properly transmitted and we catch the error here.
+    try {
+        stakingObject = JSON.parse(stakingObject);
+    } catch(e) {
+        console.log("There was an error in the curl-request. Please try again.");
+        console.log(e);
+    }
 
     // If the API returns a data.count == 0, no rewards were every logged for that address.
     if(stakingObject.data.count == 0){
