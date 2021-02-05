@@ -206,3 +206,15 @@ export function verifyUserInput(userInput){
     }
     return userInput;
 }
+
+export function getNetwork(address){
+    var network;
+    let first_string = address[0];
+
+    if(first_string == "1"){
+        network = "polkadot";
+    } else {
+        network = "kusama";
+    }
+    return network;
+}
