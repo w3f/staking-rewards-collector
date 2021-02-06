@@ -44,6 +44,6 @@ async function main () {
   }
     console.log('In total, ' + numberPayouts.DOT + ' DOT and ' + numberPayouts.KSM + ' KSM payouts were found.');
     console.log('The sum of staking rewards are ' + totalStaked.DOT +  ' DOT and ' + totalStaked.KSM + ' KSM');
-    console.log('For more information, open the CSV file or copy the content of the JSON file into http://jsonviewer.stack.hu/ (click format).'); 
+    console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).'); 
 }
 main().catch(console.error).finally(() => process.exit());
