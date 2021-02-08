@@ -4,6 +4,7 @@
 "currency": "CHF",
 "incomeTax": 0.07,
 "priceData": "y",
+"exportOutput": "true",
 "addresses": [
     {
         "name": "Account 1",
