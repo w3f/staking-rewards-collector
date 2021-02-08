@@ -57,7 +57,6 @@ export async function addStakingData(obj){
 
     
     obj.data.numberRewardsParsed = found;
-    exportVariable(JSON.stringify(obj), "LOL");
 
     if(obj.data.numberRewardsParsed == 0){
         console.log('No rewards found to parse for address ' + obj.address);

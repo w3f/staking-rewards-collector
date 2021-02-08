@@ -33,7 +33,7 @@ async function main () {
     obj = await gatherData(start, end, network, address, currency, incomeTax, priceData, initialInvestment);
     
     // otherwise there were no rewards
-    if(obj.numberRewardsParsed > 0){
+    if(obj.data.numberRewardsParsed > 0){
       obj = calculateMetrics(obj);
     }
 
