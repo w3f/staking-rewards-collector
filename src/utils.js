@@ -181,10 +181,9 @@ function _getFirstandLastReward(obj){
     }
 }
 
-export function verifyUserInput(userInput){
+export function verifyUserInput(userInput, network){
     let start = new Date(userInput.start);
     let end = new Date(userInput.end);
-    let network = userInput.network;
     let priceData = userInput.priceData;
 
     if(start > end){
