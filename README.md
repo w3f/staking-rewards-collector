@@ -15,7 +15,7 @@ Huge QoL improvement!
 ## Version 1.3
 * Updated the API call such which gathers all price data with a single call. This significantly improves runtime and avoids throttle issues.
 * Removed some rounding for non-Fiat values to give a accurate result.
-* Fixed a bug where the USD price was used instead of other curriencies.
+* Fixed a bug where the USD price was used instead of other currencies.
 * There is a very rare error when trying to parse the `stakingObject`. This resolves by simply running the script again. Added a note to ask the user to run the script again.
    
 ## Version 1.21
