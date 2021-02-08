@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.3
+# Staking Rewards Collector v1.4
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -6,6 +6,12 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
 
 # Changelog
+## Version 1.4
+Huge QoL improvement!
+* Specify as many addresses as you want in the userInput.json.
+* You can now also give your addresses a name.
+* Removed network-specifier. The script now automatically detects which network the address is from (for Kusama/Polkadot).
+* Added `exportOutput`: You can now specify if the output files should be generated or if you wish to just see your total staked amount in the terminal.
 ## Version 1.3
 * Updated the API call such which gathers all price data with a single call. This significantly improves runtime and avoids throttle issues.
 * Removed some rounding for non-Fiat values to give a accurate result.
@@ -57,17 +63,19 @@ yarn start
 The program takes several inputs in the `config/userInput.json` file.
 
 Staking Rewards:
-* **address**: The Address you want to have the stake rewards parsed.
-* **network**: The network you want to analyze (allowed: "polkadot" and "kusama").
+* **addresses**: A list of objects containing the `address` you want to parse the staking rewards, the `name` of your address and the `initialInvestment`.
+* **initialInvestment**: The amount of tokens from which the staking rewards are generated. Used to calculate the annualizedReturn. 
 * **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices for Polkadot are 2020-08-19 and 2019-09-20 for Kusama and that prices are set to 0 before that.
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
-* **initialInvestment**: The amount of tokens from which the staking rewards are generated. Used to calculate the annualizedReturn. 
+
 
 Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR", "GBP" and others available at CoinGecko.com).
 * **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
 * **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n").
 
+Output:
+* **exportOutput**: Specify if you want the .csv and .json files to be exported (allowed: "true", "false").
 
 ## Output
 After the tool executed successfully, it creates two files in the root folder. The JSON file contains some meta-data (e.g., sum of rewards and estimate of annualized return rate) and the CSV file gives the most important information in a table and thereby printable format. 
