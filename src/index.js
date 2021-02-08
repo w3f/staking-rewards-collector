@@ -18,10 +18,11 @@ async function main () {
 
 
   for(let i = 0; i < userInput.addresses.length; i++){
-    userInput = verifyUserInput(userInput);
+    let network = getNetwork(userInput.addresses[i].address);
+    userInput = verifyUserInput(userInput, network);
     let start = userInput.start;
     let end = userInput.end;
-    let network = getNetwork(userInput.addresses[i].address);
+    
     let address = userInput.addresses[i].address;
     let currency = userInput.currency;
     let exportOutput = userInput.exportOutput;
@@ -30,7 +31,11 @@ async function main () {
     let initialInvestment = userInput.addresses[i].initialInvestment;
 
     obj = await gatherData(start, end, network, address, currency, incomeTax, priceData, initialInvestment);
-    obj = calculateMetrics(obj);
+    
+    // otherwise there were no rewards
+    if(obj.data.numberRewardsParsed > 0){
+      obj = calculateMetrics(obj);
+    }
 
     if(exportOutput == "true"){ 
       exportVariable(JSON.stringify(obj), userInput.addresses[i].name + ' ' + obj.address + '.json'); 

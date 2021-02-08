@@ -1,4 +1,5 @@
 import curl from 'curlrequest';
+import { exportVariable } from './fileWorker.js';
 import { dateToString, transformDDMMYYYtoUnix, min } from './utils.js';
 
 
@@ -58,7 +59,7 @@ export async function addStakingData(obj){
     obj.data.numberRewardsParsed = found;
 
     if(obj.data.numberRewardsParsed == 0){
-        throw new Error('No rewards found to parse. Please specify a different time window where rewards were paid out.');
+        console.log('No rewards found to parse for address ' + obj.address);
     }
 
     obj.message = 'data collection complete';
