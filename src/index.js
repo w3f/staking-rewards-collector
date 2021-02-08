@@ -24,15 +24,18 @@ async function main () {
     let network = getNetwork(userInput.addresses[i].address);
     let address = userInput.addresses[i].address;
     let currency = userInput.currency;
+    let exportOutput = userInput.exportOutput;
     let incomeTax = userInput.incomeTax;
     let priceData = userInput.priceData;
     let initialInvestment = userInput.addresses[i].initialInvestment;
 
     obj = await gatherData(start, end, network, address, currency, incomeTax, priceData, initialInvestment);
     obj = calculateMetrics(obj);
-    exportVariable(JSON.stringify(obj), userInput.addresses[i].name + ' ' + obj.address + '.json'); 
-    writeCSV(obj, userInput.addresses[i].name + ' ' + obj.address + '.csv');
 
+    if(exportOutput == "true"){ 
+      exportVariable(JSON.stringify(obj), userInput.addresses[i].name + ' ' + obj.address + '.json'); 
+      writeCSV(obj, userInput.addresses[i].name + ' ' + obj.address + '.csv');
+    }
 
     if(network == "polkadot"){
       totalStaked.DOT = totalStaked.DOT + obj.totalAmountHumanReadable;
