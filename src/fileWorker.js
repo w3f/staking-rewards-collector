@@ -3,7 +3,6 @@ import fs from 'fs';
 export function exportVariable(data, name){
     try {
         fs.writeFileSync(name, data);
-        console.log('JSON file successfully exported.');
         } catch (err) {
         console.error(err);
         }
@@ -20,7 +19,6 @@ export function readJSON(filePath) {
 
      try {
          fs.writeFileSync(filename, extractAsCSV(obj));
-         console.log('CSV file successfully exported.');
         } catch (err){
         console.error(err);
         }
