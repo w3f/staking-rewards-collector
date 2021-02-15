@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.4
+# Staking Rewards Collector v1.4.1
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -6,6 +6,11 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
 
 # Changelog
+## Version 1.4.1
+* Script now does not terminate if one of the addresses did not receive any rewards in the specified time period.
+* Coingecko provides fiat prices with many decimals, which is not sensible to use in the output files. Fiat price of tokens will now be rounded to two decimals.
+* Changed `priceData` flag to `true` and `false` for consistency.
+* Changed `initialInvestment` to `startBalance` to more accurately reflect the meaning.
 ## Version 1.4
 Huge QoL improvement!
 * Specify as many addresses as you want in the userInput.json.
@@ -63,8 +68,8 @@ yarn start
 The program takes several inputs in the `config/userInput.json` file.
 
 Staking Rewards:
-* **addresses**: A list of objects containing the `address` you want to parse the staking rewards, the `name` of your address and the `initialInvestment`.
-* **initialInvestment**: The amount of tokens from which the staking rewards are generated. Used to calculate the annualizedReturn. 
+* **addresses**: A list of objects containing the `address` you want to parse the staking rewards, the `name` of your address and the `startBalance`.
+* **startBalance**: The amount of tokens from which the staking rewards are generated at the time of the `start`. Used to calculate the annualizedReturn, can be set to any number if the user is not interested in an accurate annualized return metric. 
 * **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices for Polkadot are 2020-08-19 and 2019-09-20 for Kusama and that prices are set to 0 before that.
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
 
@@ -95,10 +100,10 @@ The **JSON Output** contains:
 
 ### Summary
 
-* Some information of your inputs (address, network, incomeTax, currency, initialInvestment).
+* Some information of your inputs (address, network, incomeTax, currency, startBalance).
 * **firstReward**: The day specified within your window you received your first reward.
 * **lastReward**: The day specified within your window you received your last reward.
-* **annualizedReturn**: The annualized return rate of your investment (if you provided a reasonable value for `initialInvestment`). The basis of this calculation is those days between `firstReward` and `lastReward`. It is only reasonable if you did not change too much in your staking situation (like deposited, withdraw etc.).
+* **annualizedReturn**: The annualized return rate of your investment (if you provided a reasonable value for `startBalance`). The basis of this calculation is those days between `firstReward` and `lastReward`. It is only reasonable if you did not change too much in your staking situation (like deposited, withdraw etc.).
 * **currentValueRewardsFiat**: The current value of the staking rewards (at the most recent daily price specified by your time window).
 * **totalAmountHumanReadable**: The sum of staking rewards within your specified period in (new DOT or KSM).
 * **totalValueFiat**: The value of the staking rewards **based on daily prices they were received**.
