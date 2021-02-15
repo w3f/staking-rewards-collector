@@ -19,7 +19,7 @@ export async function addPriceData(obj){
     for(i;i<obj.data.list.length;i++){
         
         let tmp = transformDDMMYYYtoUnix(obj.data.list[i].day);               
-        obj.data.list[i].price = prices.find(x => x.timestamp == tmp).price;
+        obj.data.list[i].price = round(prices.find(x => x.timestamp == tmp).price,2);
         obj.data.list[i].volume = total_volume.find(x => x.timestamp == tmp).volume;
     }
     return obj;
