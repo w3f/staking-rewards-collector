@@ -29,14 +29,14 @@ export function makeDaysArray(startDate, endDate) {
     return dates;
   };
 
-export function initializeObject(daysArray, network, address, currency, incomeTax, initialInvestment){
+export function initializeObject(daysArray, network, address, currency, incomeTax, startBalance){
     let obj = {
         'message': 'empty',
         'address': address,
         'network': network,
         'currency': currency,
         'incomeTax': incomeTax,
-        'initialInvestment': initialInvestment,
+        'startBalance': startBalance,
         'firstReward': '',
         'lastReward': '',
         'annualizedReturn':0,
@@ -146,7 +146,7 @@ function _calculateAnnualizedReturn(obj){
     obj.lastReward = firstAndLastReward.lastReward;
     //added one day because users must lock for one day and wait.
     daysBetweenRewards =  ((transformDDMMYYYtoUnix(obj.lastReward) - transformDDMMYYYtoUnix(obj.firstReward)) / 60 / 60 / 24) + 1;
-    let rateOfReturn = 1 + obj.totalAmountHumanReadable /obj.initialInvestment;
+    let rateOfReturn = 1 + obj.totalAmountHumanReadable /obj.startBalance;
     let daysFraction = 365 / daysBetweenRewards;
     annualized = pow(rateOfReturn,daysFraction) - 1;
 
@@ -194,13 +194,13 @@ export function verifyUserInput(userInput, network){
         throw new Error('Start date is in the future.');
     }
 
-    if(end.valueOf() < 1597708800000 & network == 'polkadot' & priceData == 'y'){
-        userInput.priceData = 'n';
+    if(end.valueOf() < 1597708800000 & network == 'polkadot' & priceData == 'true'){
+        userInput.priceData = 'false';
         console.log('Your requested time window lies before prices are available. Switching off price data.');    
     }
     
-    if(end.valueOf() < 1568851200000 & network == 'kusama' & priceData == 'y'){
-        userInput.priceData = 'n';
+    if(end.valueOf() < 1568851200000 & network == 'kusama' & priceData == 'true'){
+        userInput.priceData = 'false';
         console.log('Your requested time window lies before prices are available. Switching off price data.');
     }
     return userInput;
