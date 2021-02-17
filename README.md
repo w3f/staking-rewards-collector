@@ -7,6 +7,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 
 # Changelog
 ## Version 1.4.1
+* Added link to a tutorial to the README.
 * Script now does not terminate if one of the addresses did not receive any rewards in the specified time period.
 * Coingecko provides fiat prices with many decimals, which is not sensible to use in the output files. Fiat price of tokens will now be rounded to two decimals.
 * Changed `priceData` flag to `true` and `false` for consistency.
@@ -62,6 +63,8 @@ Change the parameters inside the config/userInput.json to your needs.
 yarn
 yarn start
 ```
+# Tutorial
+For a more detailed tutorial on how to set up the script, please go [here](https://hackmd.io/@8F4MrJhQT32fynUEzuSsHA/HJ_A8Jd-O)(WIP).
 
 # How to use it?
 ## Input
