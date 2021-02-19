@@ -113,7 +113,7 @@ async function getStakingObject(address, page, network){
 
     // If the API returns a data.count == 0, no rewards were every logged for that address.
     if(stakingObject.data.count == 0){
-        throw new Error('This address does not seem to have received any rewards ever. Please check if you are using the correct address.');
+        throw new Error('The address ' + address + ' does not seem to have received any rewards ever. Please check if you are using the correct address.');
     }
 
     return stakingObject;    
