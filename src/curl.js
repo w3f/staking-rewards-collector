@@ -26,6 +26,12 @@ export async function addStakingData(obj){
         page += 1;
         round += 1;
         stakingObject = await getStakingObject(address, page, network);
+
+        // Break loop if none rewards have been found for the address.
+        if(stakingObject.data.count == 0){
+            break;
+        }
+
         if(page==0){
             loopindex = min(stakingObject.data.count, 100);
         } else {
@@ -109,11 +115,6 @@ async function getStakingObject(address, page, network){
     } catch(e) {
         console.log("There was an error in the curl-request. Please try again.");
         console.log(e);
-    }
-
-    // If the API returns a data.count == 0, no rewards were every logged for that address.
-    if(stakingObject.data.count == 0){
-        throw new Error('The address ' + address + ' does not seem to have received any rewards ever. Please check if you are using the correct address.');
     }
 
     return stakingObject;    
