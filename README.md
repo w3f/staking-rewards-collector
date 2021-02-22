@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.4.1
+# Staking Rewards Collector v1.4.2
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -6,6 +6,10 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
 
 # Changelog
+## Version 1.4.2
+* Added more info on which address did never receive any staking rewards.
+* Script does not terminate if one address did not receive any rewards.
+* Removed Tax variables.
 ## Version 1.4.1
 * Added link to a tutorial to the README.
 * Script now does not terminate if one of the addresses did not receive any rewards in the specified time period.
@@ -47,8 +51,7 @@ Huge QoL improvement!
 # What can it do?
 * Collect staking rewards for a given public address (either Polkadot or Kusama) for a user-specified time window. The tool calculates the sum of staking rewards within that period.
 * If the time window allows it (check below some requirements for `start` and `end` date), it also collects daily price data and the fiat value of a stake reward given that day's **opening price**.
-* If a meaningful income tax parameter is provided, it can help to estimate your potential tax burden.
-* If a meaningful initial investment (in DOT or KSM) is provided, it can calculate the annualized return rate (extrapolated from your time window to one year).
+* If a meaningful startBalance (in DOT or KSM) is provided, it can calculate the annualized return rate (extrapolated from your time window to one year).
 * The output is stored in table format as CSV file and as JSON object (with more detailed information). For easier processing of multiple addresses, the file names also contain the address.
 
 # How to run?
@@ -79,7 +82,6 @@ Staking Rewards:
 
 Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR", "GBP" and others available at CoinGecko.com).
-* **incomeTax**: Specify your individual income tax rate (e.g., 0.07 for 7%). This only gives a reasonable output if priceData is parsed. (allowed: numbers).
 * **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n").
 
 Output:
@@ -103,14 +105,13 @@ The **JSON Output** contains:
 
 ### Summary
 
-* Some information of your inputs (address, network, incomeTax, currency, startBalance).
+* Some information of your inputs (address, network, currency, startBalance).
 * **firstReward**: The day specified within your window you received your first reward.
 * **lastReward**: The day specified within your window you received your last reward.
 * **annualizedReturn**: The annualized return rate of your investment (if you provided a reasonable value for `startBalance`). The basis of this calculation is those days between `firstReward` and `lastReward`. It is only reasonable if you did not change too much in your staking situation (like deposited, withdraw etc.).
 * **currentValueRewardsFiat**: The current value of the staking rewards (at the most recent daily price specified by your time window).
 * **totalAmountHumanReadable**: The sum of staking rewards within your specified period in (new DOT or KSM).
 * **totalValueFiat**: The value of the staking rewards **based on daily prices they were received**.
-* **totalTaxBurden**: The `totalValueFiat` multiplied with your `incomeTax` rate.
 
 ### Additional Data
 
