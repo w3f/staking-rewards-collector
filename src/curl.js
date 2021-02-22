@@ -10,7 +10,7 @@ export async function addStakingData(obj){
     let page = -1;
     let address = obj.address;
     let network = obj.network;
-    var loopindex;
+    var loopIndex;
     let round = 0; 
 
     /*
@@ -26,13 +26,19 @@ export async function addStakingData(obj){
         page += 1;
         round += 1;
         stakingObject = await getStakingObject(address, page, network);
+
+        // Break loop if none rewards have been found for the address.
+        if(stakingObject.data.count == 0){
+            break;
+        }
+
         if(page==0){
-            loopindex = min(stakingObject.data.count, 100);
+            loopIndex = min(stakingObject.data.count, 100);
         } else {
-            loopindex = min(stakingObject.data.count - page*100,100);
+            loopIndex = min(stakingObject.data.count - page*100,100);
         }       
         for(let i=0; i < obj.data.numberOfDays; i++){
-            for(let x = 0; x < loopindex; x++){
+            for(let x = 0; x < loopIndex; x++){
                 let tmp = dateToString(new Date(stakingObject.data.list[x].block_timestamp * 1000));
                     if(tmp == obj.data.list[i].day){
                         found += 1;
@@ -52,7 +58,7 @@ export async function addStakingData(obj){
                     }
                 }
             } 
-        finished = checkIfEnd(stakingObject, obj.data.list[0].day, loopindex);
+        finished = checkIfEnd(stakingObject, obj.data.list[0].day, loopIndex);
         } while (finished == false);
 
     
@@ -71,11 +77,11 @@ value (i.e. lies more towards the present) than the last day of the desired poin
 we know that there potentially are more rewards to get.
 */
 
-function checkIfEnd(stakingObj, lastDay, loopindex){
+function checkIfEnd(stakingObj, lastDay, loopIndex){
     let finished = true;
     let lastDayStakingObj = stakingObj.data.list.slice(-1)[0].block_timestamp;
 
-    if(transformDDMMYYYtoUnix(lastDay) < lastDayStakingObj && loopindex == 100){
+    if(transformDDMMYYYtoUnix(lastDay) < lastDayStakingObj && loopIndex == 100){
         finished = false;
     }
     return finished;
@@ -109,11 +115,6 @@ async function getStakingObject(address, page, network){
     } catch(e) {
         console.log("There was an error in the curl-request. Please try again.");
         console.log(e);
-    }
-
-    // If the API returns a data.count == 0, no rewards were every logged for that address.
-    if(stakingObject.data.count == 0){
-        throw new Error('This address does not seem to have received any rewards ever. Please check if you are using the correct address.');
     }
 
     return stakingObject;    

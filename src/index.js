@@ -26,11 +26,10 @@ async function main () {
     let address = userInput.addresses[i].address;
     let currency = userInput.currency;
     let exportOutput = userInput.exportOutput;
-    let incomeTax = userInput.incomeTax;
     let priceData = userInput.priceData;
     let startBalance = userInput.addresses[i].startBalance;
 
-    obj = await gatherData(start, end, network, address, currency, incomeTax, priceData, startBalance);
+    obj = await gatherData(start, end, network, address, currency, priceData, startBalance);
     
     // otherwise there were no rewards
     if(obj.data.numberRewardsParsed > 0){

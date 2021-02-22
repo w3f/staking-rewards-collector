@@ -29,13 +29,12 @@ export function makeDaysArray(startDate, endDate) {
     return dates;
   };
 
-export function initializeObject(daysArray, network, address, currency, incomeTax, startBalance){
+export function initializeObject(daysArray, network, address, currency, startBalance){
     let obj = {
         'message': 'empty',
         'address': address,
         'network': network,
         'currency': currency,
-        'incomeTax': incomeTax,
         'startBalance': startBalance,
         'firstReward': '',
         'lastReward': '',
@@ -43,7 +42,6 @@ export function initializeObject(daysArray, network, address, currency, incomeTa
         'currentValueRewardsFiat':0,
         'totalAmountHumanReadable':0,
         'totalValueFiat': 0,
-        'totalTaxBurdenFiat': 0,
         'data':{
             'numberRewardsParsed': 0,
             'numberOfDays': daysArray.length,
@@ -60,8 +58,7 @@ export function initializeObject(daysArray, network, address, currency, incomeTa
             'amountPlanks': 0,
             'numberPayouts':0,
             'amountHumanReadable': 0,
-            'valueFiat':0,
-            'valueTaxable':0
+            'valueFiat':0
         }
     }
     return obj;
@@ -119,17 +116,14 @@ export function calculateMetrics(obj){
         // generate new metrics
         obj.data.list[i].amountHumanReadable = obj.data.list[i].amountPlanks * normalization;
         obj.data.list[i].valueFiat = obj.data.list[i].amountHumanReadable * obj.data.list[i].price;
-        obj.data.list[i].valueTaxable = obj.data.list[i].valueFiat * obj.incomeTax;
         obj.data.list[i].price = obj.data.list[i].price;
 
         // add values of each day to general metrics.
         obj.totalValueFiat = obj.totalValueFiat + obj.data.list[i].valueFiat;
-        obj.totalTaxBurdenFiat =  obj.totalTaxBurdenFiat + obj.data.list[i].valueTaxable;
         obj.totalAmountHumanReadable = obj.totalAmountHumanReadable + obj.data.list[i].amountHumanReadable;
     }
 
     obj.totalValueFiat = round(obj.totalValueFiat,2);
-    obj.totalTaxBurdenFiat = round(obj.totalTaxBurdenFiat,2);
     obj.currentValueRewardsFiat = round(obj.totalAmountHumanReadable * obj.data.list[0].price,2);
     obj.annualizedReturn = _calculateAnnualizedReturn(obj);
     
