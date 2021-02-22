@@ -35,7 +35,7 @@ export function readJSON(filePath) {
     
     const rows = obj.data.list
         .filter(entry => entry.numberPayouts > 0)
-        .map(entry => `${entry.day}, ${entry.price}, ${entry.volume}, ${entry.amountHumanReadable}, ${entry.numberPayouts}, ${entry.valueFiat};
+        .map(entry => `${entry.day}, ${entry.price}, ${entry.volume}, ${entry.amountHumanReadable}, ${entry.numberPayouts}, ${entry.valueFiat}`);
 
       return header.concat(rows).join("\n");
   }
