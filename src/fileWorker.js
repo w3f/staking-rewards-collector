@@ -30,13 +30,12 @@ export function readJSON(filePath) {
         `, Daily ${((obj.network == 'polkadot') ? 'DOT' : 'KSM')} Volume` +  
         ", Staking Rewards in" + ((obj.network == 'polkadot') ? ' DOT' : ' KSM') + 
         ", Number of Payouts" +
-        ", Value in Fiat" +
-        ", Income tax (" + (obj.incomeTax*100).toFixed(2) + "%)"
+        ", Value in Fiat" 
     ]; 
     
     const rows = obj.data.list
         .filter(entry => entry.numberPayouts > 0)
-        .map(entry => `${entry.day}, ${entry.price}, ${entry.volume}, ${entry.amountHumanReadable}, ${entry.numberPayouts}, ${entry.valueFiat}, ${entry.valueTaxable}`);
+        .map(entry => `${entry.day}, ${entry.price}, ${entry.volume}, ${entry.amountHumanReadable}, ${entry.numberPayouts}, ${entry.valueFiat};
 
       return header.concat(rows).join("\n");
   }
