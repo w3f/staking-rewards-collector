@@ -11,7 +11,7 @@ export async function addStakingData(obj){
     let address = obj.address;
     let network = obj.network;
     var loopIndex;
-    let round = 0; 
+    let round = 0;
 
     /*
     This function runs at least once and parses the staking info for the given address. The API is structured in a way that you specify which
@@ -28,7 +28,7 @@ export async function addStakingData(obj){
         stakingObject = await getStakingObject(address, page, network);
 
         // Break loop if none rewards have been found for the address.
-        if(stakingObject.data.count == 0){
+        if(stakingObject.data.count == 0 || stakingObject.data.list.length == 0){
             break;
         }
 
@@ -36,13 +36,13 @@ export async function addStakingData(obj){
             loopIndex = min(stakingObject.data.count, 100);
         } else {
             loopIndex = min(stakingObject.data.count - page*100,100);
-        }       
+        }
         for(let i=0; i < obj.data.numberOfDays; i++){
             for(let x = 0; x < loopIndex; x++){
                 let tmp = dateToString(new Date(stakingObject.data.list[x].block_timestamp * 1000));
                     if(tmp == obj.data.list[i].day){
                         found += 1;
-                        // if we already filled out the entries of a specific day. We then just concanate strings or add values. 
+                        // if we already filled out the entries of a specific day. We then just concanate strings or add values.
                         if(obj.data.list[i].numberPayouts >= 1){
                             obj.data.list[i].amountPlanks = obj.data.list[i].amountPlanks + parseInt(stakingObject.data.list[x].amount);
                             obj.data.list[i].numberPayouts = obj.data.list[i].numberPayouts + 1;
@@ -50,18 +50,18 @@ export async function addStakingData(obj){
                             obj.data.list[i].extrinsicHash = obj.data.list[i].extrinsicHash + ' and ' + stakingObject.data.list[x].extrinsic_hash;
                         // if an entry has only the default values we add the ones from the staking object.
                         } else {
-                            obj.data.list[i].amountPlanks = parseInt(stakingObject.data.list[x].amount); 
+                            obj.data.list[i].amountPlanks = parseInt(stakingObject.data.list[x].amount);
                             obj.data.list[i].numberPayouts = obj.data.list[i].numberPayouts + 1;
                             obj.data.list[i].blockNumber = stakingObject.data.list[x].block_num;
                             obj.data.list[i].extrinsicHash = stakingObject.data.list[x].extrinsic_hash;
                         }
                     }
                 }
-            } 
+            }
         finished = checkIfEnd(stakingObject, obj.data.list[0].day, loopIndex);
         } while (finished == false);
 
-    
+
     obj.data.numberRewardsParsed = found;
 
     if(obj.data.numberRewardsParsed == 0){
@@ -69,7 +69,7 @@ export async function addStakingData(obj){
     }
 
     obj.message = 'data collection complete';
-    return obj;  
+    return obj;
 }
 /*
 This function checks if the loop should continue. It should continue whenever the last day retrieved by the staking object retrieved has a larger
@@ -95,7 +95,7 @@ async function getStakingObject(address, page, network){
         url = 'https://polkadot.subscan.io/api/scan/account/reward_slash'
     } else {
         url = 'https://kusama.subscan.io/api/scan/account/reward_slash'
-    } 
+    }
 
     var options = {
         url: url,
@@ -117,7 +117,7 @@ async function getStakingObject(address, page, network){
         console.log(e);
     }
 
-    return stakingObject;    
+    return stakingObject;
 }
 
 async function curlRequest(options){
