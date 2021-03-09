@@ -64,12 +64,14 @@ export async function addStakingData(obj){
 
     obj.data.numberRewardsParsed = found;
 
+    obj.message = 'data collection complete';
+
     if(obj.data.numberRewardsParsed == 0){
         console.log('No rewards found to parse for address ' + obj.address);
+        obj.message = 'No rewards found for this address';
     }
-
-    obj.message = 'data collection complete';
-    return obj;
+   
+    return obj;  
 }
 /*
 This function checks if the loop should continue. It should continue whenever the last day retrieved by the staking object retrieved has a larger
@@ -88,6 +90,9 @@ function checkIfEnd(stakingObj, lastDay, loopIndex){
 }
 
 async function getStakingObject(address, page, network){
+    let breakPoint = 0;
+    let continueLoop = true;
+
     let stakingObject = {};
     var url;
 
@@ -107,16 +112,17 @@ async function getStakingObject(address, page, network){
         'address': address
         }),
     };
-    stakingObject = await curlRequest(options);
-
-    // Sometimes the staking object is not properly transmitted and we catch the error here.
-    try {
-        stakingObject = JSON.parse(stakingObject);
-    } catch(e) {
-        console.log("There was an error in the curl-request. Please try again.");
-        console.log(e);
+    
+    // Sometimes the staking object is not properly transmitted. We try it again 10 times.
+    while( continueLoop & breakPoint < 10 ) {
+        stakingObject = await curlRequest(options);
+            try {
+                stakingObject = JSON.parse(stakingObject);
+                continueLoop = false;
+            } catch(e) {
+                breakPoint += 1;
+            }
     }
-
     return stakingObject;
 }
 
