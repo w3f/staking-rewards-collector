@@ -64,11 +64,14 @@ export async function addStakingData(obj){
     
     obj.data.numberRewardsParsed = found;
 
+    obj.message = 'data collection complete';
+
     if(obj.data.numberRewardsParsed == 0){
         console.log('No rewards found to parse for address ' + obj.address);
+        obj.message = 'No rewards found for this address';
     }
 
-    obj.message = 'data collection complete';
+    
     return obj;  
 }
 /*

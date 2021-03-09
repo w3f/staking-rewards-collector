@@ -36,7 +36,7 @@ async function main () {
       obj = calculateMetrics(obj);
     }
 
-    if(exportOutput == "true"){ 
+    if(exportOutput == "true" & obj.message != 'No rewards found for this address'){ 
       exportVariable(JSON.stringify(obj), userInput.addresses[i].name + ' ' + obj.address + '.json'); 
       writeCSV(obj, userInput.addresses[i].name + ' ' + obj.address + '.csv');
     }
