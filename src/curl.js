@@ -91,6 +91,9 @@ function checkIfEnd(stakingObj, lastDay, loopIndex){
 }
 
 async function getStakingObject(address, page, network){
+    let breakPoint = 0;
+    let continueLoop = true;
+
     let stakingObject = {};
     var url;
 
@@ -110,16 +113,17 @@ async function getStakingObject(address, page, network){
         'address': address
         }),
     };
-    stakingObject = await curlRequest(options);
-
-    // Sometimes the staking object is not properly transmitted and we catch the error here.
-    try {
-        stakingObject = JSON.parse(stakingObject);
-    } catch(e) {
-        console.log("There was an error in the curl-request. Please try again.");
-        console.log(e);
+    
+    // Sometimes the staking object is not properly transmitted. We try it again 10 times.
+    while( continueLoop & breakPoint < 10 ) {
+        stakingObject = await curlRequest(options);
+            try {
+                stakingObject = JSON.parse(stakingObject);
+                continueLoop = false;
+            } catch(e) {
+                breakPoint += 1;
+            }
     }
-
     return stakingObject;    
 }
 
