@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.4.3
+# Staking Rewards Collector v1.4.4
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -6,6 +6,8 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
 
 # Changelog
+## Version 1.4.4
+* Fix: Slashes are not collected anymore.
 ## Version 1.4.3
 * Subscan's API occasionally returns gibberish, added a loop to try again in such a case to improve UX.
 * Output files will now not be written for accounts that did not receive rewards.
