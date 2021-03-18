@@ -40,7 +40,7 @@ export async function addStakingData(obj){
         for(let i=0; i < obj.data.numberOfDays; i++){
             for(let x = 0; x < loopIndex; x++){
                 let tmp = dateToString(new Date(stakingObject.data.list[x].block_timestamp * 1000));
-                    if(tmp == obj.data.list[i].day){
+                    if(tmp == obj.data.list[i].day & stakingObject.data.list[x].event_id == "Reward"){
                         found += 1;
                         // if we already filled out the entries of a specific day. We then just concanate strings or add values.
                         if(obj.data.list[i].numberPayouts >= 1){
