@@ -28,7 +28,7 @@ export async function addStakingData(obj){
         stakingObject = await getStakingObject(address, page, network);
 
         // Break loop if none rewards have been found for the address.
-        if(stakingObject.data.count == 0 || stakingObject.data.list.length == 0){
+        if(stakingObject.data.count == 0 || stakingObject.data.list === null){
             break;
         }
 
