@@ -48,7 +48,7 @@ yarn
 yarn start
 ```
 # Tutorial
-For a more detailed tutorial on how to set up the script, please go [here](https://hackmd.io/@8F4MrJhQT32fynUEzuSsHA/HJ_A8Jd-O)(WIP).
+For a more detailed tutorial on how to set up the script, please go [here](https://hackmd.io/@8F4MrJhQT32fynUEzuSsHA/HJ_A8Jd-O).
 
 # How to use it?
 ## Input
@@ -63,7 +63,7 @@ Staking Rewards:
 
 Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR", "GBP" and others available at CoinGecko.com).
-* **priceData**: Do you want to look up price data for your specified range? (allowed: "y", "n").
+* **priceData**: Do you want to look up price data for your specified range? (allowed: "true", "false").
 
 Output:
 * **exportOutput**: Specify if you want the .csv and .json files to be exported (allowed: "true", "false").
@@ -72,7 +72,7 @@ Output:
 After the tool executed successfully, it creates two files in the root folder. The JSON file contains some meta-data (e.g., sum of rewards and estimate of annualized return rate) and the CSV file gives the most important information in a table and thereby printable format. 
 
 ### CSV Output
-The CSV output file contains a row for every day within the time frame where at least one staking reward occured. Other days are excluded. Example output:
+The CSV output file contains a row for every day within the time frame where at least one staking reward occurred. Other days are excluded. Example output:
 
 https://i.imgur.com/4LCsDOc.png
 
