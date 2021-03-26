@@ -1,3 +1,27 @@
+# Changelog
+
+## Version 1.4.4
+* Fix: Slashes are not collected anymore.
+## Version 1.4.3
+* Subscan's API occasionally returns gibberish, added a loop to try again in such a case to improve UX.
+* Output files will now not be written for accounts that did not receive rewards.
+## Version 1.4.2
+* Added more info on which address did never receive any staking rewards.
+* Script does not terminate if one address did not receive any rewards.
+* Removed Tax variables.
+## Version 1.4.1
+* Added link to a tutorial to the README.
+* Script now does not terminate if one of the addresses did not receive any rewards in the specified time period.
+* Coingecko provides fiat prices with many decimals, which is not sensible to use in the output files. Fiat price of tokens will now be rounded to two decimals.
+* Changed `priceData` flag to `true` and `false` for consistency.
+* Changed `initialInvestment` to `startBalance` to more accurately reflect the meaning.
+## Version 1.4
+Huge QoL improvement!
+* Specify as many addresses as you want in the userInput.json.
+* You can now also give your addresses a name.
+* Removed network-specifier. The script now automatically detects which network the address is from (for Kusama/Polkadot).
+* Added `exportOutput`: You can now specify if the output files should be generated or if you wish to just see your total staked amount in the terminal.
+
 ## Version 1.3
 * Updated the API call such which gathers all price data with a single call. This significantly improves runtime and avoids throttle issues.
 * Removed some rounding for non-Fiat values to give a accurate result.
