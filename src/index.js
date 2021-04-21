@@ -16,6 +16,8 @@ async function main () {
     "KSM": 0,
   }
 
+  let totalFiat = 0;
+
 
   for(let i = 0; i < userInput.addresses.length; i++){
     let network = getNetwork(userInput.addresses[i].address);
@@ -41,6 +43,8 @@ async function main () {
       writeCSV(obj, userInput.addresses[i].name + ' ' + obj.address + '.csv');
     }
 
+    totalFiat = totalFiat + obj.totalValueFiat;
+
     if(network == "polkadot"){
       totalStaked.DOT = totalStaked.DOT + obj.totalAmountHumanReadable;
       numberPayouts.DOT = numberPayouts.DOT + obj.data.numberRewardsParsed;
@@ -50,7 +54,7 @@ async function main () {
     }
   }
     console.log('In total, ' + numberPayouts.DOT + ' DOT and ' + numberPayouts.KSM + ' KSM payouts were found.');
-    console.log('The sum of staking rewards are ' + totalStaked.DOT +  ' DOT and ' + totalStaked.KSM + ' KSM');
+    console.log('The sum of staking rewards are ' + totalStaked.DOT +  ' DOT and ' + totalStaked.KSM + ' KSM' + ', which sums up to a total of ' + totalFiat + ' ' + obj.currency + ' (based on daily prices)');
     console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).'); 
 }
 main().catch(console.error).finally(() => process.exit());
