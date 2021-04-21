@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.4.4
+# Staking Rewards Collector v1.4.5
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -6,7 +6,10 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
 
 # Changelog
-For changes see the changelog.md
+## Version 1.4.5
+* Added sum of fiat value in console output (based on daily prices).
+
+For all changes see the changelog.md
 
 # What can it do?
 * Collect staking rewards for a given public address (either Polkadot or Kusama) for a user-specified time window. The tool calculates the sum of staking rewards within that period.
