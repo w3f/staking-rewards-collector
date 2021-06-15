@@ -1,5 +1,6 @@
 # Changelog
-
+## Version 1.4.5
+* Added sum of fiat value in console output (based on daily prices).
 ## Version 1.4.4
 * Fix: Slashes are not collected anymore.
 ## Version 1.4.3
