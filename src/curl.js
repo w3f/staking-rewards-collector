@@ -97,9 +97,9 @@ async function getStakingObject(address, page, network){
     var url;
 
     if(network == 'polkadot'){
-        url = 'https://polkadot.subscan.io/api/scan/account/reward_slash'
+        url = 'https://polkadot.api.subscan.io/api/scan/account/reward_slash'
     } else {
-        url = 'https://kusama.subscan.io/api/scan/account/reward_slash'
+        url = 'https://kusama.api.subscan.io/api/scan/account/reward_slash'
     }
 
     var options = {
