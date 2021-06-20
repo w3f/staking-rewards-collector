@@ -176,6 +176,8 @@ function _getFirstandLastReward(obj){
 }
 
 export function verifyUserInput(userInput, network){
+    userInput.end ??= Date.now();
+
     let start = new Date(userInput.start);
     let end = new Date(userInput.end);
     let priceData = userInput.priceData;
