@@ -4,7 +4,7 @@ import { dateToString, transformDDMMYYYtoUnix, min, sleep } from './utils.js';
 
 
 export async function addStakingData(obj){
-    const SLEEP_DELAY=100
+    const SLEEP_DELAY=100;
     let found = 0;
     let stakingObject = {};
     var finished;
@@ -28,7 +28,7 @@ export async function addStakingData(obj){
         round += 1;
         stakingObject = await getStakingObject(address, page, network);
         // Delay to avoid hitting API rate limit
-        await sleep(SLEEP_DELAY)
+        await sleep(SLEEP_DELAY);
 
         // Break loop if none rewards have been found for the address.
         if(stakingObject.data.count == 0 || stakingObject.data.list === null){
