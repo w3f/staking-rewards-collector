@@ -1,6 +1,7 @@
 # Changelog
 ## Version 1.4.6
 * Upgraded to new Subscan API standard.
+* Added a small delay to avoid triggering API rate limit
 ## Version 1.4.5
 * Added sum of fiat value in console output (based on daily prices).
 ## Version 1.4.4

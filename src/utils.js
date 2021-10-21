@@ -1,5 +1,9 @@
 import { round, pow } from 'mathjs';
 
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 export function dateToString(date){
     let day = date.getDate().toString();
     let month = (date.getMonth() + 1).toString();
