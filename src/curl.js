@@ -94,13 +94,8 @@ async function getStakingObject(address, page, network){
     let continueLoop = true;
 
     let stakingObject = {};
-    var url;
-
-    if(network == 'polkadot'){
-        url = 'https://polkadot.api.subscan.io/api/scan/account/reward_slash'
-    } else {
-        url = 'https://kusama.api.subscan.io/api/scan/account/reward_slash'
-    }
+    
+    let url = 'https://' + network + '.api.subscan.io/api/scan/account/reward_slash';
 
     var options = {
         url: url,

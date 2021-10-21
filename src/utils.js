@@ -107,11 +107,8 @@ export function min(a,b){
 export function calculateMetrics(obj){
     var normalization;
 
-    if(obj.network == 'polkadot'){
-        normalization = 1/10000000000;
-    } else {
-        normalization = 1/1000000000000;
-    }
+    normalization = _getDenomination(obj.network);
+
     for(let i = 0; i < obj.data.numberOfDays; i++){
         // generate new metrics
         obj.data.list[i].amountHumanReadable = obj.data.list[i].amountPlanks * normalization;
@@ -197,17 +194,43 @@ export function verifyUserInput(userInput, network){
         userInput.priceData = 'false';
         console.log('Your requested time window lies before prices are available. Switching off price data.');
     }
+
+    if(end.valueOf() < 1630022400000 & network == 'moonriver' & priceData == 'true'){
+        userInput.priceData = 'false';
+        console.log('Your requested time window lies before prices are available. Switching off price data.');
+    }
     return userInput;
 }
 
-export function getNetwork(address){
-    var network;
-    let first_string = address[0];
-
-    if(first_string == "1"){
-        network = "polkadot";
-    } else {
-        network = "kusama";
+export function getTicker(network){
+    var ticker;
+    // Convert to upper case to avoid issue with different user input.
+    switch(network){
+        case "kusama":
+             ticker = "KSM";
+             break;
+        case "polkadot":
+            ticker = "DOT";
+            break;
+        case "moonriver":
+            ticker = "MOVR";
+            break;     
     }
-    return network;
+    return ticker;
+}
+
+export function _getDenomination(network){
+    var normalization;
+    switch(network){
+        case 'polkadot':
+        normalization = 1/10000000000;
+        break;
+        case 'kusama': 
+        normalization = 1/1000000000000;
+        break;
+        case 'moonriver': 
+        normalization = 1/1000000000000000000;
+        break;
+    }
+    return normalization;
 }
