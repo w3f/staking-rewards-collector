@@ -40,7 +40,7 @@ The program takes several inputs in the `config/userInput.json` file.
 Staking Rewards:
 * **addresses**: A list of objects containing the `address` you want to parse the staking rewards, the `name` of your address and the `startBalance`. It also contains a field `network`, where users can specify their address belonging to `Polkadot`, `Kusama` or `Moonriver`.
 * **startBalance**: The amount of tokens from which the staking rewards are generated at the time of the `start`. Used to calculate the annualizedReturn, can be set to any number if the user is not interested in an accurate annualized return metric. 
-* **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices for Polkadot are 2020-08-19 and 2019-09-20 for Kusama and that prices are set to 0 before that.
+* **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices for Polkadot are 2020-08-19, 2019-09-20 for Kusama and 2021-08-26 for Moonriver. Prices are set to 0 before that.
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
 
 
