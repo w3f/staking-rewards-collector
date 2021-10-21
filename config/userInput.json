@@ -8,12 +8,14 @@
     {
         "name": "Account 1",
         "address":"G1rrUNQSk7CjjEmLSGcpNu72tVtyzbWdUvgmSer9eBitXWf",
-        "startBalance": 10000
+        "startBalance": 10000,
+        "network": "Kusama"
     },
 
     {
         "name":"Account 2",
         "address": "15fTw39Ju2jJiHeGe1fJ5DtgugUauy9tr2HZuiRNFwqnGQ1Q",
-        "startBalance": 20000
+        "startBalance": 20000,
+        "network": "Polkadot"
     }
 ]}

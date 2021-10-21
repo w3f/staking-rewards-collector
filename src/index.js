@@ -1,6 +1,6 @@
 import { gatherData } from './gatherData.js';
 import { exportVariable, readJSON, writeCSV } from './fileWorker.js';
-import { calculateMetrics, verifyUserInput, getNetwork } from './utils.js';
+import { calculateMetrics, verifyUserInput, getTicker } from './utils.js';
 
 
 async function main () {
@@ -10,26 +10,30 @@ async function main () {
   let numberPayouts = {
     "DOT": 0,
     "KSM": 0,
+    "MOVR":0,
   }
   let totalStaked = {
     "DOT": 0,
     "KSM": 0,
+    "MOVR": 0,
   }
 
   let totalFiat = 0;
 
 
   for(let i = 0; i < userInput.addresses.length; i++){
-    let network = getNetwork(userInput.addresses[i].address);
+    let network = userInput.addresses[i].network.toLowerCase();
     userInput = verifyUserInput(userInput, network);
     let start = userInput.start;
     let end = userInput.end;
     
     let address = userInput.addresses[i].address;
+   
     let currency = userInput.currency;
     let exportOutput = userInput.exportOutput;
     let priceData = userInput.priceData;
     let startBalance = userInput.addresses[i].startBalance;
+    let ticker = getTicker(network);
 
     obj = await gatherData(start, end, network, address, currency, priceData, startBalance);
     
@@ -48,13 +52,16 @@ async function main () {
     if(network == "polkadot"){
       totalStaked.DOT = totalStaked.DOT + obj.totalAmountHumanReadable;
       numberPayouts.DOT = numberPayouts.DOT + obj.data.numberRewardsParsed;
-    } else {
+    } else if (network == "kusama") {
       numberPayouts.KSM = numberPayouts.KSM + obj.data.numberRewardsParsed;
       totalStaked.KSM = totalStaked.KSM + obj.totalAmountHumanReadable;
+    } else if (network == "moonriver"){
+      numberPayouts.MOVR = numberPayouts.MOVR + obj.data.numberRewardsParsed;
+      totalStaked.MOVR = totalStaked.MOVR + obj.totalAmountHumanReadable;
     }
   }
-    console.log('In total, ' + numberPayouts.DOT + ' DOT and ' + numberPayouts.KSM + ' KSM payouts were found.');
-    console.log('The sum of staking rewards are ' + totalStaked.DOT +  ' DOT and ' + totalStaked.KSM + ' KSM' + ', which sums up to a total of ' + totalFiat + ' ' + obj.currency + ' (based on daily prices)');
+    console.log('In total, ' + numberPayouts.DOT + ' DOT, ' + numberPayouts.KSM + ' KSM, '  + numberPayouts.MOVR + ' MOVR payouts were found.');
+    console.log('The sum of staking rewards are ' + totalStaked.DOT +  ' DOT, ' + totalStaked.KSM + ' KSM, ' + totalStaked.MOVR + ' MOVR' + ', which sums up to a total of ' + totalFiat + ' ' + obj.currency + ' (based on daily prices)');
     console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).'); 
 }
 main().catch(console.error).finally(() => process.exit());

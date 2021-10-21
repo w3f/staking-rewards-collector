@@ -98,6 +98,9 @@ function _setIndex(obj){
         index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1568851200);
     }
 
+    if(network == 'moonriver' )
+        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1630022400);
+
     if(index < 0){
         index = 0;
     }

@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.4.6
+# Staking Rewards Collector v1.5
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -6,8 +6,9 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
 
 # Changelog
-## Version 1.4.6
-* Upgraded to new Subscan API standard.
+## Version 1.5
+* Added support to parse Moonriver staking rewards. The goal is long-term to add more and more parachains. 
+* Added new "network" field in userInput.json.
 
 For all changes see the changelog.md
 
@@ -37,9 +38,9 @@ For a more detailed tutorial on how to set up the script, please go [here](https
 The program takes several inputs in the `config/userInput.json` file.
 
 Staking Rewards:
-* **addresses**: A list of objects containing the `address` you want to parse the staking rewards, the `name` of your address and the `startBalance`.
+* **addresses**: A list of objects containing the `address` you want to parse the staking rewards, the `name` of your address and the `startBalance`. It also contains a field `network`, where users can specify their address belonging to `Polkadot`, `Kusama` or `Moonriver`.
 * **startBalance**: The amount of tokens from which the staking rewards are generated at the time of the `start`. Used to calculate the annualizedReturn, can be set to any number if the user is not interested in an accurate annualized return metric. 
-* **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices for Polkadot are 2020-08-19 and 2019-09-20 for Kusama and that prices are set to 0 before that.
+* **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices for Polkadot are 2020-08-19, 2019-09-20 for Kusama and 2021-08-26 for Moonriver. Prices are set to 0 before that.
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
 
 
