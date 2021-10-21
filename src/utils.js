@@ -187,17 +187,17 @@ export function verifyUserInput(userInput, network){
 
     if(end.valueOf() < 1597708800000 & network == 'polkadot' & priceData == 'true'){
         userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available. Switching off price data.');    
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + ' . Switching off price data.');
     }
     
     if(end.valueOf() < 1568851200000 & network == 'kusama' & priceData == 'true'){
         userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available. Switching off price data.');
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + ' . Switching off price data.');
     }
 
     if(end.valueOf() < 1630022400000 & network == 'moonriver' & priceData == 'true'){
         userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available. Switching off price data.');
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + ' . Switching off price data.');
     }
     return userInput;
 }
