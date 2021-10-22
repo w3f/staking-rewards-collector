@@ -89,3 +89,7 @@ A list with objects for every day in your specified range. In the price of numbe
 # Troubleshooting
 * `SyntaxError: Unexpected token < in JSON at position 0`: Sometimes the request to the Subscan API fails, which could cause this issue. Try to run the script again. If the error persists, please file an issue.
 
+# Donations
+This tool is free and stays free to use. But if this tool is useful for you and you feel generous, feel free to donate :)
+* KSM: EdTN2EAPcwsWu3P692Yd3ESR5qcon7BYp3P4NtzmpiVqwpS
+* DOT: 1348r39Md3CRCnETH5GVsEhb87Z2hQr9Avw7q1cPr7XXHMhd 
