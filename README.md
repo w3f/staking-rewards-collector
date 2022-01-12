@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.5
+# Staking Rewards Collector v1.5.1
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -6,14 +6,14 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
 
 # Changelog
-## Version 1.5
-* Added support to parse Moonriver staking rewards. The goal is long-term to add more and more parachains. 
-* Added new "network" field in userInput.json.
+## Version 1.5.1
+* Added support to parse Moonbeam staking rewards. The goal is long-term to add more and more parachains. 
+* Updated donation addresses.
 
 For all changes see the changelog.md
 
 # What can it do?
-* Collect staking rewards for a given public address (currently Polkadot, Kusama, Moonriver) for a user-specified time window. The tool calculates the sum of staking rewards within that period.
+* Collect staking rewards for a given public address (currently Polkadot, Kusama, Moonriver, Moonbeam) for a user-specified time window. The tool calculates the sum of staking rewards within that period.
 * If the time window allows it (check below some requirements for `start` and `end` date), it also collects daily price data and the fiat value of a stake reward given that day's **opening price**.
 * If a meaningful startBalance (in DOT or KSM) is provided, it can calculate the annualized return rate (extrapolated from your time window to one year).
 * The output is stored in table format as CSV file and as JSON object (with more detailed information). For easier processing of multiple addresses, the file names also contain the address.
@@ -38,9 +38,9 @@ For a more detailed tutorial on how to set up the script, please go [here](https
 The program takes several inputs in the `config/userInput.json` file.
 
 Staking Rewards:
-* **addresses**: A list of objects containing the `address` you want to parse the staking rewards, the `name` of your address and the `startBalance`. It also contains a field `network`, where users can specify their address belonging to `Polkadot`, `Kusama` or `Moonriver`.
+* **addresses**: A list of objects containing the `address` you want to parse the staking rewards, the `name` of your address and the `startBalance`. It also contains a field `network`, where users can specify their address belonging to `Polkadot`, `Kusama`, `Moonriver` or `Moonbeam`.
 * **startBalance**: The amount of tokens from which the staking rewards are generated at the time of the `start`. Used to calculate the annualizedReturn, can be set to any number if the user is not interested in an accurate annualized return metric. 
-* **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices for Polkadot are 2020-08-19, 2019-09-20 for Kusama and 2021-08-26 for Moonriver. Prices are set to 0 before that.
+* **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices for Polkadot are 2020-08-19, 2019-09-20 for Kusama, 2021-08-26 for Moonriver and 2022-01-11 for Moonbeam. Prices are set to 0 before that.
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
 
 
@@ -91,5 +91,5 @@ A list with objects for every day in your specified range. In the price of numbe
 
 # Donations
 This tool is free and stays free to use. But if this tool is useful for you and you feel generous, feel free to donate :)
-* KSM: EdTN2EAPcwsWu3P692Yd3ESR5qcon7BYp3P4NtzmpiVqwpS
-* DOT: 1348r39Md3CRCnETH5GVsEhb87Z2hQr9Avw7q1cPr7XXHMhd 
+* KSM: `GEJonasUoJARPLqGijvA3M4LfuoQxFBZcwUPSNN7s3yRNNu`
+* DOT: `13b1wQcZXhWYxjwY9jdJkyJZu5p9TwFEXZnSEBPhca9kaAUN`

@@ -203,6 +203,13 @@ export function verifyUserInput(userInput, network){
         userInput.priceData = 'false';
         console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + ' . Switching off price data.');
     }
+
+    if(end.valueOf() < 1641884400000 & network == 'moonbeam' & priceData == 'true'){
+        userInput.priceData = 'false';
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + ' . Switching off price data.');
+    }
+
+
     return userInput;
 }
 
@@ -219,6 +226,9 @@ export function getTicker(network){
         case "moonriver":
             ticker = "MOVR";
             break;     
+        case "moonbeam":
+            ticker = "GLMR";
+            break;
     }
     return ticker;
 }
@@ -227,14 +237,17 @@ export function _getDenomination(network){
     var normalization;
     switch(network){
         case 'polkadot':
-        normalization = 1/10000000000;
-        break;
+            normalization = 1/10000000000;
+            break;
         case 'kusama': 
-        normalization = 1/1000000000000;
-        break;
+            normalization = 1/1000000000000;
+            break;
         case 'moonriver': 
-        normalization = 1/1000000000000000000;
-        break;
+            normalization = 1/1000000000000000000;
+            break;
+        case 'moonbeam':
+            normalization = 1/1000000000000000000;
+            break;
     }
     return normalization;
 }

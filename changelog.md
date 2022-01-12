@@ -1,4 +1,7 @@
 # Changelog
+## Version 1.5.0
+* Added support to parse Moonriver staking rewards. The goal is long-term to add more and more parachains. 
+* Added new "network" field in userInput.json.
 ## Version 1.4.6
 * Upgraded to new Subscan API standard.
 * Added a small delay to avoid triggering API rate limit
