@@ -11,11 +11,13 @@ async function main () {
     "DOT": 0,
     "KSM": 0,
     "MOVR":0,
+    "GLMR":0,
   }
   let totalStaked = {
     "DOT": 0,
     "KSM": 0,
     "MOVR": 0,
+    "GLMR": 0,
   }
 
   let totalFiat = 0;
@@ -58,10 +60,13 @@ async function main () {
     } else if (network == "moonriver"){
       numberPayouts.MOVR = numberPayouts.MOVR + obj.data.numberRewardsParsed;
       totalStaked.MOVR = totalStaked.MOVR + obj.totalAmountHumanReadable;
+    } else if (network == "moonbeam"){
+      numberPayouts.GLMR = numberPayouts.GLMR + obj.data.numberRewardsParsed
+      totalStaked.GLMR = totalStaked.GLMR + obj.totalAmountHumanReadable;
     }
   }
-    console.log('In total, ' + numberPayouts.DOT + ' DOT, ' + numberPayouts.KSM + ' KSM, '  + numberPayouts.MOVR + ' MOVR payouts were found.');
-    console.log('The sum of staking rewards are ' + totalStaked.DOT +  ' DOT, ' + totalStaked.KSM + ' KSM, ' + totalStaked.MOVR + ' MOVR' + ', which sums up to a total of ' + totalFiat + ' ' + obj.currency + ' (based on daily prices)');
+    console.log('In total, ' + numberPayouts.DOT + ' DOT, ' + numberPayouts.KSM + ' KSM, '  + numberPayouts.MOVR + ' MOVR payouts were found.'  + numberPayouts.GLMR + ' GLMR payouts were found.');
+    console.log('The sum of staking rewards are ' + totalStaked.DOT +  ' DOT, ' + totalStaked.KSM + ' KSM, ' + totalStaked.MOVR + ' MOVR, ' + totalStaked.GLMR + ' GLMR' + ', which sums up to a total of ' + totalFiat + ' ' + obj.currency + ' (based on daily prices)');
     console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).'); 
 }
 main().catch(console.error).finally(() => process.exit());
