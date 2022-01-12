@@ -106,6 +106,11 @@ function _setIndex(obj){
         index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1641884400);
     }
 
+    if(network == 'shiden'){
+        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1630303200);
+    }
+
+
     if(index < 0){
         index = 0;
     }
