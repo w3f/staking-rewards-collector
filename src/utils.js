@@ -191,23 +191,29 @@ export function verifyUserInput(userInput, network){
 
     if(end.valueOf() < 1597708800000 & network == 'polkadot' & priceData == 'true'){
         userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + ' . Switching off price data.');
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
     }
     
     if(end.valueOf() < 1568851200000 & network == 'kusama' & priceData == 'true'){
         userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + ' . Switching off price data.');
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
     }
 
     if(end.valueOf() < 1630022400000 & network == 'moonriver' & priceData == 'true'){
         userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + ' . Switching off price data.');
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
     }
 
     if(end.valueOf() < 1641884400000 & network == 'moonbeam' & priceData == 'true'){
         userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + ' . Switching off price data.');
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
     }
+
+    if(end.valueOf() < 1630303200000 & network == 'shiden' & priceData == 'true'){
+        userInput.priceData = 'false';
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
+    }
+    
 
 
     return userInput;
@@ -217,17 +223,20 @@ export function getTicker(network){
     var ticker;
     // Convert to upper case to avoid issue with different user input.
     switch(network){
-        case "kusama":
-             ticker = "KSM";
+        case 'kusama':
+             ticker = 'KSM';
              break;
-        case "polkadot":
-            ticker = "DOT";
+        case 'polkadot':
+            ticker = 'DOT';
             break;
-        case "moonriver":
-            ticker = "MOVR";
+        case 'moonriver':
+            ticker = 'MOVR';
             break;     
-        case "moonbeam":
-            ticker = "GLMR";
+        case 'moonbeam':
+            ticker = 'GLMR';
+            break;
+        case 'shiden':
+            ticker = 'SDN';
             break;
     }
     return ticker;
@@ -246,6 +255,9 @@ export function _getDenomination(network){
             normalization = 1/1000000000000000000;
             break;
         case 'moonbeam':
+            normalization = 1/1000000000000000000;
+            break;
+        case 'shiden':
             normalization = 1/1000000000000000000;
             break;
     }

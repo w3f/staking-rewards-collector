@@ -1,4 +1,7 @@
 # Changelog
+## Version 1.5.1
+* Added support to parse Moonbeam staking rewards. The goal is long-term to add more and more parachains. 
+* Updated donation addresses.
 ## Version 1.5.0
 * Added support to parse Moonriver staking rewards. The goal is long-term to add more and more parachains. 
 * Added new "network" field in userInput.json.
