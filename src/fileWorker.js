@@ -26,6 +26,7 @@ export function readJSON(filePath) {
   
   function extractAsCSV(obj){
       const header = [
+        "Prices from CoinGecko & Staking Rewards from Subscan.io \n" +
           "Day, Price in " + obj.currency +
           ", Daily Volume in " + obj.currency +  
           ", Staking Rewards in " + obj.ticker + 
@@ -48,6 +49,7 @@ export function readJSON(filePath) {
     const filename = 'Overview.csv';
     var row;
     const header = [
+      "Prices from CoinGecko & Staking Rewards from Subscan.io \n" +
       "Address " +
       ", Network " +  
       ", Ticker" +
