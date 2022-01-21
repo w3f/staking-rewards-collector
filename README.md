@@ -9,7 +9,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 ## Version 1.6
 * Added new terminal output layout to account for increasing number of supported networks.
 * Added support for Astar.
-* Fixed: Name of volume column of every chain except Polkadot indicated "KSM" instead of using correct ticker.
+* Fixed: Name of volume column and rewards column of every chain except Polkadot indicated "KSM" instead of using correct ticker. This did not have any influence on the correct data.
 
 For all changes see the changelog.md
 

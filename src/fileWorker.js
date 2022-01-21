@@ -28,7 +28,7 @@ export function readJSON(filePath) {
     const header = [
         "Day, Price in " + obj.currency +
         ", Daily Volume in " + obj.ticker +  
-        ", Staking Rewards in" + ((obj.network == 'polkadot') ? ' DOT' : ' KSM') + 
+        ", Staking Rewards in" + obj.ticker + 
         ", Number of Payouts" +
         ", Value in Fiat" 
     ]; 
