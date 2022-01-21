@@ -6,8 +6,8 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
 
 # Changelog
-## Version 1.6
-* Added a new "Overview.csv" output that sums up the rewards on an account level and writes them all into a single file.
+## Version 1.6.0
+* Added a new "Overview.csv" output that sums up all accounts into one file and shows the amount of tokens and the respective sum in the defined currency.
 * Added new terminal output layout to account for increasing number of supported networks.
 * Added support for Astar addresses.
 * Fixed: If a user requested price data for a network when no prices were available, the gathering of prices was wrongly turned off for all addresses that came after. 
