@@ -25,6 +25,15 @@ async function main () {
     "ASTR": 0,
   }
 
+  let totalFiatToken = {
+    "DOT": 0,
+    "KSM": 0,
+    "MOVR": 0,
+    "GLMR": 0,
+    "SDN": 0,
+    "ASTR": 0,
+  }
+
   let totalFiat = 0;
 
 
@@ -65,21 +74,27 @@ async function main () {
     if(network == "polkadot"){
         totalStaked.DOT = totalStaked.DOT + obj.totalAmountHumanReadable;
         numberPayouts.DOT = numberPayouts.DOT + obj.data.numberRewardsParsed;
+        totalFiatToken.DOT = totalFiatToken.DOT + obj.totalValueFiat;
     } else if (network == "kusama") {
         numberPayouts.KSM = numberPayouts.KSM + obj.data.numberRewardsParsed;
         totalStaked.KSM = totalStaked.KSM + obj.totalAmountHumanReadable;
+        totalFiatToken.KSM = totalFiatToken.KSM + obj.totalValueFiat;
     } else if (network == "moonriver"){
         numberPayouts.MOVR = numberPayouts.MOVR + obj.data.numberRewardsParsed;
         totalStaked.MOVR = totalStaked.MOVR + obj.totalAmountHumanReadable;
+        totalFiatToken.MOVR = totalFiatToken.MOVR + obj.totalValueFiat;
     } else if (network == "moonbeam"){
         numberPayouts.GLMR = numberPayouts.GLMR + obj.data.numberRewardsParsed
         totalStaked.GLMR = totalStaked.GLMR + obj.totalAmountHumanReadable;
+        totalFiatToken.GLMR = totalFiatToken.GLMR + obj.totalValueFiat;
     } else if (network == "shiden"){
         numberPayouts.SDN = numberPayouts.SDN + obj.data.numberRewardsParsed
         totalStaked.SDN = totalStaked.SDN + obj.totalAmountHumanReadable;
+        totalFiatToken.SDN = totalFiatToken.SDN + obj.totalValueFiat;
     } else if (network == "astar"){
       numberPayouts.ASTR = numberPayouts.ASTR + obj.data.numberRewardsParsed
       totalStaked.ASTR = totalStaked.ASTR + obj.totalAmountHumanReadable;
+      totalFiatToken.ASTR = totalFiatToken.ASTR + obj.totalValueFiat;
     }
   }
 
@@ -87,12 +102,12 @@ async function main () {
   console.log('The following table lists all found rewards and values are expressed in ' + obj.currency);
 
 
-  const DOT = {"Name": "DOT", "Nr. Payouts": numberPayouts.DOT, "Value": totalStaked.DOT};
-  const KSM = {"Name": "KSM", "Nr. Payouts": numberPayouts.KSM, "Value": totalStaked.KSM};
-  const GLMR = {"Name": "GLMR", "Nr. Payouts": numberPayouts.GLMR, "Value": totalStaked.GLMR}
-  const MOVR = {"Name": "MOVR", "Nr. Payouts": numberPayouts.MOVR, "Value": totalStaked.MOVR};
-  const SDN = {"Name": "SDN", "Nr. Payouts": numberPayouts.SDN, "Value": totalStaked.SDN};
-  const ASTR = {"Name": "ASTR", "Nr. Payouts": numberPayouts.ASTR, "Value": totalStaked.ASTR};
+  const DOT = {"Name": "DOT", "Nr. Payouts": numberPayouts.DOT, "Number of Tokens": totalStaked.DOT, "Value": totalFiatToken.DOT};
+  const KSM = {"Name": "KSM", "Nr. Payouts": numberPayouts.KSM, "Number of Tokens": totalStaked.KSM, "Value": totalFiatToken.KSM};
+  const GLMR = {"Name": "GLMR", "Nr. Payouts": numberPayouts.GLMR, "Number of Tokens": totalStaked.GLMR, "Value": totalFiatToken.GLMR}
+  const MOVR = {"Name": "MOVR", "Nr. Payouts": numberPayouts.MOVR, "Number of Tokens": totalStaked.MOVR, "Value": totalFiatToken.MOVR};
+  const SDN = {"Name": "SDN", "Nr. Payouts": numberPayouts.SDN, "Number of Tokens": totalStaked.SDN, "Value": totalFiatToken.SDN};
+  const ASTR = {"Name": "ASTR", "Nr. Payouts": numberPayouts.ASTR, "Number of Tokens": totalStaked.ASTR, "Value": totalFiatToken.ASTR};
 
 
   
