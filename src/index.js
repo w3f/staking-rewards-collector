@@ -77,7 +77,7 @@ async function main () {
   }
 
     
-  console.log('The following table lists all found rewards in and values are expressed in ' + obj.currency);
+  console.log('The following table lists all found rewards and values are expressed in ' + obj.currency);
 
 
   const DOT = {"Name": "DOT", "Nr. Payouts": numberPayouts.DOT, "Value": totalStaked.DOT};
