@@ -11,8 +11,9 @@ async function main () {
     "DOT": 0,
     "KSM": 0,
     "MOVR":0,
-    "GLMR":0,
+    "GLMR": 0,
     "SDN": 0,
+    "ASTR": 0,
   }
   let totalStaked = {
     "DOT": 0,
@@ -20,6 +21,7 @@ async function main () {
     "MOVR": 0,
     "GLMR": 0,
     "SDN": 0,
+    "ASTR": 0,
   }
 
   let totalFiat = 0;
@@ -68,10 +70,27 @@ async function main () {
     } else if (network == "shiden"){
         numberPayouts.SDN = numberPayouts.SDN + obj.data.numberRewardsParsed
         totalStaked.SDN = totalStaked.SDN + obj.totalAmountHumanReadable;
+    } else if (network == "astar"){
+      numberPayouts.ASTR = numberPayouts.ASTR + obj.data.numberRewardsParsed
+      totalStaked.ASTR = totalStaked.ASTR + obj.totalAmountHumanReadable;
     }
   }
-    console.log('In total, ' + numberPayouts.DOT + ' DOT, ' + numberPayouts.KSM + ' KSM, '  + numberPayouts.MOVR + ' MOVR, '  + numberPayouts.GLMR + ' GLMR, ' + numberPayouts.SDN + ' SDN ' + 'payouts were found.');
-    console.log('The sum of staking rewards are ' + totalStaked.DOT +  ' DOT, ' + totalStaked.KSM + ' KSM, ' + totalStaked.MOVR + ' MOVR, ' + totalStaked.GLMR + ' GLMR, ' + totalStaked.SDN + ' SDN, ' + 'which sums up to a total of ' + totalFiat + ' ' + obj.currency + ' (based on daily prices)');
-    console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).'); 
+
+    
+  console.log('The following table lists all found rewards in and values are expressed in ' + obj.currency);
+
+
+  const DOT = {"Name": "DOT", "Nr. Payouts": numberPayouts.DOT, "Value": totalStaked.DOT};
+  const KSM = {"Name": "KSM", "Nr. Payouts": numberPayouts.KSM, "Value": totalStaked.KSM};
+  const GLMR = {"Name": "GLMR", "Nr. Payouts": numberPayouts.GLMR, "Value": totalStaked.GLMR}
+  const MOVR = {"Name": "MOVR", "Nr. Payouts": numberPayouts.MOVR, "Value": totalStaked.MOVR};
+  const SDN = {"Name": "SDN", "Nr. Payouts": numberPayouts.SDN, "Value": totalStaked.SDN};
+  const ASTR = {"Name": "ASTR", "Nr. Payouts": numberPayouts.ASTR, "Value": totalStaked.ASTR};
+
+
+  
+  console.table([DOT, KSM, GLMR, MOVR, ASTR, SDN]);
+  console.log('The total value of all payouts is ' + totalFiat + ' ' + obj.currency + ' (based on daily prices).');
+  console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).'); 
 }
 main().catch(console.error).finally(() => process.exit());

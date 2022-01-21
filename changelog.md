@@ -1,4 +1,6 @@
 # Changelog
+## Version 1.5.2
+* Added support to parse Shiden staking rewards. The goal is long-term to add more and more parachains. 
 ## Version 1.5.1
 * Added support to parse Moonbeam staking rewards. The goal is long-term to add more and more parachains. 
 * Updated donation addresses.

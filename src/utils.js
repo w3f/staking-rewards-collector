@@ -213,9 +213,12 @@ export function verifyUserInput(userInput, network){
         userInput.priceData = 'false';
         console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
     }
+
+    if(end.valueOf() < 1642402800000 & network == 'astar' & priceData == 'true'){
+        userInput.priceData = 'false';
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
+    } 
     
-
-
     return userInput;
 }
 
@@ -238,6 +241,9 @@ export function getTicker(network){
         case 'shiden':
             ticker = 'SDN';
             break;
+        case 'astar':
+            ticker = 'ASTR';
+            break;
     }
     return ticker;
 }
@@ -258,6 +264,9 @@ export function _getDenomination(network){
             normalization = 1/1000000000000000000;
             break;
         case 'shiden':
+            normalization = 1/1000000000000000000;
+            break;
+        case 'astar':
             normalization = 1/1000000000000000000;
             break;
     }

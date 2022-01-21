@@ -110,6 +110,10 @@ function _setIndex(obj){
         index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1630303200);
     }
 
+    if(network == 'astar'){
+        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1642402800);
+    }
+
 
     if(index < 0){
         index = 0;
