@@ -48,7 +48,7 @@ async function _getPriceObject(obj){
 }
 
 /*
-CoinGecko API returns a list of arrays without a key,value pair. This function creates an object from that list.
+CoinGecko API returns a list of arrays without a key, value pair. This function creates an object from that list.
 */
 
 function _arrayToObject(array, key){
@@ -65,7 +65,7 @@ function _arrayToObject(array, key){
 }
 
 /*
-This function checks if the user did input a time-period larger than 90 days. Minutely data will be provided for for duration within 1 day and  Hourly data will be used for duration between 1 day and 90 days. We are only interested in daily data, so we check if the duration is less than 90 days and then just increase it artificially (only the prices within the time-period of the user will be used later).
+This function checks if the user did input a time-period larger than 90 days. Minutely data will be provided for duration within 1 day and  Hourly data will be used for duration between 1 day and 90 days. We are only interested in daily data, so we check if the duration is less than 90 days and then just increase it artificially (only the prices within the time-period of the user will be used later).
 */ 
 
 function _checkDuration(start, end){
@@ -108,6 +108,10 @@ function _setIndex(obj){
 
     if(network == 'shiden'){
         index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1630303200);
+    }
+
+    if(network == 'astar'){
+        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1642402800);
     }
 
 
