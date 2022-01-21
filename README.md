@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.6
+# Staking Rewards Collector v1.6.0
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -7,11 +7,12 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 
 # Changelog
 ## Version 1.6
+* Added a new "Overview.csv" output that sums up the rewards on an account level and writes them all into a single file.
 * Added new terminal output layout to account for increasing number of supported networks.
-* Added support for Astar.
+* Added support for Astar addresses.
 * Fixed: If a user requested price data for a network when no prices were available, the gathering of prices was wrongly turned off for all addresses that came after. 
 * Fixed: Ticker in rewards column of every chain except Polkadot indicated "KSM" instead of using correct ticker. This did not have any influence on the correct data.
-* Fixed: Ticker in volume column indicated "DOT" or "KSM" but is actually expressed in underlying currency.
+* Fixed: Ticker in volume column indicated "DOT" or "KSM" but is provided in the requested price currency. This did not have any influence on the correct data.
 
 For all changes see the changelog.md
 
