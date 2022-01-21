@@ -1,10 +1,11 @@
 import { gatherData } from './gatherData.js';
-import { exportVariable, readJSON, writeCSV } from './fileWorker.js';
+import { exportVariable, readJSON, writeCSV, writeOverviewCSV } from './fileWorker.js';
 import { calculateMetrics, verifyUserInput, getTicker } from './utils.js';
 
 
 async function main () {
   let obj = {};
+  let csv = [];
   let userInput = readJSON('config/userInput.json');
 
   let numberPayouts = {
@@ -52,6 +53,12 @@ async function main () {
       exportVariable(JSON.stringify(obj), userInput.addresses[i].name + ' ' + obj.address + '.json'); 
       writeCSV(obj, userInput.addresses[i].name + ' ' + obj.address + '.csv');
     }
+    /* 
+    Creates an overview csv that holds a summary of all addresses. I need to pass it outside of the previous if-condition because it could be that the last address didn't have any rewards which
+    would lead to the fact that the file would never be written. I included a flag in the writeOverviewCSV function to skip writing a line for addresses that have no rewards.
+    */
+    csv = writeOverviewCSV(i, userInput.addresses.length, obj, csv);
+
 
     totalFiat = totalFiat + obj.totalValueFiat;
 
