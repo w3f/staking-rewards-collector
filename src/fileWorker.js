@@ -27,7 +27,7 @@ export function readJSON(filePath) {
   function extractAsCSV(obj){
     const header = [
         "Day, Price in " + obj.currency +
-        ", Daily Volume in " + obj.ticker +  
+        ", Daily Volume in " + obj.currency +  
         ", Staking Rewards in" + obj.ticker + 
         ", Number of Payouts" +
         ", Value in Fiat" 
