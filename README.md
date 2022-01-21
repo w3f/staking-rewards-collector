@@ -9,6 +9,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 ## Version 1.6
 * Added new terminal output layout to account for increasing number of supported networks.
 * Added support for Astar.
+* Fixed: If a user requested price data for a network when no prices were available, the gathering of prices was wrongly turned off for all addresses that came after. 
 * Fixed: Ticker in rewards column of every chain except Polkadot indicated "KSM" instead of using correct ticker. This did not have any influence on the correct data.
 * Fixed: Ticker in volume column indicated "DOT" or "KSM" but is actually expressed in underlying currency.
 

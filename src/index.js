@@ -1,6 +1,6 @@
 import { gatherData } from './gatherData.js';
 import { exportVariable, readJSON, writeCSV, writeOverviewCSV } from './fileWorker.js';
-import { calculateMetrics, verifyUserInput, getTicker } from './utils.js';
+import { calculateMetrics, verifyUserInput, getTicker, checkPriceAvailablilty } from './utils.js';
 
 
 async function main () {
@@ -38,16 +38,14 @@ async function main () {
 
 
   for(let i = 0; i < userInput.addresses.length; i++){
+    verifyUserInput(userInput);
     let network = userInput.addresses[i].network.toLowerCase();
-    userInput = verifyUserInput(userInput, network);
+    let priceData = checkPriceAvailablilty(userInput, network);
     let start = userInput.start;
     let end = userInput.end;
-    
-    let address = userInput.addresses[i].address;
-   
+    let address = userInput.addresses[i].address;   
     let currency = userInput.currency;
     let exportOutput = userInput.exportOutput;
-    let priceData = userInput.priceData;
     let startBalance = userInput.addresses[i].startBalance;
     let ticker = getTicker(network);
 

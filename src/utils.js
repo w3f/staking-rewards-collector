@@ -177,10 +177,9 @@ function _getFirstandLastReward(obj){
     }
 }
 
-export function verifyUserInput(userInput, network){
+export function verifyUserInput(userInput){
     let start = new Date(userInput.start);
     let end = new Date(userInput.end);
-    let priceData = userInput.priceData;
 
     if(start > end){
         throw new Error('Start date must be before end date')
@@ -189,38 +188,6 @@ export function verifyUserInput(userInput, network){
     if(end > new Date()){
         throw new Error('Start date is in the future.');
     }
-
-    if(end.valueOf() < 1597708800000 & network == 'polkadot' & priceData == 'true'){
-        userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-    }
-    
-    if(end.valueOf() < 1568851200000 & network == 'kusama' & priceData == 'true'){
-        userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-    }
-
-    if(end.valueOf() < 1630022400000 & network == 'moonriver' & priceData == 'true'){
-        userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-    }
-
-    if(end.valueOf() < 1641884400000 & network == 'moonbeam' & priceData == 'true'){
-        userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-    }
-
-    if(end.valueOf() < 1630303200000 & network == 'shiden' & priceData == 'true'){
-        userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-    }
-
-    if(end.valueOf() < 1642402800000 & network == 'astar' & priceData == 'true'){
-        userInput.priceData = 'false';
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-    } 
-    
-    return userInput;
 }
 
 export function getTicker(network){
@@ -272,4 +239,40 @@ export function _getDenomination(network){
             break;
     }
     return normalization;
+}
+
+export function checkPriceAvailablilty(userInput, network){
+    let priceData = userInput.priceData;
+    let end = new Date(userInput.end);
+
+    if(end.valueOf() < 1597708800000 & network == 'polkadot' & priceData == 'true'){
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
+        priceData = 'false';
+    }
+    
+    if(end.valueOf() < 1568851200000 & network == 'kusama' & priceData == 'true'){
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
+        priceData = 'false';
+    }
+
+    if(end.valueOf() < 1630022400000 & network == 'moonriver' & priceData == 'true'){
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
+        priceData = 'false';
+    }
+
+    if(end.valueOf() < 1641884400000 & network == 'moonbeam' & priceData == 'true'){
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
+        priceData = 'false';
+    }
+
+    if(end.valueOf() < 1630303200000 & network == 'shiden' & priceData == 'true'){
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
+        priceData = 'false';
+    }
+
+    if(end.valueOf() < 1642402800000 & network == 'astar' & priceData == 'true'){
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
+        priceData = 'false';
+    } 
+    return priceData;
 }
