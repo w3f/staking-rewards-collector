@@ -33,11 +33,12 @@ export function makeDaysArray(startDate, endDate) {
     return dates;
   };
 
-export function initializeObject(daysArray, network, address, currency, startBalance){
+export function initializeObject(daysArray, network, address, currency, startBalance, ticker){
     let obj = {
         'message': 'empty',
         'address': address,
         'network': network,
+        'ticker' : ticker,
         'currency': currency,
         'startBalance': startBalance,
         'firstReward': '',

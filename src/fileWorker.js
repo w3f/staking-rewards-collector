@@ -27,7 +27,7 @@ export function readJSON(filePath) {
   function extractAsCSV(obj){
     const header = [
         "Day, Price in " + obj.currency +
-        `, Daily ${((obj.network == 'polkadot') ? 'DOT' : 'KSM')} Volume` +  
+        ", Daily Volume in " + obj.ticker +  
         ", Staking Rewards in" + ((obj.network == 'polkadot') ? ' DOT' : ' KSM') + 
         ", Number of Payouts" +
         ", Value in Fiat" 

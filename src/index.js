@@ -41,7 +41,7 @@ async function main () {
     let startBalance = userInput.addresses[i].startBalance;
     let ticker = getTicker(network);
 
-    obj = await gatherData(start, end, network, address, currency, priceData, startBalance);
+    obj = await gatherData(start, end, network, address, currency, priceData, startBalance, ticker);
     
     // otherwise there were no rewards
     if(obj.data.numberRewardsParsed > 0){
