@@ -64,7 +64,9 @@ async function main () {
     Creates an overview csv that holds a summary of all addresses. I need to pass it outside of the previous if-condition because it could be that the last address didn't have any rewards which
     would lead to the fact that the file would never be written. I included a flag in the writeOverviewCSV function to skip writing a line for addresses that have no rewards.
     */
+    if(exportOutput == "true"){
     csv = writeOverviewCSV(i, userInput.addresses.length, obj, csv);
+    }
 
 
     totalFiat = totalFiat + obj.totalValueFiat;
