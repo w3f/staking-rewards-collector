@@ -63,7 +63,7 @@ export function readJSON(filePath) {
     if(obj.message == 'No rewards found for this address'){
       row = '';
     } else {
-      row = obj.address + ',' + obj.network + ',' + obj.ticker + ',' + obj.totalAmountHumanReadable + ',' + obj.totalValueFiat + "\n";
+      row = obj.address + ',' + obj.network.toUpperCase() + ',' + obj.ticker + ',' + obj.totalAmountHumanReadable + ',' + obj.totalValueFiat + "\n";
     }
 
     // If it is the first address that has been parsed, we want to create the overview csv
