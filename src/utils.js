@@ -220,7 +220,7 @@ export function getTicker(network){
 }
 
 export function getTokenName(network) {
-  return network == "centrifuge" ? "wrapped-centrifuge" : "network";
+  return network == "centrifuge" ? "wrapped-centrifuge" : network;
 }
 
 export function _getDenomination(network){

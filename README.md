@@ -3,7 +3,7 @@
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
 
-**This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework. 
+**This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework.
 
 # Changelog
 ## Version 1.6.0
@@ -11,7 +11,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 * Added new terminal output layout to account for increasing number of supported networks.
 * Added support for Astar addresses.
 * Added note about data sources in output files.
-* Fixed: If a user requested price data for a network when no prices were available, the gathering of prices was wrongly turned off for all addresses that came after. 
+* Fixed: If a user requested price data for a network when no prices were available, the gathering of prices was wrongly turned off for all addresses that came after.
 * Fixed: Ticker in rewards column of every chain except Polkadot indicated "KSM" instead of using correct ticker. This did not have any influence on the correct data.
 * Fixed: Ticker in volume column indicated "DOT" or "KSM" but is provided in the requested price currency. This did not have any influence on the correct data.
 
@@ -44,7 +44,7 @@ The program takes several inputs in the `config/userInput.json` file.
 
 Staking Rewards:
 * **addresses**: A list of objects containing the `address` you want to parse the staking rewards, the `name` of your address and the `startBalance`. It also contains a field `network`, where users can specify their address belonging to: `Polkadot`, `Kusama`, `Moonriver`, `Moonbeam`, `Shiden`, `Astar`.
-* **startBalance**: The amount of tokens from which the staking rewards are generated at the time of the `start`. Used to calculate the annualizedReturn, can be set to any number if the user is not interested in an accurate annualized return metric. 
+* **startBalance**: The amount of tokens from which the staking rewards are generated at the time of the `start`. Used to calculate the annualizedReturn, can be set to any number if the user is not interested in an accurate annualized return metric.
 * **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices: Polkadot (2020-08-19), Kusama (2019-09-20) Moonriver (2021-08-26), Moonbeam (2022-01-11), Shiden (2021-08-30), Astar (2022-01-17). Prices are set to 0 before that.
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
 
@@ -55,9 +55,10 @@ Price Data:
 
 Output:
 * **exportOutput**: Specify if you want the .csv and .json files to be exported (allowed: "true", "false").
+* **exportPrefix**: Specify a prefix appended to all files exported. (e.g. "out/" leads to all files being written in "out/")
 
 ## Output
-After the tool executed successfully, it creates two files in the root folder. The JSON file contains some meta-data (e.g., sum of rewards and estimate of annualized return rate) and the CSV file gives the most important information in a table and thereby printable format. 
+After the tool executed successfully, it creates two files in the root folder. The JSON file contains some meta-data (e.g., sum of rewards and estimate of annualized return rate) and the CSV file gives the most important information in a table and thereby printable format.
 
 ### CSV Output
 The CSV output file contains a row for every day within the time frame where at least one staking reward occurred. Other days are excluded. Example output:

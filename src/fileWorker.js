@@ -1,6 +1,7 @@
 import fs from 'fs';
 
-let outputDir = "out/";
+let userInput = readJSON('config/userInput.json');
+let outputDir = userInput.exportPrefix === undefined ? "" : userInput.exportPrefix;
 
 export function exportVariable(data, name){
     try {
