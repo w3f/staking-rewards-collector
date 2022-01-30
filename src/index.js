@@ -15,6 +15,7 @@ async function main () {
     "GLMR": 0,
     "SDN": 0,
     "ASTR": 0,
+    "CFG": 0,
   }
   let totalStaked = {
     "DOT": 0,
@@ -23,6 +24,7 @@ async function main () {
     "GLMR": 0,
     "SDN": 0,
     "ASTR": 0,
+    "CFG": 0,
   }
 
   let totalFiatToken = {
@@ -32,6 +34,7 @@ async function main () {
     "GLMR": 0,
     "SDN": 0,
     "ASTR": 0,
+    "CFG": 0,
   }
 
   let totalFiat = 0;
@@ -43,24 +46,24 @@ async function main () {
     let priceData = checkPriceAvailablilty(userInput, network);
     let start = userInput.start;
     let end = userInput.end;
-    let address = userInput.addresses[i].address;   
+    let address = userInput.addresses[i].address;
     let currency = userInput.currency;
     let exportOutput = userInput.exportOutput;
     let startBalance = userInput.addresses[i].startBalance;
     let ticker = getTicker(network);
 
     obj = await gatherData(start, end, network, address, currency, priceData, startBalance, ticker);
-    
+
     // otherwise there were no rewards
     if(obj.data.numberRewardsParsed > 0){
       obj = calculateMetrics(obj);
     }
 
-    if(exportOutput == "true" & obj.message != 'No rewards found for this address'){ 
-      exportVariable(JSON.stringify(obj), userInput.addresses[i].name + ' ' + obj.address + '.json'); 
+    if(exportOutput == "true" & obj.message != 'No rewards found for this address'){
+      exportVariable(JSON.stringify(obj), userInput.addresses[i].name + ' ' + obj.address + '.json');
       writeCSV(obj, userInput.addresses[i].name + ' ' + obj.address + '.csv');
     }
-    /* 
+    /*
     Creates an overview csv that holds a summary of all addresses. I need to pass it outside of the previous if-condition because it could be that the last address didn't have any rewards which
     would lead to the fact that the file would never be written. I included a flag in the writeOverviewCSV function to skip writing a line for addresses that have no rewards.
     */
@@ -91,6 +94,10 @@ async function main () {
         numberPayouts.SDN = numberPayouts.SDN + obj.data.numberRewardsParsed
         totalStaked.SDN = totalStaked.SDN + obj.totalAmountHumanReadable;
         totalFiatToken.SDN = totalFiatToken.SDN + obj.totalValueFiat;
+    } else if (network == "centrifuge"){
+      numberPayouts.CFG = numberPayouts.CFG + obj.data.numberRewardsParsed
+      totalStaked.CFG = totalStaked.CFG + obj.totalAmountHumanReadable;
+      totalFiatToken.CFG = totalFiatToken.CFG + obj.totalValueFiat;
     } else if (network == "astar"){
       numberPayouts.ASTR = numberPayouts.ASTR + obj.data.numberRewardsParsed
       totalStaked.ASTR = totalStaked.ASTR + obj.totalAmountHumanReadable;
@@ -98,7 +105,7 @@ async function main () {
     }
   }
 
-    
+
   console.log('The following table lists all found rewards and values are expressed in ' + obj.currency);
 
 
@@ -108,11 +115,12 @@ async function main () {
   const MOVR = {"Name": "MOVR", "Nr. Payouts": numberPayouts.MOVR, "Number of Tokens": totalStaked.MOVR, "Value": totalFiatToken.MOVR};
   const SDN = {"Name": "SDN", "Nr. Payouts": numberPayouts.SDN, "Number of Tokens": totalStaked.SDN, "Value": totalFiatToken.SDN};
   const ASTR = {"Name": "ASTR", "Nr. Payouts": numberPayouts.ASTR, "Number of Tokens": totalStaked.ASTR, "Value": totalFiatToken.ASTR};
+  const CFG = {"Name": "CFG", "Nr. Payouts": numberPayouts.CFG, "Number of Tokens": totalStaked.CFG, "Value": totalFiatToken.CFG};
 
 
-  
-  console.table([DOT, KSM, GLMR, MOVR, ASTR, SDN]);
+
+  console.table([DOT, KSM, GLMR, MOVR, ASTR, SDN, CFG]);
   console.log('The total value of all payouts is ' + totalFiat + ' ' + obj.currency + ' (based on daily prices).');
-  console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).'); 
+  console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).');
 }
 main().catch(console.error).finally(() => process.exit());

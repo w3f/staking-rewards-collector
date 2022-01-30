@@ -8,12 +8,12 @@ export function dateToString(date){
     let day = date.getDate().toString();
     let month = (date.getMonth() + 1).toString();
     let year = date.getFullYear().toString();
-  
+
     if(day.length == 1){
       day = day.concat('0');
       day = _reverseString(day);
     }
-  
+
     if(month.length == 1){
       month = month.concat('0');
       month = _reverseString(month);
@@ -73,7 +73,7 @@ function _reverseString(string){
     var i;
     let length = string.length;
     var tmp_string = '';
-  
+
     for(i = 0; i < string.length; i++){
       tmp_string = tmp_string.concat(string[length-1]);
       length -= 1;
@@ -83,7 +83,7 @@ function _reverseString(string){
 
 function _transformArrayToString(array){
     let newArray = [];
-  
+
     for(let i = 0; i < array.length; i++){
       newArray[i] = dateToString(array[i]);
     }
@@ -102,7 +102,7 @@ export function transformDDMMYYYtoUnix(dateString){
 export function min(a,b){
     var min;
     if(a>b){
-        min = b; 
+        min = b;
     }else {
         min = a;
     }
@@ -128,7 +128,7 @@ export function calculateMetrics(obj){
     obj.totalValueFiat = round(obj.totalValueFiat,2);
     obj.currentValueRewardsFiat = round(obj.totalAmountHumanReadable * obj.data.list[0].price,2);
     obj.annualizedReturn = _calculateAnnualizedReturn(obj);
-    
+
     return obj;
 }
 
@@ -158,14 +158,14 @@ function _getFirstandLastReward(obj){
 
     while (i < max) {
         if (obj.data.list[i].numberPayouts != 0) {
-            firstReward = obj.data.list[i].day; 
+            firstReward = obj.data.list[i].day;
             break;
-        } 
+        }
         i++;
     }
 
     while (x >= 0) {
-        if (obj.data.list[x].numberPayouts != 0) {    
+        if (obj.data.list[x].numberPayouts != 0) {
            lastReward = obj.data.list[x].day;
             break;
         }
@@ -202,7 +202,7 @@ export function getTicker(network){
             break;
         case 'moonriver':
             ticker = 'MOVR';
-            break;     
+            break;
         case 'moonbeam':
             ticker = 'GLMR';
             break;
@@ -212,8 +212,15 @@ export function getTicker(network){
         case 'astar':
             ticker = 'ASTR';
             break;
+       case 'centrifuge':
+            ticker = 'CFG';
+            break;
     }
     return ticker;
+}
+
+export function getTokenName(network) {
+  return network == "centrifuge" ? "wrapped-centrifuge" : "network";
 }
 
 export function _getDenomination(network){
@@ -222,10 +229,10 @@ export function _getDenomination(network){
         case 'polkadot':
             normalization = 1/10000000000;
             break;
-        case 'kusama': 
+        case 'kusama':
             normalization = 1/1000000000000;
             break;
-        case 'moonriver': 
+        case 'moonriver':
             normalization = 1/1000000000000000000;
             break;
         case 'moonbeam':
@@ -235,6 +242,9 @@ export function _getDenomination(network){
             normalization = 1/1000000000000000000;
             break;
         case 'astar':
+            normalization = 1/1000000000000000000;
+            break;
+        case 'centrifuge':
             normalization = 1/1000000000000000000;
             break;
     }
@@ -249,7 +259,7 @@ export function checkPriceAvailablilty(userInput, network){
         console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
         priceData = 'false';
     }
-    
+
     if(end.valueOf() < 1568851200000 & network == 'kusama' & priceData == 'true'){
         console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
         priceData = 'false';
@@ -273,6 +283,10 @@ export function checkPriceAvailablilty(userInput, network){
     if(end.valueOf() < 1642402800000 & network == 'astar' & priceData == 'true'){
         console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
         priceData = 'false';
-    } 
+    }
+    if(end.valueOf() < 1626220800 & network == 'centrifuge' & priceData == 'true'){
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
+        priceData = 'false';
+    }
     return priceData;
 }
