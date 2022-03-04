@@ -13,6 +13,7 @@
     "prettier": "^2.5.1"
   },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "format": "prettier -w ./config ./src"
   }
 }
