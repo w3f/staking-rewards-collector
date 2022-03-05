@@ -15,6 +15,7 @@
   },
   "scripts": {
     "format": "prettier -w ./config ./src",
+    "prepare": "husky install",
     "start": "node src/index.js"
   }
 }
