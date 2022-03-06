@@ -56,12 +56,10 @@ export function initializeObject(daysArray, network, address, currency, startBal
     for(let i = 0; i < daysArray.length; i++){
         obj.data.list[i] = {
             'day' : daysArray[i],
-            'blockNumber': '',
-            'extrinsicHash': '',
+            'payouts': [],
             'price': 0,
             'volume': 0,
             'amountPlanks': 0,
-            'numberPayouts':0,
             'amountHumanReadable': 0,
             'valueFiat':0
         }
@@ -120,6 +118,11 @@ export function calculateMetrics(obj){
         obj.data.list[i].valueFiat = obj.data.list[i].amountHumanReadable * obj.data.list[i].price;
         obj.data.list[i].price = obj.data.list[i].price;
 
+        for(let j = 0; j < obj.data.list[i].payouts.length; j++) {
+            obj.data.list[i].payouts[j].amountHumanReadable = obj.data.list[i].payouts[j].amountPlanks * normalization;
+            obj.data.list[i].payouts[j].valueFiat = obj.data.list[i].payouts[j].amountHumanReadable * obj.data.list[i].price;
+        }
+
         // add values of each day to general metrics.
         obj.totalValueFiat = obj.totalValueFiat + obj.data.list[i].valueFiat;
         obj.totalAmountHumanReadable = obj.totalAmountHumanReadable + obj.data.list[i].amountHumanReadable;
@@ -157,7 +160,7 @@ function _getFirstandLastReward(obj){
     var lastReward;
 
     while (i < max) {
-        if (obj.data.list[i].numberPayouts != 0) {
+        if (obj.data.list[i].payouts.length != 0) {
             firstReward = obj.data.list[i].day; 
             break;
         } 
@@ -165,7 +168,7 @@ function _getFirstandLastReward(obj){
     }
 
     while (x >= 0) {
-        if (obj.data.list[x].numberPayouts != 0) {    
+        if (obj.data.list[x].payouts.length != 0) {    
            lastReward = obj.data.list[x].day;
             break;
         }

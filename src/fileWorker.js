@@ -30,15 +30,24 @@ export function readJSON(filePath) {
           "Day, Price in " + obj.currency +
           ", Daily Volume in " + obj.currency +  
           ", Staking Rewards in " + obj.ticker + 
-          ", Number of Payouts" +
+          ", Payout Block Number" +
+          ", Payout Block Timestamp" +
           ", Value in Fiat" 
       ]; 
       
-      const rows = obj.data.list
-          .filter(entry => entry.numberPayouts > 0)
-          .map(entry => `${entry.day}, ${entry.price}, ${entry.volume}, ${entry.amountHumanReadable}, ${entry.numberPayouts}, ${entry.valueFiat}`);
-  
-        return header.concat(rows).join("\n");
+      let rows = [];
+
+      for (let d=0; d<obj.data.list.length; d++) {
+        let day = obj.data.list[d];
+
+        let dayRows = day.payouts
+          .filter(payout => payout.amountPlanks > 0)
+          .map(entry => `${day.day}, ${day.price}, ${day.volume}, ${day.amountHumanReadable}, ${entry.blockNumber}, ${entry.timestamp}, ${entry.valueFiat}`);
+
+        rows.push(...dayRows);
+      }
+
+      return header.concat(rows).join("\n");
     }
   
   export function writeOverviewCSV(i, i_max, obj, csv){ 
