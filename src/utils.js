@@ -186,7 +186,7 @@ export function verifyUserInput(userInput){
     }
 
     if(end > new Date()){
-        throw new Error('Start date is in the future.');
+        throw new Error('End date is in the future.');
     }
 }
 
