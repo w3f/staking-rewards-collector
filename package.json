@@ -9,9 +9,13 @@
   "dependencies": {
     "coingecko-api": "^1.0.10",
     "curlrequest": "^1.0.1",
-    "mathjs": "^8.0.1"
+    "husky": "^7.0.4",
+    "mathjs": "^8.0.1",
+    "prettier": "^2.5.1"
   },
   "scripts": {
+    "format": "prettier -w ./config ./src",
+    "prepare": "husky install",
     "start": "node src/index.js"
   }
 }
