@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.6.0
+# Staking Rewards Collector v1.6.1
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -6,21 +6,17 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework.
 
 # Changelog
-## Version 1.6.0
-* Added a new "Overview.csv" output that sums up all accounts into one file and shows the amount of tokens and the respective sum in the defined currency.
-* Added new terminal output layout to account for increasing number of supported networks.
-* Added support for Astar addresses.
-* Added note about data sources in output files.
-* Fixed: If a user requested price data for a network when no prices were available, the gathering of prices was wrongly turned off for all addresses that came after.
-* Fixed: Ticker in rewards column of every chain except Polkadot indicated "KSM" instead of using correct ticker. This did not have any influence on the correct data.
-* Fixed: Ticker in volume column indicated "DOT" or "KSM" but is provided in the requested price currency. This did not have any influence on the correct data.
+## Version 1.6.1
+* Added Centrifuge support (thanks to lucasvo)
+* Added adjustable destination for output files. If not otherwise stated, files will be put into `/out`folder.
+* Added KILT support. Note, that KILT seems to have a lot of individual payouts which can substantially increase the time that the script is running and increases the risk of API-timeouts.
 
 For all changes see the changelog.md
 
 # What can it do?
-* Collect staking rewards for a given public address (currently Polkadot, Kusama, Moonriver, Moonbeam, Shiden, Astar) for a user-specified time window. The tool calculates the sum of staking rewards within that period.
+* Collect staking rewards for a given public address (currently Polkadot, Kusama, Moonriver, Moonbeam, Shiden, Astar, Centrifuge, KILT) for a user-specified time window. The tool calculates the sum of staking rewards within that period.
 * If the time window allows it (check below some requirements for `start` and `end` date), it also collects daily price data and the fiat value of a stake reward given that day's **opening price**.
-* If a meaningful startBalance (in DOT or KSM) is provided, it can calculate the annualized return rate (extrapolated from your time window to one year).
+* If a meaningful startBalance (in the token itself) is provided, it can calculate the annualized return rate (extrapolated from your time window to one year).
 * The output is stored in table format as CSV file and as JSON object (with more detailed information). For easier processing of multiple addresses, the file names also contain the address.
 
 # How to run?
@@ -43,9 +39,9 @@ For a more detailed tutorial on how to set up the script, please go [here](https
 The program takes several inputs in the `config/userInput.json` file.
 
 Staking Rewards:
-* **addresses**: A list of objects containing the `address` you want to parse the staking rewards, the `name` of your address and the `startBalance`. It also contains a field `network`, where users can specify their address belonging to: `Polkadot`, `Kusama`, `Moonriver`, `Moonbeam`, `Shiden`, `Astar`.
+* **addresses**: A list of objects containing the `address` you want to parse the staking rewards, the `name` of your address and the `startBalance`. It also contains a field `network`, where users can specify their address belonging to: `Polkadot`, `Kusama`, `Moonriver`, `Moonbeam`, `Shiden`, `Astar`, `Centrifuge`, `KILT`.
 * **startBalance**: The amount of tokens from which the staking rewards are generated at the time of the `start`. Used to calculate the annualizedReturn, can be set to any number if the user is not interested in an accurate annualized return metric.
-* **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices: Polkadot (2020-08-19), Kusama (2019-09-20) Moonriver (2021-08-26), Moonbeam (2022-01-11), Shiden (2021-08-30), Astar (2022-01-17). Prices are set to 0 before that.
+* **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices: Polkadot (2020-08-19), Kusama (2019-09-20) Moonriver (2021-08-26), Moonbeam (2022-01-11), Shiden (2021-08-30), Astar (2022-01-17), Centrifuge (2022-07-13), KILT (2021-12-01). Prices are set to 0 before that.
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
 
 
