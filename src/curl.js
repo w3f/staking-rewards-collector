@@ -1,6 +1,6 @@
 import curl from 'curlrequest';
 import { exportVariable } from './fileWorker.js';
-import { dateToString, transformDDMMYYYtoUnix, min, sleep } from './utils.js';
+import { dateToString, transformDDMMYYYtoUnix, min, sleep, getSubscanName } from './utils.js';
 
 
 export async function addStakingData(obj){
@@ -10,7 +10,7 @@ export async function addStakingData(obj){
     var finished;
     let page = -1;
     let address = obj.address;
-    let network = obj.network;
+    let network = getSubscanName(obj.network);
     var loopIndex;
     let round = 0;
 

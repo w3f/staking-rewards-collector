@@ -1,6 +1,6 @@
 import CoinGecko from 'coingecko-api';
 import { ceil, round } from 'mathjs';
-import { transformDDMMYYYtoUnix, getTokenName} from './utils.js';
+import { transformDDMMYYYtoUnix, getCoinGeckoName} from './utils.js';
 
 
 
@@ -33,7 +33,7 @@ async function _getPriceObject(obj){
     end = _checkDuration(start, end);
 
         try{
-            priceObject = await CoinGeckoClient.coins.fetchMarketChartRange(getTokenName(obj.network), {
+            priceObject = await CoinGeckoClient.coins.fetchMarketChartRange(getCoinGeckoName(obj.network), {
                 from: start,
                 to: end,
                 vs_currency: obj.currency,
@@ -113,6 +113,9 @@ function _setIndex(obj){
 
     if(network == 'centrifuge'){
         index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) >= 1629417600);
+    }
+    if(network == 'kilt'){
+        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) >= 1638342000);
     }
 
     if(index < 0){

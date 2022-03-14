@@ -16,6 +16,7 @@ async function main () {
     "SDN": 0,
     "ASTR": 0,
     "CFG": 0,
+    "KILT": 0,
   }
   let totalStaked = {
     "DOT": 0,
@@ -25,6 +26,7 @@ async function main () {
     "SDN": 0,
     "ASTR": 0,
     "CFG": 0,
+    "KILT": 0,
   }
 
   let totalFiatToken = {
@@ -35,6 +37,7 @@ async function main () {
     "SDN": 0,
     "ASTR": 0,
     "CFG": 0,
+    "KILT": 0,
   }
 
   let totalFiat = 0;
@@ -102,6 +105,10 @@ async function main () {
       numberPayouts.ASTR = numberPayouts.ASTR + obj.data.numberRewardsParsed
       totalStaked.ASTR = totalStaked.ASTR + obj.totalAmountHumanReadable;
       totalFiatToken.ASTR = totalFiatToken.ASTR + obj.totalValueFiat;
+    } else if (network == "kilt"){
+    numberPayouts.KILT = numberPayouts.KILT + obj.data.numberRewardsParsed
+    totalStaked.KILT = totalStaked.KILT + obj.totalAmountHumanReadable;
+    totalFiatToken.KILT = totalFiatToken.KILT + obj.totalValueFiat;
     }
   }
 
@@ -116,10 +123,11 @@ async function main () {
   const SDN = {"Name": "SDN", "Nr. Payouts": numberPayouts.SDN, "Number of Tokens": totalStaked.SDN, "Value": totalFiatToken.SDN};
   const ASTR = {"Name": "ASTR", "Nr. Payouts": numberPayouts.ASTR, "Number of Tokens": totalStaked.ASTR, "Value": totalFiatToken.ASTR};
   const CFG = {"Name": "CFG", "Nr. Payouts": numberPayouts.CFG, "Number of Tokens": totalStaked.CFG, "Value": totalFiatToken.CFG};
+  const KILT = {"Name": "KILT", "Nr. Payouts": numberPayouts.KILT, "Number of Tokens": totalStaked.KILT, "Value": totalFiatToken.KILT};
 
 
 
-  console.table([DOT, KSM, GLMR, MOVR, ASTR, SDN, CFG]);
+  console.table([DOT, KSM, GLMR, MOVR, ASTR, SDN, CFG, KILT]);
   console.log('The total value of all payouts is ' + totalFiat + ' ' + obj.currency + ' (based on daily prices).');
   console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).');
 }

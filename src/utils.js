@@ -215,13 +215,36 @@ export function getTicker(network){
        case 'centrifuge':
             ticker = 'CFG';
             break;
+        case 'kilt':
+            ticker = 'KILT';
+            break;
     }
     return ticker;
 }
 
-export function getTokenName(network) {
-  return network == "centrifuge" ? "wrapped-centrifuge" : network;
+// Sometimes the CoinGecko API takes something unexpected as coinID as input.
+export function getCoinGeckoName(network) {
+    switch(network){
+        case 'centrifuge':
+        network = 'wrapped-centrifuge';
+        break;
+    case 'kilt':
+        network = 'kilt-protocol';
+        break;
+    }
+    return network;
 }
+
+// Sometimes the Subscan API takes something unexpected as network as input.
+export function getSubscanName(network){
+    switch(network){
+    case 'kilt':
+        network = 'spiritnet';
+        break;
+    }
+    return network;
+}
+
 
 export function _getDenomination(network){
     var normalization;
@@ -246,6 +269,9 @@ export function _getDenomination(network){
             break;
         case 'centrifuge':
             normalization = 1/1000000000000000000;
+            break;
+        case 'kilt':
+            normalization =  1/1000000000000000;
             break;
     }
     return normalization;
@@ -288,5 +314,9 @@ export function checkPriceAvailablilty(userInput, network){
         console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
         priceData = 'false';
     }
+    if(end.valueOf() < 1638342000000 & network == 'kilt' & priceData == 'true'){
+        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
+        priceData = 'false';
+    }    
     return priceData;
 }

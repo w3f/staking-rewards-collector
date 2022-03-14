@@ -1,4 +1,12 @@
 # Changelog
+## Version 1.6.0
+* Added a new "Overview.csv" output that sums up all accounts into one file and shows the amount of tokens and the respective sum in the defined currency.
+* Added new terminal output layout to account for increasing number of supported networks.
+* Added support for Astar addresses.
+* Added note about data sources in output files.
+* Fixed: If a user requested price data for a network when no prices were available, the gathering of prices was wrongly turned off for all addresses that came after.
+* Fixed: Ticker in rewards column of every chain except Polkadot indicated "KSM" instead of using correct ticker. This did not have any influence on the correct data.
+* Fixed: Ticker in volume column indicated "DOT" or "KSM" but is provided in the requested price currency. This did not have any influence on the correct data.
 ## Version 1.5.2
 * Added support to parse Shiden staking rewards. The goal is long-term to add more and more parachains. 
 ## Version 1.5.1
