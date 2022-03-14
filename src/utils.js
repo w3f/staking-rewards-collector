@@ -284,7 +284,7 @@ export function checkPriceAvailablilty(userInput, network){
         console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
         priceData = 'false';
     }
-    if(end.valueOf() < 1626220800 & network == 'centrifuge' & priceData == 'true'){
+    if(end.valueOf() < 1626220800000 & network == 'centrifuge' & priceData == 'true'){
         console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
         priceData = 'false';
     }
