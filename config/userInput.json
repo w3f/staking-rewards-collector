@@ -4,6 +4,7 @@
 "currency": "CHF",
 "priceData": "true",
 "exportOutput": "true",
+"exportPrefix": "out/",
 "addresses": [
     {
         "name": "Account 1",

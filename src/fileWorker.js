@@ -1,8 +1,11 @@
 import fs from 'fs';
 
+let userInput = readJSON('config/userInput.json');
+let outputDir = userInput.exportPrefix === undefined ? "" : userInput.exportPrefix;
+
 export function exportVariable(data, name){
     try {
-        fs.writeFileSync(name, data);
+        fs.writeFileSync(outputDir+name, data);
         } catch (err) {
         console.error(err);
         }
@@ -18,30 +21,30 @@ export function readJSON(filePath) {
     const filename = name;
 
      try {
-         fs.writeFileSync(filename, extractAsCSV(obj));
+         fs.writeFileSync(outputDir+filename, extractAsCSV(obj));
         } catch (err){
         console.error(err);
         }
     }
-  
+
   function extractAsCSV(obj){
       const header = [
         "Prices from CoinGecko & Staking Rewards from Subscan.io \n" +
           "Day, Price in " + obj.currency +
-          ", Daily Volume in " + obj.currency +  
-          ", Staking Rewards in " + obj.ticker + 
+          ", Daily Volume in " + obj.currency +
+          ", Staking Rewards in " + obj.ticker +
           ", Number of Payouts" +
-          ", Value in Fiat" 
-      ]; 
-      
+          ", Value in Fiat"
+      ];
+
       const rows = obj.data.list
           .filter(entry => entry.numberPayouts > 0)
           .map(entry => `${entry.day}, ${entry.price}, ${entry.volume}, ${entry.amountHumanReadable}, ${entry.numberPayouts}, ${entry.valueFiat}`);
-  
+
         return header.concat(rows).join("\n");
     }
-  
-  export function writeOverviewCSV(i, i_max, obj, csv){ 
+
+  export function writeOverviewCSV(i, i_max, obj, csv){
    /*
    This function creates an overview csv that holds aggregated information about the addresses. I am passing back and forth the csv that gets enriched with every loop in index.js. When the loop ends,
    i.e., when i == i_max, then the csv is written.
@@ -51,10 +54,10 @@ export function readJSON(filePath) {
     const header = [
       "Prices from CoinGecko & Staking Rewards from Subscan.io \n" +
       "Address " +
-      ", Network " +  
+      ", Network " +
       ", Ticker" +
       ", Number of Tokens" +
-      ", Value in " + obj.currency 
+      ", Value in " + obj.currency
     ];
 
     /*
@@ -79,13 +82,13 @@ export function readJSON(filePath) {
 
     if(i == (i_max-1)){
       try {
-        fs.writeFileSync(filename, csv);
+        fs.writeFileSync(outputDir+filename, csv);
        } catch (err){
        console.error(err);
        }
     }
     return csv;
   }
-  
 
-  
+
+
