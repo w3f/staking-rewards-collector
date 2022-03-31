@@ -50,7 +50,7 @@ export function writeOverviewCSV(i, i_max, obj, csv) {
   var row;
   const header = [
     `Prices from CoinGecko & Staking Rewards from Subscan.io\n` +
-    `Address,Network,Ticker,Number of Tokens,Value in ${obj.currency}`
+    `Address,Network,Name,Ticker,Number of Tokens,Value in ${obj.currency}`
   ];
 
   /*
@@ -63,7 +63,7 @@ export function writeOverviewCSV(i, i_max, obj, csv) {
   if (obj.message == 'No rewards found for this address') {
     row = '';
   } else {
-    row = `${obj.address},${obj.network.toUpperCase()},${obj.ticker},${obj.totalAmountHumanReadable},${obj.totalValueFiat}\n`;
+    row = `${obj.address},${obj.network.toUpperCase()},${obj.name},${obj.ticker},${obj.totalAmountHumanReadable},${obj.totalValueFiat}\n`;
   }
 
   // If it is the first address that has been parsed, we want to create the overview csv

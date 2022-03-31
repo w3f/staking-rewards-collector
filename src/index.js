@@ -46,6 +46,7 @@ async function main () {
   for(let i = 0; i < userInput.addresses.length; i++){
     verifyUserInput(userInput);
     let network = userInput.addresses[i].network.toLowerCase();
+    let addressName = userInput.addresses[i].name;
     let priceData = checkPriceAvailablilty(userInput, network);
     let start = userInput.start;
     let end = userInput.end;
@@ -55,25 +56,27 @@ async function main () {
     let startBalance = userInput.addresses[i].startBalance;
     let ticker = getTicker(network);
 
-    obj = await gatherData(start, end, network, address, currency, priceData, startBalance, ticker);
+    obj = await gatherData(start, end, network, addressName, address, currency, priceData, startBalance, ticker);
 
     // otherwise there were no rewards
     if(obj.data.numberRewardsParsed > 0){
       obj = calculateMetrics(obj);
     }
 
-    if(exportOutput == "true" & obj.message != 'No rewards found for this address'){
-      exportVariable(JSON.stringify(obj), userInput.addresses[i].name + ' ' + obj.address + '.json');
-      writeCSV(obj, userInput.addresses[i].name + ' ' + obj.address + '.csv');
+    if (exportOutput == "true" & obj.message != 'No rewards found for this address') {
+      exportVariable(JSON.stringify(obj), `${addressName} ${obj.address}.json`);
+      writeCSV(obj, `${addressName} ${obj.address}.csv`);
     }
+
     /*
-    Creates an overview csv that holds a summary of all addresses. I need to pass it outside of the previous if-condition because it could be that the last address didn't have any rewards which
-    would lead to the fact that the file would never be written. I included a flag in the writeOverviewCSV function to skip writing a line for addresses that have no rewards.
+      Creates an overview csv that holds a summary of all addresses. I need to pass it outside of
+      the previous if-condition because it could be that the last address didn't have any rewards
+      which would lead to the fact that the file would never be written. I included a flag in the
+      `writeOverviewCSV` function to skip writing a line for addresses that have no rewards.
     */
     if(exportOutput == "true"){
     csv = writeOverviewCSV(i, userInput.addresses.length, obj, csv);
     }
-
 
     totalFiat = totalFiat + obj.totalValueFiat;
 
