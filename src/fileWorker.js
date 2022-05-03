@@ -1,29 +1,53 @@
 import fs from 'fs';
 
-let userInput = readJSON('config/userInput.json');
-let outputDir = userInput.exportPrefix === undefined ? "" : userInput.exportPrefix;
-
-export function exportVariable(data, name){
-  try {
-    fs.writeFileSync(outputDir+name, data);
-  } catch (err) {
-    console.error(err);
+/**
+ * Create the user-specified output directory, if it doesn't exist.
+ * 
+ * @param outputDir - The output directory, referenced relative to where this program is executing.
+ */
+function createOutputDir(outputDir) {
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir);
   }
 }
 
+/**
+ * Read a JSON file from disk.
+ * 
+ * @param filePath - string, file to read, referenced relative to where this program is executing.
+ * @returns the data as an object.
+ */
 export function readJSON(filePath) {
   const rawContent = fs.readFileSync(filePath);
   return JSON.parse(rawContent);
 }
 
-export function writeCSV(obj, name) {
-  const filename = name;
+/**
+ * Write some data to a file on disk.
+ * 
+ * @param fname - string, filename to be placed in user-specified output directory.
+ * @param data  - data to write to the file.
+ */
+export function writeOutput(fname, data) {
+  let userInput = readJSON('config/userInput.json');
+  let outputDir = userInput.exportPrefix === undefined ? "" : userInput.exportPrefix;
 
   try {
-    fs.writeFileSync(outputDir+filename, extractAsCSV(obj));
+    createOutputDir(outputDir);
+    fs.writeFileSync(outputDir + fname, data);
   } catch (err) {
     console.error(err);
   }
+}
+
+/**
+ * Write an address's staking rewards to a CSV.
+ * 
+ * @param obj - data object to write
+ * @param fname - string, filename (including .csv)
+ */
+export function writeCSV(obj, fname) {
+  writeOutput(fname, extractAsCSV(obj));
 }
 
 function extractAsCSV(obj) {
@@ -76,11 +100,7 @@ export function writeOverviewCSV(i, i_max, obj, csv) {
   }
 
   if (i == (i_max-1)) {
-    try {
-      fs.writeFileSync(outputDir+filename, csv);
-    } catch (err) {
-      console.error(err);
-    }
+    writeOutput(filename, csv)
   }
   return csv;
 }
