@@ -1,3 +1,4 @@
+import { getDenomination } from './networks.js';
 import { round, pow } from 'mathjs';
 
 export function sleep(ms) {
@@ -72,19 +73,19 @@ export function initializeObject(
     return obj;
 }
 
-function _reverseString(string){
+function _reverseString(string) {
     var i;
     let length = string.length;
     var tmp_string = '';
 
-    for(i = 0; i < string.length; i++){
+    for (i = 0; i < string.length; i++) {
       tmp_string = tmp_string.concat(string[length-1]);
       length -= 1;
     }
     return tmp_string;
 }
 
-function _transformArrayToString(array){
+function _transformArrayToString(array) {
     let newArray = [];
 
     for(let i = 0; i < array.length; i++){
@@ -93,7 +94,7 @@ function _transformArrayToString(array){
     return newArray;
 }
 
-export function transformDDMMYYYtoUnix(dateString){
+export function transformDDMMYYYtoUnix(dateString) {
 
     var dateParts = dateString.split('-');
     let date = new Date(Date.UTC(+dateParts[2], dateParts[1] - 1, +dateParts[0]));
@@ -102,20 +103,20 @@ export function transformDDMMYYYtoUnix(dateString){
     return unix;
 }
 
-export function min(a,b){
+export function min(a, b) {
     var min;
-    if(a>b){
+    if (a > b) {
         min = b;
-    }else {
+    } else {
         min = a;
     }
     return min;
 }
 
-export function calculateMetrics(obj){
+export function calculateMetrics(obj) {
     var normalization;
 
-    normalization = _getDenomination(obj.network);
+    normalization = getDenomination(obj.network);
 
     for(let i = 0; i < obj.data.numberOfDays; i++){
         // generate new metrics
@@ -135,7 +136,7 @@ export function calculateMetrics(obj){
     return obj;
 }
 
-function _calculateAnnualizedReturn(obj){
+function _calculateAnnualizedReturn(obj) {
     var annualized;
     var firstAndLastReward;
     var daysBetweenRewards;
@@ -152,7 +153,7 @@ function _calculateAnnualizedReturn(obj){
     return annualized;
 }
 
-function _getFirstandLastReward(obj){
+function _getFirstandLastReward(obj) {
     let i = 0;
     let max = obj.data.numberOfDays;
     let x = max - 1;
@@ -180,7 +181,7 @@ function _getFirstandLastReward(obj){
     }
 }
 
-export function verifyUserInput(userInput){
+export function verifyUserInput(userInput) {
     let start = new Date(userInput.start);
     let end = new Date(userInput.end);
 
@@ -191,135 +192,4 @@ export function verifyUserInput(userInput){
     if(end > new Date()){
         throw new Error('End date is in the future.');
     }
-}
-
-export function getTicker(network){
-    var ticker;
-    // Convert to upper case to avoid issue with different user input.
-    switch(network){
-        case 'kusama':
-             ticker = 'KSM';
-             break;
-        case 'polkadot':
-            ticker = 'DOT';
-            break;
-        case 'moonriver':
-            ticker = 'MOVR';
-            break;
-        case 'moonbeam':
-            ticker = 'GLMR';
-            break;
-        case 'shiden':
-            ticker = 'SDN';
-            break;
-        case 'astar':
-            ticker = 'ASTR';
-            break;
-       case 'centrifuge':
-            ticker = 'CFG';
-            break;
-        case 'kilt':
-            ticker = 'KILT';
-            break;
-    }
-    return ticker;
-}
-
-// Sometimes the CoinGecko API takes something unexpected as coinID as input.
-export function getCoinGeckoName(network) {
-    switch(network){
-        case 'centrifuge':
-        network = 'wrapped-centrifuge';
-        break;
-    case 'kilt':
-        network = 'kilt-protocol';
-        break;
-    }
-    return network;
-}
-
-// Sometimes the Subscan API takes something unexpected as network as input.
-export function getSubscanName(network){
-    switch(network){
-    case 'kilt':
-        network = 'spiritnet';
-        break;
-    }
-    return network;
-}
-
-
-export function _getDenomination(network){
-    var normalization;
-    switch(network){
-        case 'polkadot':
-            normalization = 1/10000000000;
-            break;
-        case 'kusama':
-            normalization = 1/1000000000000;
-            break;
-        case 'moonriver':
-            normalization = 1/1000000000000000000;
-            break;
-        case 'moonbeam':
-            normalization = 1/1000000000000000000;
-            break;
-        case 'shiden':
-            normalization = 1/1000000000000000000;
-            break;
-        case 'astar':
-            normalization = 1/1000000000000000000;
-            break;
-        case 'centrifuge':
-            normalization = 1/1000000000000000000;
-            break;
-        case 'kilt':
-            normalization =  1/1000000000000000;
-            break;
-    }
-    return normalization;
-}
-
-export function checkPriceAvailablilty(userInput, network){
-    let priceData = userInput.priceData;
-    let end = new Date(userInput.end);
-
-    if(end.valueOf() < 1597708800000 & network == 'polkadot' & priceData == 'true'){
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-        priceData = 'false';
-    }
-
-    if(end.valueOf() < 1568851200000 & network == 'kusama' & priceData == 'true'){
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-        priceData = 'false';
-    }
-
-    if(end.valueOf() < 1630022400000 & network == 'moonriver' & priceData == 'true'){
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-        priceData = 'false';
-    }
-
-    if(end.valueOf() < 1641884400000 & network == 'moonbeam' & priceData == 'true'){
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-        priceData = 'false';
-    }
-
-    if(end.valueOf() < 1630303200000 & network == 'shiden' & priceData == 'true'){
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-        priceData = 'false';
-    }
-
-    if(end.valueOf() < 1642402800000 & network == 'astar' & priceData == 'true'){
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-        priceData = 'false';
-    }
-    if(end.valueOf() < 1626220800000 & network == 'centrifuge' & priceData == 'true'){
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-        priceData = 'false';
-    }
-    if(end.valueOf() < 1638342000000 & network == 'kilt' & priceData == 'true'){
-        console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
-        priceData = 'false';
-    }    
-    return priceData;
 }

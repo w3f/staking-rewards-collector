@@ -1,7 +1,6 @@
 import curl from 'curlrequest';
-import { exportVariable } from './fileWorker.js';
-import { dateToString, transformDDMMYYYtoUnix, min, sleep, getSubscanName } from './utils.js';
-
+import { getSubscanName } from './networks.js';
+import { dateToString, transformDDMMYYYtoUnix, min, sleep } from './utils.js';
 
 export async function addStakingData(obj){
     const SLEEP_DELAY=100;
@@ -62,14 +61,14 @@ export async function addStakingData(obj){
                 }
             }
         finished = checkIfEnd(stakingObject, obj.data.list[0].day, loopIndex);
-        } while (finished == false);
+    } while (finished == false);
 
 
     obj.data.numberRewardsParsed = found;
 
     obj.message = 'data collection complete';
 
-    if(obj.data.numberRewardsParsed == 0){
+    if (obj.data.numberRewardsParsed == 0) {
         console.log('No rewards found to parse for address ' + obj.address);
         obj.message = 'No rewards found for this address';
     }

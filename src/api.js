@@ -1,8 +1,7 @@
 import CoinGecko from 'coingecko-api';
-import { ceil, round } from 'mathjs';
-import { transformDDMMYYYtoUnix, getCoinGeckoName} from './utils.js';
-
-
+import { round } from 'mathjs';
+import { getCoinGeckoName, getNetworkTimeMinimum } from './networks.js';
+import { transformDDMMYYYtoUnix } from './utils.js';
 
 export async function addPriceData(obj){
     let priceObject = await _getPriceObject(obj);
@@ -47,7 +46,6 @@ async function _getPriceObject(obj){
 /*
 CoinGecko API returns a list of arrays without a key, value pair. This function creates an object from that list.
 */
-
 function _arrayToObject(array, key){
     let name = key;
     let obj = [];
@@ -61,10 +59,13 @@ function _arrayToObject(array, key){
     return obj;
 }
 
-/*
-This function checks if the user did input a time-period larger than 90 days. Minutely data will be provided for duration within 1 day and  Hourly data will be used for duration between 1 day and 90 days. We are only interested in daily data, so we check if the duration is less than 90 days and then just increase it artificially (only the prices within the time-period of the user will be used later).
-*/
-
+/**
+ * This function checks if the user did input a time-period larger than 90 days. Minutely data will
+ * be provided for duration within 1 day and  Hourly data will be used for duration between 1 day
+ * and 90 days. We are only interested in daily data, so we check if the duration is less than 90
+ * days and then just increase it artificially (only the prices within the time-period of the user
+ * will be used later).
+ */
 function _checkDuration(start, end){
     var setEnd;
 
@@ -81,44 +82,15 @@ function _checkDuration(start, end){
 /*
 This function checks when prices were available and sets the index correspondingly to avoid looking for prices when there were none available.
 */
-
 function _setIndex(obj){
     var index;
-
     let network = obj.network;
 
-    if(network == 'polkadot'){
-        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1597708800);
-    }
+    index = obj.data.list.findIndex(
+        x => transformDDMMYYYtoUnix(x.day) >= getNetworkTimeMinimum(network)
+    );
 
-    if(network == 'kusama'){
-        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1568851200);
-    }
-
-    if(network == 'moonriver' ){
-        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1630022400);
-    }
-
-    if(network == 'moonbeam'){
-        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1641884400);
-    }
-
-    if(network == 'shiden'){
-        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1630303200);
-    }
-
-    if(network == 'astar'){
-        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) > 1642402800);
-    }
-
-    if(network == 'centrifuge'){
-        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) >= 1629417600);
-    }
-    if(network == 'kilt'){
-        index = obj.data.list.findIndex(x => transformDDMMYYYtoUnix(x.day) >= 1638342000);
-    }
-
-    if(index < 0){
+    if (index < 0) {
         index = 0;
     }
 
