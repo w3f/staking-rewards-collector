@@ -30,7 +30,8 @@ For all changes see the changelog.md
 ```bash
 git clone git@github.com:w3f/staking-rewards-collector.git
 cd staking-rewards-collector
-Change the parameters inside the config/userInput.json to your needs.
+cp config/userInput.json.sample config/userInput.json
+// Change the parameters inside the config/userInput.json to your needs.
 yarn
 yarn start
 ```
