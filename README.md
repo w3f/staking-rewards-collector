@@ -47,6 +47,7 @@ Staking Rewards:
 * **startBalance**: The amount of tokens from which the staking rewards are generated at the time of the `start`. Used to calculate the annualizedReturn, can be set to any number if the user is not interested in an accurate annualized return metric.
 * **start** (YYYY-MM-DD): The earliest day you want to analyze. Note that the earliest available prices: Polkadot (2020-08-19), Kusama (2019-09-20) Moonriver (2021-08-26), Moonbeam (2022-01-11), Shiden (2021-08-30), Astar (2022-01-17), Centrifuge (2022-07-13), KILT (2021-12-01). Prices are set to 0 before that.
 * **end** (YYYY-MM-DD): The most recent day you want to analyze.
+* **subscan_apikey**: You can apply for a developer apikey from [subscan.io](https://support.subscan.io/#introduction) to skip api call rate limit.
 
 
 Price Data:
