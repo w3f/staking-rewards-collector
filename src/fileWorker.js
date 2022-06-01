@@ -33,7 +33,9 @@ export function writeOutput(fname, data) {
   let outputDir = userInput.exportPrefix === undefined ? "" : userInput.exportPrefix;
 
   try {
-    createOutputDir(outputDir);
+    if (outputDir != "") {
+      createOutputDir(outputDir);
+    }
     fs.writeFileSync(outputDir + fname, data);
   } catch (err) {
     console.error(err);
