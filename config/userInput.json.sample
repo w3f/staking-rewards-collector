@@ -5,6 +5,7 @@
 "priceData": "true",
 "exportOutput": "true",
 "exportPrefix": "out/",
+"subscan_apikey": "",
 "addresses": [
     {
         "name": "Account 1",
@@ -20,3 +21,4 @@
         "network": "Polkadot"
     }
 ]}
+

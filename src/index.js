@@ -44,8 +44,9 @@ async function main () {
     let exportOutput = userInput.exportOutput;
     let startBalance = userInput.addresses[i].startBalance;
     let ticker = getTicker(network);
+    let subscan_apikey = userInput.subscan_apikey;
 
-    obj = await gatherData(start, end, network, addressName, address, currency, priceData, startBalance, ticker);
+    obj = await gatherData(start, end, network, addressName, address, currency, priceData, startBalance, ticker, subscan_apikey);
 
     // otherwise there were no rewards
     if (obj.data.numberRewardsParsed > 0) {

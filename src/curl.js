@@ -10,6 +10,7 @@ export async function addStakingData(obj){
     let page = -1;
     let address = obj.address;
     let network = getSubscanName(obj.network);
+    let subscan_apikey = obj.subscan_apikey;
     var loopIndex;
     let round = 0;
 
@@ -25,12 +26,12 @@ export async function addStakingData(obj){
     do {
         page += 1;
         round += 1;
-        stakingObject = await getStakingObject(address, page, network);
+        stakingObject = await getStakingObject(address, page, network, subscan_apikey);
         // Delay to avoid hitting API rate limit
         await sleep(SLEEP_DELAY);
 
         // Break loop if none rewards have been found for the address.
-        if(stakingObject.data.count == 0 || stakingObject.data.list === null){
+        if(stakingObject.data == undefined || stakingObject.data.count == 0 || stakingObject.data.list === null){
             break;
         }
 
@@ -69,7 +70,7 @@ export async function addStakingData(obj){
     obj.message = 'data collection complete';
 
     if (obj.data.numberRewardsParsed == 0) {
-        console.log('No rewards found to parse for address ' + obj.address);
+        console.log(obj.network + ': No rewards found to parse for address ' + obj.name + ': ' + obj.address);
         obj.message = 'No rewards found for this address';
     }
    
@@ -91,7 +92,7 @@ function checkIfEnd(stakingObj, lastDay, loopIndex){
     return finished;
 }
 
-async function getStakingObject(address, page, network){
+async function getStakingObject(address, page, network, subscan_apikey){
     let breakPoint = 0;
     let continueLoop = true;
 
@@ -102,14 +103,17 @@ async function getStakingObject(address, page, network){
     var options = {
         url: url,
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': subscan_apikey
+        },
         data: JSON.stringify({
         'row':100,
         'page': page,
         'address': address
         }),
     };
-    
+
     // Sometimes the staking object is not properly transmitted. We try it again 10 times.
     while( continueLoop & breakPoint < 10 ) {
         stakingObject = await curlRequest(options);

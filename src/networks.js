@@ -57,6 +57,24 @@ export function getNetworkInfo() {
 			normalization: 1 / 1e15,
 			minTime: 1638342000000
 		},
+		'crab' : {
+			ticker: 'CRAB',
+			coinGeckoOverride: 'darwinia-crab-network',
+			normalization: 1 / 1e9,
+			minTime: 1638342000000
+		},
+		'darwinia' : {
+			ticker: 'RING',
+			coinGeckoOverride: 'darwinia-network-native-token',
+			normalization: 1 / 1e9,
+			minTime: 1638342000000
+		},
+		'edgeware' : {
+			ticker: 'EDG',
+			coinGeckoOverride: 'edgeware',
+			normalization: 1 / 1e18,
+			minTime: 1638342000000
+		},
 	}
 }
 

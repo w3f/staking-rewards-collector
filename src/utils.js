@@ -35,7 +35,7 @@ export function makeDaysArray(startDate, endDate) {
   };
 
 export function initializeObject(
-    daysArray, network, name, address, currency, startBalance, ticker
+    daysArray, network, name, address, currency, startBalance, ticker, subscan_apikey
 ) {
     let obj = {
         'message': 'empty',
@@ -51,6 +51,7 @@ export function initializeObject(
         'currentValueRewardsFiat':0,
         'totalAmountHumanReadable':0,
         'totalValueFiat': 0,
+        'subscan_apikey': subscan_apikey,
         'data':{
             'numberRewardsParsed': 0,
             'numberOfDays': daysArray.length,

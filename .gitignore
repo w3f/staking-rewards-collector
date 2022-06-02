@@ -1,4 +1,4 @@
-config/
+config/userInput.json
 node_modules
 *.json
 *.csv
