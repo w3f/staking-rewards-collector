@@ -1,4 +1,11 @@
 # Changelog
+## Version 1.6.2
+* Some code refactoring and under-the-hood improvements to make it easier to add additional networks in the future. (thanks to joepetrowski)
+* Fixed bug that caused issues when creating a custom-named output folder.
+## Version 1.6.1
+* Added Centrifuge support (thanks to lucasvo)
+* Added adjustable destination for output files. If not otherwise stated, files will be put into `/out`folder.
+* Added KILT support. Note, that KILT seems to have a lot of individual payouts which can substantially increase the time that the script is running and increases the risk of API-timeouts.
 ## Version 1.6.0
 * Added a new "Overview.csv" output that sums up all accounts into one file and shows the amount of tokens and the respective sum in the defined currency.
 * Added new terminal output layout to account for increasing number of supported networks.

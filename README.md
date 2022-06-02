@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.6.2
+# Staking Rewards Collector v1.6.3
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -6,13 +6,12 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework.
 
 # Changelog
-## Version 1.6.2
-* Some code refactoring and under-the-hood improvements to make it easier to add additional networks in the future. (thanks to joepetrowski)
-* Fixed bug that caused issues when creating a custom-named output folder.
-## Version 1.6.1
-* Added Centrifuge support (thanks to lucasvo)
-* Added adjustable destination for output files. If not otherwise stated, files will be put into `/out`folder.
-* Added KILT support. Note, that KILT seems to have a lot of individual payouts which can substantially increase the time that the script is running and increases the risk of API-timeouts.
+## Version 1.6.3
+* It is now possible to add a subscan API key to skip call rate limits. If you do not have a key, just leave empty.
+* More supported networks (edgeware, crab, and darwinia)
+* Small bugfix with creation of output folder.
+
+Thanks to the contributors.
 
 For all changes see the changelog.md
 
