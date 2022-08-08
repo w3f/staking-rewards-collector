@@ -16,19 +16,8 @@ export async function addPriceData(obj){
 
     for(i;i<obj.data.list.length;i++){
         let tmp = transformDDMMYYYtoUnix(obj.data.list[i].day); 
-        let priceEntry = prices.find(x => x.timestamp >= tmp);
-
-        // CoinGecko doesn't always provide all prices. Handle this and use last
-        // available price.
-        if (priceEntry == undefined) {
-            priceEntry = prices[prices.length - 1];
-        }
-
+        let priceEntry = prices.find(x => x.timestamp >= tmp);       
         let volumeEntry = total_volume.find(x => x.timestamp >= tmp);
-        if (volumeEntry == undefined) {
-            volumeEntry = total_volume[total_volume.length - 1];
-        }
-
         obj.data.list[i].price = round(priceEntry.price, 2);
         obj.data.list[i].volume = volumeEntry.volume;
     }
