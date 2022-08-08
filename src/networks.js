@@ -149,6 +149,7 @@ export function getNetworkTimeMinimum(network) {
 	} else {
 		console.log(`${network.toUpperCase()} not in the database, returning all history.`)
 	}
+	return minTime;
 }
 
 /**
