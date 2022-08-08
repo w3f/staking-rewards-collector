@@ -5,7 +5,7 @@
  * ticker:            The commonly accepted ticker for a network's token.
  * normalization:     The multiplier on returned balances for user display. Often called "decimals".
  *                    This parameter is in the inverse, i.e. `1 / 10 ** decimals`.
- * minTime:           The UNIX timestamp before which there is no price data. Helps avoid
+ * minTime:           The UNIX timestamp (in seconds) before which there is no price data. Helps avoid
  *                    unnecessary API calls.
  * coinGeckoOverride: (Optional) Sometimes the Coin Gecko API requires a name that differs from
  *                    network.
@@ -17,63 +17,63 @@ export function getNetworkInfo() {
 		'polkadot' : {
 			ticker: 'DOT',
 			normalization: 1 / 1e10,
-			minTime: 1597708800000
+			minTime: 1597708800
 		},
 		'kusama' : {
 			ticker: 'KSM',
 			normalization: 1 / 1e12,
-			minTime: 1568851200000
+			minTime: 1568851200
 		},
 		'moonriver' : {
 			ticker: 'MOVR',
 			normalization: 1 / 1e18,
-			minTime: 1630022400000
+			minTime: 1630022400
 		},
 		'moonbeam' : {
 			ticker: 'GLMR',
 			normalization: 1 / 1e18,
-			minTime: 1641884400000
+			minTime: 1641884400
 		},
 		'astar' : {
 			ticker: 'ASTR',
 			normalization: 1 / 1e18,
-			minTime: 1642402800000
+			minTime: 1642402800
 		},
 		'shiden' : {
 			ticker: 'SDN',
 			normalization: 1 / 1e18,
-			minTime: 1630303200000
+			minTime: 1630303200
 		},
 		'centrifuge' : {
 			ticker: 'CFG',
 			coinGeckoOverride: 'wrapped-centrifuge',
 			normalization: 1 / 1e18,
-			minTime: 1626220800000
+			minTime: 1626220800
 		},
 		'kilt' : {
 			ticker: 'KILT',
 			coinGeckoOverride: 'kilt-protocol',
 			subscanOverride: 'spiritnet',
 			normalization: 1 / 1e15,
-			minTime: 1638342000000
+			minTime: 1638342000
 		},
 		'crab' : {
 			ticker: 'CRAB',
 			coinGeckoOverride: 'darwinia-crab-network',
 			normalization: 1 / 1e9,
-			minTime: 1638342000000
+			minTime: 1638342000
 		},
 		'darwinia' : {
 			ticker: 'RING',
 			coinGeckoOverride: 'darwinia-network-native-token',
 			normalization: 1 / 1e9,
-			minTime: 1638342000000
+			minTime: 1638342000
 		},
 		'edgeware' : {
 			ticker: 'EDG',
 			coinGeckoOverride: 'edgeware',
 			normalization: 1 / 1e18,
-			minTime: 1638342000000
+			minTime: 1638342000
 		},
 	}
 }
@@ -159,7 +159,7 @@ export function checkPriceAvailablilty(userInput, network) {
     let priceData = userInput.priceData;
     let end = new Date(userInput.end);
 
-    if (end.valueOf() < getNetworkTimeMinimum(network) & priceData == 'true') {
+    if ((end.valueOf() / 1000) < getNetworkTimeMinimum(network) & priceData == 'true') {
         console.log('Your requested time window lies before prices are available for ' + network.toUpperCase() + '. Switching off price data.');
         priceData = 'false';
     }
