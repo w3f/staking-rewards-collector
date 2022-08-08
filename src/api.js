@@ -52,6 +52,10 @@ async function _getPriceObject(obj){
         } catch (e){
             console.log('Error in parsing CoinGecko Data' + e);
         }
+    if(priceObject.success == false){
+        throw new Error('The API request to CoinGecko was not successful. It returned the following message: ' + priceObject.message);       
+    }
+
     return priceObject;
 }
 
