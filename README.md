@@ -8,6 +8,7 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 # Changelog
 ## Version 1.7.0
 * Changed format of the account-level csv-outputs. We switched from a "per-day" format to a "per-payout" format to get more granular information. (thanks to rphmeier)
+* Added the EventID of each staking reward to the csv-outputs.
 * Fixed a small bug with timestamps and a function that lead the script to try to access unavailable prices leading to a "price undefined" error.
 
 Thanks to the contributors.
