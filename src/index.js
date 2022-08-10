@@ -90,5 +90,4 @@ async function main () {
   console.log('The total value of all payouts is ' + totalFiat + ' ' + obj.currency + ' (based on daily prices).');
   console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).');
 }
-
 main().catch(console.error).finally(() => process.exit());

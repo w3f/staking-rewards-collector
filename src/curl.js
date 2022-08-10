@@ -40,30 +40,28 @@ export async function addStakingData(obj){
         } else {
             loopIndex = min(stakingObject.data.count - page*100,100);
         }
+
         for(let i=0; i < obj.data.numberOfDays; i++){
             for(let x = 0; x < loopIndex; x++){
                 let tmp = dateToString(new Date(stakingObject.data.list[x].block_timestamp * 1000));
-                    if(tmp == obj.data.list[i].day & stakingObject.data.list[x].event_id == "Reward"){
-                        found += 1;
-                        // if we already filled out the entries of a specific day. We then just concanate strings or add values.
-                        if(obj.data.list[i].numberPayouts >= 1){
-                            obj.data.list[i].amountPlanks = obj.data.list[i].amountPlanks + parseInt(stakingObject.data.list[x].amount);
-                            obj.data.list[i].numberPayouts = obj.data.list[i].numberPayouts + 1;
-                            obj.data.list[i].blockNumber = obj.data.list[i].blockNumber + ' and ' + stakingObject.data.list[x].block_num;
-                            obj.data.list[i].extrinsicHash = obj.data.list[i].extrinsicHash + ' and ' + stakingObject.data.list[x].extrinsic_hash;
-                        // if an entry has only the default values we add the ones from the staking object.
-                        } else {
-                            obj.data.list[i].amountPlanks = parseInt(stakingObject.data.list[x].amount);
-                            obj.data.list[i].numberPayouts = obj.data.list[i].numberPayouts + 1;
-                            obj.data.list[i].blockNumber = stakingObject.data.list[x].block_num;
-                            obj.data.list[i].extrinsicHash = stakingObject.data.list[x].extrinsic_hash;
-                        }
-                    }
+                if(tmp == obj.data.list[i].day & stakingObject.data.list[x].event_id == "Reward"){
+                    found += 1;
+
+                    let amountPlanks = parseInt(stakingObject.data.list[x].amount);
+                    obj.data.list[i].payouts.push({
+                        amountPlanks: amountPlanks,
+                        blockNumber: stakingObject.data.list[x].block_num,
+                        extrinsicHash: stakingObject.data.list[x].extrinsicHash,
+                        timestamp: stakingObject.data.list[x].block_timestamp,
+                        eventIndex: stakingObject.data.list[x].event_index,
+                    });
+
+                    obj.data.list[i].amountPlanks += amountPlanks;
                 }
             }
+        }
         finished = checkIfEnd(stakingObject, obj.data.list[0].day, loopIndex);
     } while (finished == false);
-
 
     obj.data.numberRewardsParsed = found;
 
@@ -93,6 +91,9 @@ function checkIfEnd(stakingObj, lastDay, loopIndex){
 }
 
 async function getStakingObject(address, page, network, subscan_apikey){
+
+    const SLEEP_DELAY=100;
+    
     let breakPoint = 0;
     let continueLoop = true;
 
@@ -124,7 +125,12 @@ async function getStakingObject(address, page, network, subscan_apikey){
                 breakPoint += 1;
             }
     }
-    return stakingObject;
+
+    if(stakingObject.message != 'Success'){
+        throw new Error("The Subscan API returned the following error: "+ stakingObject.message);
+    }
+
+   return stakingObject;
 }
 
 async function curlRequest(options){

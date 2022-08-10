@@ -54,13 +54,27 @@ export function writeCSV(obj, fname) {
 
 function extractAsCSV(obj) {
   const header = [
-    `Prices from CoinGecko & Staking Rewards from Subscan.io\n` +
-    `Day,Price in ${obj.currency},Daily Volume in ${obj.currency},Staking Rewards in ${obj.ticker},Number of Payouts,Value in Fiat`
-  ];
+    "Prices from CoinGecko & Staking Rewards from Subscan.io \n" +
+      "Day, Price in " + obj.currency +
+      ", Daily Volume in " + obj.currency +  
+      ", Staking Rewards in " + obj.ticker + 
+      ", Payout Block Number" +
+      ", Payout Block Timestamp" +
+      ", Value in Fiat" +
+      ", EventID"
+  ]; 
+  
+  let rows = [];
 
-  const rows = obj.data.list
-    .filter(entry => entry.numberPayouts > 0)
-    .map(entry => `${entry.day}, ${entry.price}, ${entry.volume}, ${entry.amountHumanReadable}, ${entry.numberPayouts}, ${entry.valueFiat}`);
+  for (let d=0; d<obj.data.list.length; d++) {
+    let day = obj.data.list[d];
+
+    let dayRows = day.payouts
+      .filter(payout => payout.amountPlanks > 0)
+      .map(entry => `${day.day}, ${day.price}, ${day.volume}, ${entry.amountHumanReadable}, ${entry.blockNumber}, ${entry.timestamp}, ${entry.valueFiat}, ${entry.eventIndex}`);
+
+    rows.push(...dayRows);
+  }
 
   return header.concat(rows).join("\n");
 }

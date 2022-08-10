@@ -1,4 +1,8 @@
 # Changelog
+## Version 1.6.3
+* It is now possible to add a subscan API key to skip call rate limits. If you do not have a key, just leave empty.
+* More supported networks (edgeware, crab, and darwinia)
+* Small bugfix with creation of output folder.
 ## Version 1.6.2
 * Some code refactoring and under-the-hood improvements to make it easier to add additional networks in the future. (thanks to joepetrowski)
 * Fixed bug that caused issues when creating a custom-named output folder.

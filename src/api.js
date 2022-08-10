@@ -15,10 +15,11 @@ export async function addPriceData(obj){
     let i = _setIndex(obj);
 
     for(i;i<obj.data.list.length;i++){
-
-        let tmp = transformDDMMYYYtoUnix(obj.data.list[i].day);
-        obj.data.list[i].price = round(prices.find(x => x.timestamp == tmp).price,2);
-        obj.data.list[i].volume = total_volume.find(x => x.timestamp == tmp).volume;
+        let tmp = transformDDMMYYYtoUnix(obj.data.list[i].day); 
+        let priceEntry = prices.find(x => x.timestamp >= tmp);       
+        let volumeEntry = total_volume.find(x => x.timestamp >= tmp);
+        obj.data.list[i].price = round(priceEntry.price, 2);
+        obj.data.list[i].volume = volumeEntry.volume;
     }
     return obj;
 }
@@ -40,6 +41,10 @@ async function _getPriceObject(obj){
         } catch (e){
             console.log('Error in parsing CoinGecko Data' + e);
         }
+
+    if(priceObject.success != true){
+        throw new Error('The API request to CoinGecko was not successful. It returned the following message: ' + priceObject.message);       
+    }
     return priceObject;
 }
 

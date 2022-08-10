@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.6.3
+# Staking Rewards Collector v1.7.0
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -6,10 +6,10 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework.
 
 # Changelog
-## Version 1.6.3
-* It is now possible to add a subscan API key to skip call rate limits. If you do not have a key, just leave empty.
-* More supported networks (edgeware, crab, and darwinia)
-* Small bugfix with creation of output folder.
+## Version 1.7.0
+* Changed format of the account-level csv-outputs. We switched from a "per-day" format to a "per-payout" format to get more granular information. (thanks to rphmeier)
+* Added the EventID of each staking reward to the csv-outputs.
+* Fixed a small bug with timestamps and a function that lead the script to try to access unavailable prices leading to a "price undefined" error.
 
 Thanks to the contributors.
 
@@ -61,7 +61,7 @@ Output:
 After the tool executed successfully, it creates two files in the root folder. The JSON file contains some meta-data (e.g., sum of rewards and estimate of annualized return rate) and the CSV file gives the most important information in a table and thereby printable format.
 
 ### CSV Output
-The CSV output file contains a row for every day within the time frame where at least one staking reward occurred. Other days are excluded. Example output:
+The CSV output file contains a row for every payout within the time frame where at least one staking reward occurred. Example output:
 
 https://i.imgur.com/4LCsDOc.png
 
