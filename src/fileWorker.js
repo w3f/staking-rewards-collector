@@ -60,7 +60,8 @@ function extractAsCSV(obj) {
       ", Staking Rewards in " + obj.ticker + 
       ", Payout Block Number" +
       ", Payout Block Timestamp" +
-      ", Value in Fiat" 
+      ", Value in Fiat" +
+      ", Extrinsic Hash"
   ]; 
   
   let rows = [];
@@ -70,7 +71,7 @@ function extractAsCSV(obj) {
 
     let dayRows = day.payouts
       .filter(payout => payout.amountPlanks > 0)
-      .map(entry => `${day.day}, ${day.price}, ${day.volume}, ${entry.amountHumanReadable}, ${entry.blockNumber}, ${entry.timestamp}, ${entry.valueFiat}`);
+      .map(entry => `${day.day}, ${day.price}, ${day.volume}, ${entry.amountHumanReadable}, ${entry.blockNumber}, ${entry.timestamp}, ${entry.valueFiat}, ${entry.eventIndex}`);
 
     rows.push(...dayRows);
   }

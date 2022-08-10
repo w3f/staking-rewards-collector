@@ -53,6 +53,7 @@ export async function addStakingData(obj){
                         blockNumber: stakingObject.data.list[x].block_num,
                         extrinsicHash: stakingObject.data.list[x].extrinsicHash,
                         timestamp: stakingObject.data.list[x].block_timestamp,
+                        eventIndex: stakingObject.data.list[x].event_index,
                     });
 
                     obj.data.list[i].amountPlanks += amountPlanks;
@@ -128,7 +129,7 @@ async function getStakingObject(address, page, network, subscan_apikey){
     if(stakingObject.message != 'Success'){
         throw new Error("The Subscan API returned the following error: "+ stakingObject.message);
     }
-    
+
    return stakingObject;
 }
 
