@@ -90,6 +90,7 @@ function checkIfEnd(stakingObj, lastDay, loopIndex){
 }
 
 async function getStakingObject(address, page, network, subscan_apikey){
+
     const SLEEP_DELAY=100;
     
     let breakPoint = 0;
@@ -122,14 +123,13 @@ async function getStakingObject(address, page, network, subscan_apikey){
             } catch(e) {
                 breakPoint += 1;
             }
-
-        if (stakingObject.message == 'API rate limit exceeded') {
-            // Delay to avoid hitting API rate limit
-            await sleep(SLEEP_DELAY);
-            continueLoop = true;
-        }
     }
-    return stakingObject;
+
+    if(stakingObject.message != 'Success'){
+        throw new Error("The Subscan API returned the following error: "+ stakingObject.message);
+    }
+    
+   return stakingObject;
 }
 
 async function curlRequest(options){
