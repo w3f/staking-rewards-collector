@@ -61,7 +61,7 @@ function extractAsCSV(obj) {
       ", Payout Block Number" +
       ", Payout Block Timestamp" +
       ", Value in Fiat" +
-      ", Extrinsic Hash"
+      ", EventID"
   ]; 
   
   let rows = [];
