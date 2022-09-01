@@ -1,7 +1,7 @@
 import CoinGecko from 'coingecko-api';
 import { round } from 'mathjs';
 import { getCoinGeckoName, getNetworkTimeMinimum } from './networks.js';
-import { transformDDMMYYYtoUnix } from './utils.js';
+import { sleep, transformDDMMYYYtoUnix } from './utils.js';
 
 export async function addPriceData(obj){
     let priceObject = await _getPriceObject(obj);
@@ -32,15 +32,19 @@ async function _getPriceObject(obj){
     // Avoid getting hourly or minute price data.
     end = _checkDuration(start, end);
 
-        try{
-            priceObject = await CoinGeckoClient.coins.fetchMarketChartRange(getCoinGeckoName(obj.network), {
+    try {
+        await sleep(100); // be nice to the API
+        priceObject = await CoinGeckoClient.coins.fetchMarketChartRange(
+            getCoinGeckoName(obj.network),
+            {
                 from: start,
                 to: end,
                 vs_currency: obj.currency,
-            });
-        } catch (e){
-            console.log('Error in parsing CoinGecko Data' + e);
-        }
+            }
+        );
+    } catch (e) {
+        console.log('Error in parsing CoinGecko Data' + e);
+    }
 
     if(priceObject.success != true){
         throw new Error('The API request to CoinGecko was not successful. It returned the following message: ' + priceObject.message);       

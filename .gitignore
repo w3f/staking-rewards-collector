@@ -2,5 +2,5 @@ config/userInput.json
 node_modules
 *.json
 *.csv
-out/
+out*/
 
