@@ -11,10 +11,11 @@ export async function gatherData(
 
     daysArray = makeDaysArray(new Date(start), new Date(end));
     obj = initializeObject(daysArray, network, name, address, currency, startBalance, ticker, subscan_apikey);
-    if(priceData == 'true'){
+    obj = await addStakingData(obj);
+    // There's no point in hitting the CoinGecko API if there are not any rewards.
+    if (priceData == 'true' && obj.data.numberRewardsParsed > 0) {
         obj = await addPriceData(obj);
     }
-    obj = await addStakingData(obj);
 
     return obj;
 }

@@ -32,19 +32,20 @@ async function main () {
 
   let totalFiat = 0;
 
+  verifyUserInput(userInput);
+  let start = userInput.start;
+  let end = userInput.end;
+  let currency = userInput.currency;
+  let exportOutput = userInput.exportOutput;
+  let subscan_apikey = userInput.subscan_apikey;
+
   for (let i = 0; i < userInput.addresses.length; i++) {
-    verifyUserInput(userInput);
     let network = userInput.addresses[i].network.toLowerCase();
     let addressName = userInput.addresses[i].name;
     let priceData = checkPriceAvailablilty(userInput, network);
-    let start = userInput.start;
-    let end = userInput.end;
     let address = userInput.addresses[i].address;
-    let currency = userInput.currency;
-    let exportOutput = userInput.exportOutput;
     let startBalance = userInput.addresses[i].startBalance;
     let ticker = getTicker(network);
-    let subscan_apikey = userInput.subscan_apikey;
 
     obj = await gatherData(start, end, network, addressName, address, currency, priceData, startBalance, ticker, subscan_apikey);
 
