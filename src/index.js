@@ -2,6 +2,7 @@ import { gatherData } from './gatherData.js';
 import { readJSON, writeCSV, writeOutput, writeOverviewCSV } from './fileWorker.js';
 import { getSupportedNetworks, getTicker, checkPriceAvailablilty } from './networks.js';
 import { calculateMetrics, verifyUserInput } from './utils.js';
+import { API_SLEEP_DELAY } from './const.js';
 
 function initNetworkData(networks) {
   let networkInfo = {};
@@ -38,6 +39,7 @@ async function main () {
   let currency = userInput.currency;
   let exportOutput = userInput.exportOutput;
   let subscan_apikey = userInput.subscan_apikey;
+  const apiSleepDelay = userInput.apiSleepDelay? userInput.apiSleepDelay: API_SLEEP_DELAY;
 
   for (let i = 0; i < userInput.addresses.length; i++) {
     let network = userInput.addresses[i].network.toLowerCase();
@@ -47,7 +49,7 @@ async function main () {
     let startBalance = userInput.addresses[i].startBalance;
     let ticker = getTicker(network);
 
-    obj = await gatherData(start, end, network, addressName, address, currency, priceData, startBalance, ticker, subscan_apikey);
+    obj = await gatherData(start, end, network, addressName, address, currency, priceData, startBalance, ticker, subscan_apikey, apiSleepDelay);
 
     // otherwise there were no rewards
     if (obj.data.numberRewardsParsed > 0) {

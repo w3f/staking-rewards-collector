@@ -35,7 +35,7 @@ export function makeDaysArray(startDate, endDate) {
   };
 
 export function initializeObject(
-    daysArray, network, name, address, currency, startBalance, ticker, subscan_apikey
+    daysArray, network, name, address, currency, startBalance, ticker, subscan_apikey, apiSleepDelay
 ) {
     let obj = {
         'message': 'empty',
@@ -52,6 +52,7 @@ export function initializeObject(
         'totalAmountHumanReadable':0,
         'totalValueFiat': 0,
         'subscan_apikey': subscan_apikey,
+        'apiSleepDelay': apiSleepDelay,
         'data':{
             'numberRewardsParsed': 0,
             'numberOfDays': daysArray.length,

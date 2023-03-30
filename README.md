@@ -6,6 +6,8 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework.
 
 # Changelog
+## Version 1.8.0
+* Added apiSleepDelay config (optional)
 ## Version 1.7.1
 * Reduced the load on CoinGecko's API and some minor code cleanup (thanks to joepetrowski).
 ## Version 1.7.0
@@ -32,7 +34,7 @@ For all changes see the changelog.md
 git clone git@github.com:w3f/staking-rewards-collector.git
 cd staking-rewards-collector
 cp config/userInput.json.sample config/userInput.json
-// Change the parameters inside the config/userInput.json to your needs.
+# Change the parameters inside the config/userInput.json to your needs.
 yarn
 yarn start
 ```

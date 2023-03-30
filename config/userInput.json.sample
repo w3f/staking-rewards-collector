@@ -6,6 +6,7 @@
 "exportOutput": "true",
 "exportPrefix": "out/",
 "subscan_apikey": "",
+"apiSleepDelay": 1000,
 "addresses": [
     {
         "name": "Account 1",
