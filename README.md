@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.7.1
+# Staking Rewards Collector v1.7.2
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
@@ -6,8 +6,8 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework.
 
 # Changelog
-## Version 1.8.0
-* Added apiSleepDelay config (optional)
+## Version 1.7.2
+* Added apiSleepDelay config (optional) - You can now set a custom sleepDelay for the API if you experience API timeouts (thanks to ironoa)
 ## Version 1.7.1
 * Reduced the load on CoinGecko's API and some minor code cleanup (thanks to joepetrowski).
 ## Version 1.7.0
