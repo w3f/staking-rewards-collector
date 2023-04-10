@@ -65,7 +65,7 @@ After the tool executed successfully, it creates two files in the root folder. T
 ### CSV Output
 The CSV output file contains a row for every payout within the time frame where at least one staking reward occurred. Example output:
 
-![example csv output](https://i.imgur.com/4LCsDOc.png)
+![example csv output](https://i.imgur.com/LUntuP8.png)
 
 
 ### JSON Output
