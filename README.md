@@ -67,13 +67,13 @@ After the tool executed successfully, it creates two files in the root folder. T
 ### CSV Output
 The CSV output file contains a row for every payout within the time frame where at least one staking reward occurred. Example output:
 
-https://i.imgur.com/4LCsDOc.png
+![example csv output](https://i.imgur.com/LUntuP8.png)
 
 
 ### JSON Output
 The JSON output file contains a summary of the data as well as a list of objects for every day of the specified time-period (regardless of whether staking rewards occured). If your standard OS text editor does not format the file properly, you can copy the data and insert it to http://jsonviewer.stack.hu/ (click at "format" after paste). Example output:
 
-https://i.imgur.com/QwXEGIN.png
+![example json output](https://i.imgur.com/QwXEGIN.png)
 
 The **JSON Output** contains:
 
