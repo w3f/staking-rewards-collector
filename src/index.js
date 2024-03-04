@@ -88,7 +88,8 @@ async function main () {
     });
   }
 
-  console.log('\nThe following table lists all found rewards and values are expressed in ' + obj.currency);
+  console.log('\nThe following table lists all found rewards and values are expressed in ' + obj.currency + '.');
+  console.log('\nRewards are calculated between ' + userInput.start + ' and ' + userInput.end + '.');
   console.table(tableArray);
   console.log('The total value of all payouts is ' + totalFiat + ' ' + obj.currency + ' (based on daily prices).');
   console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).');
