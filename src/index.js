@@ -39,6 +39,7 @@ async function main () {
   let currency = userInput.currency;
   let exportOutput = userInput.exportOutput;
   let subscan_apikey = userInput.subscan_apikey;
+  let priceApi = userInput.priceApi;
   const apiSleepDelay = userInput.apiSleepDelay? userInput.apiSleepDelay: API_SLEEP_DELAY;
 
   for (let i = 0; i < userInput.addresses.length; i++) {
@@ -49,7 +50,7 @@ async function main () {
     let startBalance = userInput.addresses[i].startBalance;
     let ticker = getTicker(network);
 
-    obj = await gatherData(start, end, network, addressName, address, currency, priceData, startBalance, ticker, subscan_apikey, apiSleepDelay);
+    obj = await gatherData(start, end, network, addressName, address, currency, priceData, startBalance, ticker, subscan_apikey, apiSleepDelay, priceApi);
 
     // otherwise there were no rewards
     if (obj.data.numberRewardsParsed > 0) {
@@ -91,7 +92,7 @@ async function main () {
   console.log('\nThe following table lists all found rewards and values are expressed in ' + obj.currency + '.');
   console.log('\nRewards are calculated between ' + userInput.start + ' and ' + userInput.end + '.');
   console.table(tableArray);
-  console.log('The total value of all payouts is ' + totalFiat + ' ' + obj.currency + ' (based on daily prices).');
+  console.log('The total value of all payouts is ' + totalFiat + ' ' + obj.currency + ' (based on daily prices using ' + obj.priceApi + ' API).');
   console.log('For more information, open the CSV file(s) or copy the content of the JSON file(s) into http://jsonviewer.stack.hu/ (click format).');
 }
 main().catch(console.error).finally(() => process.exit());

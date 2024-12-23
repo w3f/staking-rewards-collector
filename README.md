@@ -59,6 +59,15 @@ Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR", "GBP" and others available at CoinGecko.com).
 * **priceData**: Do you want to look up price data for your specified range? (allowed: "true", "false").
 
+Price API:
+* The application currently supports two price data sources:
+    * CoinGecko API (default): has some limitations on the amount of historical data that can be fetched for free. 
+    * CryptoCompare API: has more generous free plan limits, currently with no limit on the historical data time range.
+* **priceApi**:
+    * `coingecko` will use the CoinGecko APIs
+    * `cryptocompare` will use the CryptoCompare API.
+
+
 Output:
 * **exportOutput**: Specify if you want the .csv and .json files to be exported (allowed: "true", "false").
 * **exportPrefix**: Specify a prefix appended to all files exported. (e.g. "out/" leads to all files being written in "out/")
