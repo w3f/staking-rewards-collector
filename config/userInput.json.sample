@@ -6,6 +6,7 @@
 "exportOutput": "true",
 "exportPrefix": "out/",
 "subscan_apikey": "",
+"priceApi": "cryptocompare",
 "apiSleepDelay": 1000,
 "addresses": [
     {
