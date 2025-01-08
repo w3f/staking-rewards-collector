@@ -1,21 +1,21 @@
-# Staking Rewards Collector v1.7.3
+# Staking Rewards Collector v1.7.4
 
 # Disclaimer
-Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's API is used to collect daily price data.
+Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's / Cryptocompare's API is used to collect daily price data.
 
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework.
 
 # Changelog
+## Version 1.7.4
+* Added option to choose Cryptocompare as provider for prices. Useful for queries longer than 1 year ago (thanks to rmnprkrl).
+* Added requirement for node 18+ to support fetch() API.
 ## Version 1.7.3
 * Added dates to console output.
 ## Version 1.7.2
 * Added apiSleepDelay config (optional) - You can now set a custom sleepDelay for the API if you experience API timeouts (thanks to ironoa)
 ## Version 1.7.1
 * Reduced the load on CoinGecko's API and some minor code cleanup (thanks to joepetrowski).
-## Version 1.7.0
-* Changed format of the account-level csv-outputs. We switched from a "per-day" format to a "per-payout" format to get more granular information. (thanks to rphmeier)
-* Added the EventID of each staking reward to the csv-outputs.
-* Fixed a small bug with timestamps and a function that lead the script to try to access unavailable prices leading to a "price undefined" error.
+
 
 Thanks to the contributors.
 
@@ -58,6 +58,14 @@ Staking Rewards:
 Price Data:
 * **currency**: In what currency you would like to have your value expressed (allowed: "CHF", "USD", "EUR", "GBP" and others available at CoinGecko.com).
 * **priceData**: Do you want to look up price data for your specified range? (allowed: "true", "false").
+
+Price API:
+* The application currently supports two price data sources:
+    * CoinGecko API (default): has some limitations on the amount of historical data that can be fetched for free. 
+    * CryptoCompare API: has more generous free plan limits, currently with no limit on the historical data time range.
+* **priceApi**:
+    * `coingecko` will use the CoinGecko APIs
+    * `cryptocompare` will use the CryptoCompare API.
 
 Output:
 * **exportOutput**: Specify if you want the .csv and .json files to be exported (allowed: "true", "false").

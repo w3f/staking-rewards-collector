@@ -1,71 +1,52 @@
-import CoinGecko from 'coingecko-api';
-import { round } from 'mathjs';
-import { getCoinGeckoName, getNetworkTimeMinimum } from './networks.js';
-import { sleep, transformDDMMYYYtoUnix } from './utils.js';
+import { coingeckoService, cryptocompareService } from "./priceApiServices.js";
+import { round } from "mathjs";
+import { getNetworkTimeMinimum } from "./networks.js";
+import { transformDDMMYYYtoUnix } from "./utils.js";
 
-export async function addPriceData(obj){
-    let priceObject = await _getPriceObject(obj);
-    var prices;
-    var total_volume;
+export const PRICE_APIS = {
+  COINGECKO: "coingecko",
+  CRYPTOCOMPARE: "cryptocompare",
+  // NEWAPI: 'newapi',
+};
 
-    prices = _arrayToObject(priceObject.data.prices, "price");
-    total_volume = _arrayToObject(priceObject.data.total_volumes, "volume");
+// API Service registry
+const priceApis = {
+  [PRICE_APIS.COINGECKO]: coingeckoService,
+  [PRICE_APIS.CRYPTOCOMPARE]: cryptocompareService,
+};
 
-    // set index to first day price were available to avoid looking for prices where are none
-    let i = _setIndex(obj);
-
-    for(i;i<obj.data.list.length;i++){
-        let tmp = transformDDMMYYYtoUnix(obj.data.list[i].day); 
-        let priceEntry = prices.find(x => x.timestamp >= tmp);       
-        let volumeEntry = total_volume.find(x => x.timestamp >= tmp);
-        obj.data.list[i].price = round(priceEntry.price, 2);
-        obj.data.list[i].volume = volumeEntry.volume;
-    }
-    return obj;
+// Service selector function
+function getPriceApi(serviceType) {
+  const service = priceApis[serviceType.toLowerCase()];
+  if (!service) {
+    throw new Error(`Unsupported API service: ${serviceType}`);
+  }
+  return service;
 }
 
-async function _getPriceObject(obj){
-    const CoinGeckoClient = new CoinGecko();
-    var priceObject;
-    let start = transformDDMMYYYtoUnix(obj.data.list[0].day);
-    let end = transformDDMMYYYtoUnix(obj.data.list.slice(-1)[0].day);
-    // Avoid getting hourly or minute price data.
-    end = _checkDuration(start, end);
+export async function addPriceData(obj) {
+  const priceApi = getPriceApi(obj.priceApi || PRICE_APIS.COINGECKO);
 
-    try {
-        await sleep(100); // be nice to the API
-        priceObject = await CoinGeckoClient.coins.fetchMarketChartRange(
-            getCoinGeckoName(obj.network),
-            {
-                from: start,
-                to: end,
-                vs_currency: obj.currency,
-            }
-        );
-    } catch (e) {
-        console.log('Error in parsing CoinGecko Data' + e);
-    }
+  let start = transformDDMMYYYtoUnix(obj.data.list[0].day);
+  let end = transformDDMMYYYtoUnix(obj.data.list.slice(-1)[0].day);
+  // Avoid getting hourly or minute price data.
+  end = _checkDuration(start, end);
 
-    if(priceObject.success != true){
-        throw new Error('The API request to CoinGecko was not successful. It returned the following message: ' + priceObject.message);       
-    }
-    return priceObject;
-}
+  const priceData = await priceApi.getPrices(obj, start, end);
+  const prices = priceApi.formatPriceData(priceData, "price");
+  const total_volume = priceApi.formatPriceData(priceData, "volume");
 
-/*
-CoinGecko API returns a list of arrays without a key, value pair. This function creates an object from that list.
-*/
-function _arrayToObject(array, key){
-    let name = key;
-    let obj = [];
-    // populate the key
-        for(let i=0; i<array.length; i++){
-            obj[i] = {
-                "timestamp" : array[i][0] / 1000,
-                [name]: array[i][1],
-            }
-        }
-    return obj;
+  // set index to first day price were available to avoid looking for prices where are none
+  let i = _setIndex(obj);
+
+  for (i; i < obj.data.list.length; i++) {
+    let tmp = transformDDMMYYYtoUnix(obj.data.list[i].day);
+    let priceEntry = prices.find((x) => x.timestamp >= tmp);
+    let volumeEntry = total_volume.find((x) => x.timestamp >= tmp);
+    obj.data.list[i].price = round(priceEntry.price, 2);
+    obj.data.list[i].volume = volumeEntry.volume;
+  }
+  return obj;
 }
 
 /**
@@ -75,33 +56,33 @@ function _arrayToObject(array, key){
  * days and then just increase it artificially (only the prices within the time-period of the user
  * will be used later).
  */
-function _checkDuration(start, end){
-    var setEnd;
+function _checkDuration(start, end) {
+  var setEnd;
 
-    let duration = (end - start) / 60 / 60 / 24;
+  let duration = (end - start) / 60 / 60 / 24;
 
-    if(duration < 90){
-        setEnd = start + 91 * 60 * 60 * 24;
-    } else {
-        setEnd = end;
-    }
-    return setEnd;
+  if (duration < 90) {
+    setEnd = start + 91 * 60 * 60 * 24;
+  } else {
+    setEnd = end;
+  }
+  return setEnd;
 }
 
 /*
 This function checks when prices were available and sets the index correspondingly to avoid looking for prices when there were none available.
 */
-function _setIndex(obj){
-    var index;
-    let network = obj.network;
+function _setIndex(obj) {
+  var index;
+  let network = obj.network;
 
-    index = obj.data.list.findIndex(
-        x => transformDDMMYYYtoUnix(x.day) >= getNetworkTimeMinimum(network)
-    );
+  index = obj.data.list.findIndex(
+    (x) => transformDDMMYYYtoUnix(x.day) >= getNetworkTimeMinimum(network)
+  );
 
-    if (index < 0) {
-        index = 0;
-    }
+  if (index < 0) {
+    index = 0;
+  }
 
-    return index;
+  return index;
 }
