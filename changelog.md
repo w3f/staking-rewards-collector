@@ -1,4 +1,8 @@
 # Changelog
+## Version 1.7.0
+* Changed format of the account-level csv-outputs. We switched from a "per-day" format to a "per-payout" format to get more granular information. (thanks to rphmeier)
+* Added the EventID of each staking reward to the csv-outputs.
+* Fixed a small bug with timestamps and a function that lead the script to try to access unavailable prices leading to a "price undefined" error.
 ## Version 1.6.3
 * It is now possible to add a subscan API key to skip call rate limits. If you do not have a key, just leave empty.
 * More supported networks (edgeware, crab, and darwinia)
