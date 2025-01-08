@@ -47,22 +47,23 @@ export function writeOutput(fname, data) {
  * 
  * @param obj - data object to write
  * @param fname - string, filename (including .csv)
+ * @param priceprovider - string, name of price provider
  */
-export function writeCSV(obj, fname) {
-  writeOutput(fname, extractAsCSV(obj));
+export function writeCSV(obj, fname, priceprovider) {
+  writeOutput(fname, extractAsCSV(obj, priceprovider));
 }
 
-function extractAsCSV(obj) {
+function extractAsCSV(obj, priceprovider) {
   const header = [
-    "Prices from CoinGecko & Staking Rewards from Subscan.io \n" +
-      "Day, Price in " + obj.currency +
-      ", Daily Volume in " + obj.currency +  
-      ", Staking Rewards in " + obj.ticker + 
-      ", Payout Block Number" +
-      ", Payout Block Timestamp" +
-      ", Value in Fiat" +
-      ", EventID"
-  ]; 
+    `Prices from ${priceprovider} & Staking Rewards from Subscan.io \n` +
+    `Day, Price in ${obj.currency}, ` +
+    `Daily Volume in ${obj.currency}, ` +
+    `Staking Rewards in ${obj.ticker}, ` +
+    `Payout Block Number, ` +
+    `Payout Block Timestamp, ` +
+    `Value in Fiat, ` +
+    `EventID`
+  ];
   
   let rows = [];
 

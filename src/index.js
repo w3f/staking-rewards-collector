@@ -59,7 +59,7 @@ async function main () {
 
     if (exportOutput == "true" & obj.message != 'No rewards found for this address') {
       writeOutput(`${addressName} ${obj.address}.json`, JSON.stringify(obj));
-      writeCSV(obj, `${addressName} ${obj.address}.csv`);
+      writeCSV(obj, `${addressName} ${obj.address}.csv`, priceApi);
     }
 
     /*
