@@ -3,13 +3,14 @@ import { getSubscanName } from './networks.js';
 import { dateToString, transformDDMMYYYtoUnix, min, sleep } from './utils.js';
 
 export async function addStakingData(obj){
+
     const SLEEP_DELAY=obj.apiSleepDelay
     let found = 0;
     let stakingObject = {};
     var finished;
     let page = -1;
     let address = obj.address;
-    let network = getSubscanName(obj.network);
+    let network = getSubscanName(obj.network, obj.start);
     let subscan_apikey = obj.subscan_apikey;
     var loopIndex;
     let round = 0;

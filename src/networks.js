@@ -17,12 +17,16 @@ export function getNetworkInfo() {
 		'polkadot' : {
 			ticker: 'DOT',
 			normalization: 1 / 1e10,
-			minTime: 1597708800
+			minTime: 1597708800,
+			migrated: '2025-11-04',
+			migratedNetwork: "assethub-polkadot"
 		},
 		'kusama' : {
 			ticker: 'KSM',
 			normalization: 1 / 1e12,
-			minTime: 1568851200
+			minTime: 1568851200,
+			migrated: '2025-11-04',
+			migratedNetwork: "assethub-kusama"
 		},
 		'moonriver' : {
 			ticker: 'MOVR',
@@ -100,14 +104,36 @@ export function getCoinGeckoName(network) {
 /**
  * Return the Subscan identifier for a given network.
  */
-export function getSubscanName(network) {
+export function getSubscanName(network, date) {
 	const networkInfo = getNetworkInfo();
 	let subscanName = network;
-	if (Object.keys(networkInfo[network]).includes('subscanOverride')) {
-		subscanName = networkInfo[network].subscanOverride;
+
+	// Handle migration if there was any
+	if (
+		Object.keys(networkInfo).includes(network) &&
+		Object.keys(networkInfo[network]).includes('migrated') &&
+		Object.keys(networkInfo[network]).includes('migratedNetwork') &&
+		date != undefined
+	) {
+		const migratedDate = new Date(networkInfo[network].migrated);
+		const userDate = new Date(date);
+
+		if (userDate >= migratedDate) {
+			subscanName = networkInfo[network].migratedNetwork;
+		}
 	}
+
+	// Subscan override for those networks have a different subscan url than their natural network name (e.g. KILT as Spiritnet)
+	if (
+		Object.keys(networkInfo).includes(subscanName) &&
+		Object.keys(networkInfo[subscanName]).includes('subscanOverride')
+	) {
+		subscanName = networkInfo[subscanName].subscanOverride;
+	}
+	
 	return subscanName;
 }
+
 
 /**
  * Get the ticker for a given network.
