@@ -11,6 +11,8 @@
  *                    network.
  * subscanOverride:   (Optional) Sometimes the Subscan API requires a name that differs from
  *                    network.
+ * migrated:		 (Optional) The date (YYYY-MM-DD) when the network migrated (and thereby changed their endpoint).
+ * migratedNetwork:	 (Optional) The new network name after migration.
  */
 export function getNetworkInfo() {
 	return {
@@ -25,7 +27,7 @@ export function getNetworkInfo() {
 			ticker: 'KSM',
 			normalization: 1 / 1e12,
 			minTime: 1568851200,
-			migrated: '2025-11-04',
+			migrated: '2025-10-07',
 			migratedNetwork: "assethub-kusama"
 		},
 		'moonriver' : {
@@ -104,34 +106,42 @@ export function getCoinGeckoName(network) {
 /**
  * Return the Subscan identifier for a given network.
  */
-export function getSubscanName(network, date) {
+export function getSubscanName(network, start, end) {
 	const networkInfo = getNetworkInfo();
-	let subscanName = network;
+	let subscanNames = [network];
 
 	// Handle migration if there was any
 	if (
 		Object.keys(networkInfo).includes(network) &&
 		Object.keys(networkInfo[network]).includes('migrated') &&
-		Object.keys(networkInfo[network]).includes('migratedNetwork') &&
-		date != undefined
+		Object.keys(networkInfo[network]).includes('migratedNetwork')
 	) {
 		const migratedDate = new Date(networkInfo[network].migrated);
-		const userDate = new Date(date);
+		const startDate = new Date(start);
+		const endDate = new Date(end);
 
-		if (userDate >= migratedDate) {
-			subscanName = networkInfo[network].migratedNetwork;
+		// Interval crosses the migration date => need both networks
+		if (startDate < migratedDate && endDate >= migratedDate) {
+			subscanNames = [network, networkInfo[network].migratedNetwork];
+		} 
+		// Fully post-migration => only migrated network
+		else if (startDate >= migratedDate) {
+			subscanNames = [networkInfo[network].migratedNetwork];
 		}
 	}
 
-	// Subscan override for those networks have a different subscan url than their natural network name (e.g. KILT as Spiritnet)
-	if (
-		Object.keys(networkInfo).includes(subscanName) &&
-		Object.keys(networkInfo[subscanName]).includes('subscanOverride')
-	) {
-		subscanName = networkInfo[subscanName].subscanOverride;
-	}
-	
-	return subscanName;
+	// Subscan override for networks that have a different subscan url than their natural network name
+	// Apply override to every entry in the vector
+	subscanNames = subscanNames.map((n) => {
+		if (
+			Object.keys(networkInfo).includes(n) &&
+			Object.keys(networkInfo[n]).includes('subscanOverride')
+		) {
+			return networkInfo[n].subscanOverride;
+		}
+		return n;
+	});
+	return subscanNames;
 }
 
 
