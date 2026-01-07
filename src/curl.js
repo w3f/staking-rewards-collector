@@ -3,19 +3,23 @@ import { getSubscanName } from './networks.js';
 import { dateToString, transformDDMMYYYtoUnix, min, sleep } from './utils.js';
 
 export async function addStakingData(obj){
+
     const SLEEP_DELAY=obj.apiSleepDelay
     let found = 0;
     let stakingObject = {};
     var finished;
     let page = -1;
     let address = obj.address;
-    let network = getSubscanName(obj.network);
+    let networks = getSubscanName(obj.network, obj.start, obj.end);
     let subscan_apikey = obj.subscan_apikey;
     var loopIndex;
     let round = 0;
 
     /*
-    This function runs at least once and parses the staking info for the given address. The API is structured in a way that you specify which
+    The outer loop is necessary since Polkadot and Kusama underwent a migration and their rewards can be found within two endpoints. 
+    So, we run the whole thing twice for networks that had a migration.
+
+    The inner function runs at least once and parses the staking info for the given address. The API is structured in a way that you specify which
     page is shown (probably like in the webpage). There is a maximum of 100 entries per page and the first page is 0. The following loop has two
     for loops. The two loops compare every day of the object (by the user) with all entries of the staking object. This is necessary since you can
     have multiple rewards per day (so it is not enough to stop once you found a match). After both loops are finished, we have to check whether we need
@@ -23,45 +27,51 @@ export async function addStakingData(obj){
     specified range of the user. Only then can we be sure that we have all the data. If this is not the case, we parse the next 100 entries of the next page.
      */
 
-    do {
-        page += 1;
-        round += 1;
-        stakingObject = await getStakingObject(address, page, network, subscan_apikey);
-        // Delay to avoid hitting API rate limit
-        await sleep(SLEEP_DELAY);
+    for (let n = 0; n < networks.length; n++) {
+    let network = networks[n];
+    page = -1;
+    finished = false;
 
-        // Break loop if none rewards have been found for the address.
-        if(stakingObject.data == undefined || stakingObject.data.count == 0 || stakingObject.data.list === null){
-            break;
-        }
+        do {
+            page += 1;
+            round += 1;
+            stakingObject = await getStakingObject(address, page, network, subscan_apikey);
+            // Delay to avoid hitting API rate limit
+            await sleep(SLEEP_DELAY);
 
-        if(page==0){
-            loopIndex = min(stakingObject.data.count, 100);
-        } else {
-            loopIndex = min(stakingObject.data.count - page*100,100);
-        }
+            // Break loop if none rewards have been found for the address.
+            if(stakingObject.data == undefined || stakingObject.data.count == 0 || stakingObject.data.list === null){
+                break;
+            }
 
-        for(let i=0; i < obj.data.numberOfDays; i++){
-            for(let x = 0; x < loopIndex; x++){
-                let tmp = dateToString(new Date(stakingObject.data.list[x].block_timestamp * 1000));
-                if(tmp == obj.data.list[i].day & stakingObject.data.list[x].event_id == "Reward"){
-                    found += 1;
+            if(page==0){
+                loopIndex = min(stakingObject.data.count, 100);
+            } else {
+                loopIndex = min(stakingObject.data.count - page*100,100);
+            }
 
-                    let amountPlanks = parseInt(stakingObject.data.list[x].amount);
-                    obj.data.list[i].payouts.push({
-                        amountPlanks: amountPlanks,
-                        blockNumber: stakingObject.data.list[x].block_num,
-                        extrinsicHash: stakingObject.data.list[x].extrinsicHash,
-                        timestamp: stakingObject.data.list[x].block_timestamp,
-                        eventIndex: stakingObject.data.list[x].event_index,
-                    });
+            for(let i=0; i < obj.data.numberOfDays; i++){
+                for(let x = 0; x < loopIndex; x++){
+                    let tmp = dateToString(new Date(stakingObject.data.list[x].block_timestamp * 1000));
+                    if(tmp == obj.data.list[i].day & stakingObject.data.list[x].event_id == "Reward"){
+                        found += 1;
 
-                    obj.data.list[i].amountPlanks += amountPlanks;
+                        let amountPlanks = parseInt(stakingObject.data.list[x].amount);
+                        obj.data.list[i].payouts.push({
+                            amountPlanks: amountPlanks,
+                            blockNumber: stakingObject.data.list[x].block_num,
+                            extrinsicHash: stakingObject.data.list[x].extrinsicHash,
+                            timestamp: stakingObject.data.list[x].block_timestamp,
+                            eventIndex: stakingObject.data.list[x].event_index,
+                        });
+
+                        obj.data.list[i].amountPlanks += amountPlanks;
+                    }
                 }
             }
-        }
-        finished = checkIfEnd(stakingObject, obj.data.list[0].day, loopIndex);
-    } while (finished == false);
+            finished = checkIfEnd(stakingObject, obj.data.list[0].day, loopIndex);
+        } while (finished == false);
+    }
 
     obj.data.numberRewardsParsed = found;
 

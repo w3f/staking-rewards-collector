@@ -1,4 +1,4 @@
-# Staking Rewards Collector v1.7.4
+# Staking Rewards Collector v1.8.0
 
 # Disclaimer
 Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundation guarantee that any data collected is valid and every user is responsible for double-checking the results of this tool. In addition to potential bugs in this code, you are relying on third-party data: Subscan's API is used to collect staking data and CoinGecko's / Cryptocompare's API is used to collect daily price data.
@@ -6,6 +6,9 @@ Everyone using this tool does so at his/her own risk. Neither I nor Web3 Foundat
 **This is no tax advice**: Every user is responsible to do his/her own research about how stake rewards are taxable in his/her regulatory framework.
 
 # Changelog
+## Version 1.8.0
+* Added support for migrated networks (Kusama & Polkadot), where the endpoint changed from the relay chain to assethub. The code now scrapes both networks if the migration falls into the user's requested time window.
+* Removed faulty header in .csv generation that could lead to problems opening the files.
 ## Version 1.7.4
 * Added option to choose Cryptocompare as provider for prices. Useful for queries longer than 1 year ago (thanks to rmnprkrl).
 * Added requirement for node 18+ to support fetch() API.

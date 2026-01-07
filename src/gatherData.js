@@ -10,7 +10,7 @@ export async function gatherData(
     let daysArray = [];
 
     daysArray = makeDaysArray(new Date(start), new Date(end));
-    obj = initializeObject(daysArray, network, name, address, currency, startBalance, ticker, subscan_apikey, apiSleepDelay, priceApi);
+    obj = initializeObject(daysArray, network, name, address, currency, startBalance, ticker, subscan_apikey, apiSleepDelay, priceApi, start, end);
     obj = await addStakingData(obj);
     // There's no point in hitting the CoinGecko API if there are not any rewards.
     if (priceData == 'true' && obj.data.numberRewardsParsed > 0) {
